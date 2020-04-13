@@ -13,21 +13,22 @@
 \newcommand{\green}[1]{\textcolor{green!70!black}{#1}}
 \usepackage{mathtools}
 \DeclarePairedDelimiter{\evdel}{\langle}{\rangle}
+\usepackage[colorinlistoftodos]{todonotes}
 
 \begin{document}
-\title{Linklength distribution in Proteins and our model}
 \title{The role of geometry in the chain separation distribution of links in protein contact networks}
 %\title{}
 %\title{}
 %\title{}
-\author{Antonia Mey}
-\affiliation{EaStCHEM School of Chemistry, University of Edinburgh, Edinburgh, United Kingdom}
-\author{Steffen Mühle}
-\affiliation{Uni Göttingen, 37077 Göttingen, Germany}
 \author{Nora Molkenthin}
 \email[Electronic Address: ]{n.molkenthin@gmx.de}
 \affiliation{Potsdam Institut für Klimafolgenforschung, Potsdam, Germany}
 \affiliation{Chair for Network Dynamics, Institute for Theoretical Physics and Center for Advancing Electronics Dresden (cfaed), Technical University of Dresden, 01069 Dresden}
+\author{Antonia S J S Mey}
+\affiliation{EaStCHEM School of Chemistry, University of Edinburgh, Edinburgh, United Kingdom}
+\author{Steffen Mühle}
+\affiliation{Uni Göttingen, 37077 Göttingen, Germany}
+
 %\author{Marc Timme}
 % \affiliation{Network Dynamics, Max Planck Institute for Dynamics and Self-Organization (MPIDS), 37077 Göttingen, Germany}
 % \affiliation{Chair for Network Dynamics, Institute for Theoretical Physics and Center for Advancing Electronics Dresden (cfaed), Technical University of Dresden, 01069 Dresden}
@@ -38,25 +39,21 @@ The distribution of chain separations of interacting amino acids in proteins rou
 \maketitle
 
 \section*{Introduction}
-Proteins, the molecular machines of every living organism perform vital tasks required for life to persists ranging from transport (e.g. hemoglobin), signal transduction (e.g. rhodopsin), immune responses (e.g. antibodies), and hormonal regulation (e.g. insulin)~\cite{}. All natural proteins are made up of 20 different amino acids which dictate the three dimensional conformations the proteins adopt in order to function~\cite{}. One way of looking at the functional forms of proteins and classifying structure properties of proteins is by looking at protein residue or contact networks~\cite{Vendruscolo2002,DiPaola2013,Estrada2011}. Protein Contact Networks (PCN), 
+Proteins, the molecular machines of every living organism perform vital tasks required for life to persists ranging from transport (e.g. hemoglobin), signal transduction (e.g. rhodopsin), immune responses (e.g. antibodies), and hormonal regulation (e.g. insulin)~\cite{}. All natural proteins are made up of 20 different amino acids which dictate the three dimensional conformations the proteins adopt in order to function~\cite{}. One way of looking at the functional forms of proteins and classifying structure properties of proteins is by looking at protein residue or contact networks~\cite{Vendruscolo2002,DiPaola2013,Estrada2011}. Protein Contact Networks (PCN), have shown promise in understanding protein folding patterns as well as revealing allosteric communication pathways~\cite{https://pubs.acs.org/doi/10.1021/acs.jcim.9b00320, and others}. 
+Prom a physicist perspective it is interesting to understand the emergent behaviour in protein structure from PCNs, by investigating common network measures and their behaviour for PCNs. For example Bartoli et al. observe that proteins have a sequence separation distribution that follows $\frac{1}{L}$, where $L$ is the length of the protein sequence, however do not provide an explanation for this observations~\cite{bartoli2008effect}. 
+Here, we will show how simple geometrical model can capture this behaviour well, even providing a simple analytical approximation. The analytical approximation and geometrical model build on the idea that inherently geometrical objects, such as amino acids, that any resulting PCN network ensembles for such geometrical objects has to be spatially embedded~\cite{Grabow2010,Wu2015}. 
+Different approaches have been used in the past for geometrical models describing protein folding, some of which derived characteristics of the secondary structure from constraints on bond and torsion angles~\cite{Danielsson2010,Molkenthin2011} and others focused on the formation mechanisms of the tertiary structure~\cite{molkenthin2016scaling, molkenthin2020self}. Based on such considerations, we have constructed a network formation process, in which random connections are added to a chain of unit disks, without causing them to intersect~\cite{molkenthin2016scaling}. Such a model cannow be used to investigate the emergenct behaviour of sequence separation deistributions as observed by Bartoli et al.~\cite{bartoli2008effect}. To this end, we analyze the link length distribution that emerge from the geometric model, where the length of a link is defined as the distance of the two ends along the original chain.
+This is then compared to the link length distribution extracted from protein residue networks (PRN) generated from protein data bank data. 
 
-Since amino acids take up space and are inherently geometrical objects, any plausible network ensemble for describing them, would have to be spatially embedded [5, 10]. Geometrical models for protein folding include models that derive characteristics of the secondary structure from constraints on bond and torsion angles [2, 7] and models focused on the formation mechanisms of the tertiary structure [8]. Based on such considerations, we have constructed a network formation process, in which random connections are added to a chain of unit disks, without causing them to intersect [8]. Here we analyze the link length distribution in those models, where the length of a link is defined as the distance of the two ends along the original chain.
-This is then compared to the link length distribution ex- tracted from protein residue networks (PRN) from Pro- tein Data Bank (PDB) data. We find that the frequency of links drops off with their length as
-f(l) ∝ l−γ, (1)
-both for the model and the PRNs (see Fig. 2), although the PRNs show a dip in the distribution for small lengths. Here f(l) denotes the frequency of links of length l. Interestingly in [https://iopscience.iop.org/article/10.1088/1478-3975/4/4/L01/fulltext/], such a link length distribution (with γ = 1) was imposed on a model (without further explanation), reproducing protein-like average shortest path lengths and clustering coefficient.
-\begin{enumerate}
-    \item Proteins are very important \cite{a bunch of stuff}
-    \item Proteins can be modeled as networks of amino acids and their connections \cite{Vendruscolo2002,DiPaola2013,Estrada2011}.
-    \item They postulate/observe that proteins have a sequence separation distribution, that is 1/l in \cite{bartoli2008effect}.
-    \item Here we explain this from geometric constraints alone using a model introduced in \cite{Molkenthin2016,molkenthin2020self}
-\end{enumerate}
-TO DO: Write text
+\todo[inline, color={green!40}]{@Nora: Summary of our findings and why this is cool.}
+
+
 \section*{Model}
 \begin{enumerate}
     \item Model in General
     \item Simplified 2D version
 \end{enumerate}
-TO DO: Write text
+\todo[inline, color={green!40}]{@Nora: Add model information}
 \section*{Analytic approximation}
 Starting from a closed chain of $N$ unit discs, as introduced for the analytic calculations in \cite{molkenthin2016scaling}. \red{briefly explain that here too.}
 Let us start by introducing the auxiliary variable $F(s)$, defined to be the number of possible links with a sequence separation of $s$. Before any links are added all sequence separations are equally likely, as there are $N$ possibilities of making a link of each separation $s$ with $2\leq s < N/2$.
@@ -65,7 +62,7 @@ As we add more links, not only are links taken out of this pool, because they ha
 Let us call the pools of available links after $i$ links have been added $F_i(s)$.
 \begin{figure}
     \centering
-    \includegraphics[width=\columnwidth]{prn_vis.pdf}
+    \includegraphics[width=0.5\columnwidth]{figures/prn_vis.pdf}
     \caption{Caption}
     \label{fig:fig_prn_vis}
 \end{figure}
@@ -182,8 +179,7 @@ We thank ... for fruitful discussions.
     \item Can we use all NMR structures for IDPs
     \item Would it help using more simulated structures than just the Crystal structure. 
 \end{itemize}
-TODO: @Toni: Collect data and plotting scripts in github
-TODO: @Toni: Connect overleaf to github \green{(check)}
+
 
 
 \end{document}
