@@ -1,1 +1,3 @@
-# sequence_distance_distribution
+# Sequence distance distribution
+
+This repository contains the manuscirpt and data for project looking at geometric properties of proteins together with Nora Molkenthin. 
