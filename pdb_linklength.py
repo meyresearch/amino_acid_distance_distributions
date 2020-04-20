@@ -24,6 +24,12 @@ def func(x, a,b):
 def func2(x, a):
      return a / x
 
+def theofunc(x, C,N,ex):
+     return (C)* np.power(N/(2*(-x**2+N*x-N)),ex)
+
+#def theofunc(x, C,N):
+#     return (C)* N/(2*(N*x-N))
+
 names_xray = glob.glob("pdb_data2/all_xray/*.pdb")
 names_xray = glob.glob("pdb_data2/xray_data_short/*.pdb")
 names_xray = glob.glob("pdb_data2/xray_data/*.pdb")
@@ -32,6 +38,8 @@ names_nmr = glob.glob("pdb_data2/nmr_data/*.pdb")
 names_nmr = glob.glob("pdb_data2/nmr_data_short/*.pdb")
 
 names_both = glob.glob("pdb_data2/both/*.pdb")
+
+#names_both = glob.glob("idp/*.pdb")
 
 names_used=names_both
 
@@ -48,6 +56,7 @@ binnedresults=[]
 
 if __name__ == '__main__':
     directories = ['pdb_data2/both']
+    #directories = ['idp']
     nameslen=len(names_used)
     #nameslen=50
     path = os.getcwd()
@@ -58,7 +67,7 @@ if __name__ == '__main__':
         output = os.path.join(path,d)
         count=0
         n=1000
-        t=6.5
+        t=8.0
         counter=0
         for counter in range(nameslen):
             #pdb_file = os.path.join(output,pdb.strip())+'.pdb'
@@ -128,7 +137,7 @@ for i in range(len(results)):
     me=results[i]
     bin_means, bin_edges, binnumber = sp.stats.binned_statistic(me[1][1][:-1],me[1][0], statistic=np.mean, bins=logscale)
     bin_centers = bin_edges[1:] - (bin_edges[1:] - bin_edges[0:numnum-1])/2
-    if me[0]<230 and me[0]>170:
+    if me[0]<260 and me[0]>130:
         sum=sum+me[1][0]
         bsum=bsum+bin_means
         countbin+=1
@@ -148,25 +157,28 @@ for i in range(len(sim_results)):
     me=sim_results[i]
     bin_means, bin_edges, binnumber = sp.stats.binned_statistic(me[1][1][:-1],me[1][0], statistic=np.mean, bins=logscale)
     bin_centers = bin_edges[1:] - (bin_edges[1:] - bin_edges[0:numnum-1])/2
-    if me[0]<230 and me[0]>170:
+    if me[0]<210 and me[0]>200:
         sum=sum+me[1][0]
         bsum=bsum+bin_means
         countbin+=1
 print('number of len around 200 sim',(countbin*num))
 print(me[1][0][0])
+
+simlen=np.linspace(0,100,num=50)
+print(simlen)
 plt.plot(me[1][1][:-1],sum/(countbin*num), linewidth=0, marker='o',label='sim 200')
 fit, ficov=curve_fit(func, me[1][1][heixdip:-1],sum[heixdip:]/(countbin*num))
 print('sim fit',fit)
 bfit, bficov=curve_fit(func, bin_centers,bsum/countbin)
 print('sim binned fit',bfit)
 plt.plot(me[1][1][:-1],func(me[1][1][:-1],fit[0],fit[1]))
-plt.plot(np.array(lengths),3.4*200/5.18738/np.array(lengths),label='theory')
+plt.plot(np.array(simlen),theofunc(np.array(simlen),80.0,200.0,0.8),label='theory')
 plt.yscale('log')
 plt.xscale('log')
-plt.xlim([2,200])
+plt.xlim([4,100])
 plt.ylim([0.01,200])
 plt.legend()
-plt.savefig('both_dist_200.pdf')
+plt.savefig('both_200.pdf')
 
 
 plt.figure()
@@ -177,7 +189,7 @@ for i in range(len(results)):
     me=results[i]
     bin_means, bin_edges, binnumber = sp.stats.binned_statistic(me[1][1][:-1],me[1][0], statistic=np.mean, bins=logscale)
     bin_centers = bin_edges[1:] - (bin_edges[1:] - bin_edges[0:numnum-1])/2
-    if me[0]<430 and me[0]>370:
+    if me[0]<460 and me[0]>330:
         #plt.plot(me[1][1][:-1],me[1][0],label='%.0f'%me[0])
         #plt.plot(me[1][1][:-1],me[1][0],linewidth=0, marker='o', color='grey')
         sum=sum+me[1][0]
@@ -205,18 +217,21 @@ for i in range(len(sim_results)):
         countbin+=1
 print('number of len around 400 sim',(countbin*num))
 print(me[1][0][0])
+
+simlen=np.linspace(0,200,num=100)
+print(simlen)
 plt.plot(me[1][1][:-1],sum/(countbin*num), linewidth=0, marker='o',label='sim 400')
 fit, ficov=curve_fit(func, me[1][1][heixdip:-1],sum[heixdip:]/(countbin*num))
 print('sim fit',fit)
 bfit, bficov=curve_fit(func, bin_centers,bsum/countbin)
 print('sim binned fit',bfit)
 plt.plot(me[1][1][:-1],func(me[1][1][:-1],fit[0],fit[1]))
-plt.plot(np.array(lengths),3.4*400/5.8783/np.array(lengths),label='theory')
+plt.plot(np.array(simlen),theofunc(np.array(simlen),80.0,400.0,0.7),label='theory')
 plt.yscale('log')
 plt.xscale('log')
-plt.xlim([2,400])
+plt.xlim([4,200])
 plt.ylim([0.01,200])
 plt.legend()
-plt.savefig('both_dist_400.pdf')
+plt.savefig('both_400.pdf')
 
 plt.show()

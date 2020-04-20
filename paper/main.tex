@@ -39,35 +39,53 @@ The distribution of chain separations of interacting amino acids in proteins rou
 \maketitle
 
 \section*{Introduction}
-Proteins, the molecular machines of every living organism perform vital tasks required for life to persists ranging from transport (e.g. hemoglobin), signal transduction (e.g. rhodopsin), immune responses (e.g. antibodies), and hormonal regulation (e.g. insulin)~\cite{}. All natural proteins are made up of 20 different amino acids which dictate the three dimensional conformations the proteins adopt in order to function~\cite{}. One way of looking at the functional forms of proteins and classifying structure properties of proteins is by looking at protein residue or contact networks~\cite{Vendruscolo2002,DiPaola2013,Estrada2011}. Protein Contact Networks (PCN), have shown promise in understanding protein folding patterns as well as revealing allosteric communication pathways~\cite{https://pubs.acs.org/doi/10.1021/acs.jcim.9b00320, and others}. 
-Prom a physicist perspective it is interesting to understand the emergent behaviour in protein structure from PCNs, by investigating common network measures and their behaviour for PCNs. For example Bartoli et al. observe that proteins have a sequence separation distribution that follows $\frac{1}{L}$, where $L$ is the length of the protein sequence, however do not provide an explanation for this observations~\cite{bartoli2008effect}. 
-Here, we will show how simple geometrical model can capture this behaviour well, even providing a simple analytical approximation. The analytical approximation and geometrical model build on the idea that inherently geometrical objects, such as amino acids, that any resulting PCN network ensembles for such geometrical objects has to be spatially embedded~\cite{Grabow2010,Wu2015}. 
-Different approaches have been used in the past for geometrical models describing protein folding, some of which derived characteristics of the secondary structure from constraints on bond and torsion angles~\cite{Danielsson2010,Molkenthin2011} and others focused on the formation mechanisms of the tertiary structure~\cite{molkenthin2016scaling, molkenthin2020self}. Based on such considerations, we have constructed a network formation process, in which random connections are added to a chain of unit disks, without causing them to intersect~\cite{molkenthin2016scaling}. Such a model cannow be used to investigate the emergenct behaviour of sequence separation deistributions as observed by Bartoli et al.~\cite{bartoli2008effect}. To this end, we analyze the link length distribution that emerge from the geometric model, where the length of a link is defined as the distance of the two ends along the original chain.
-This is then compared to the link length distribution extracted from protein residue networks (PRN) generated from protein data bank data. 
+Proteins, the molecular machines of every living organism perform vital tasks required for life to persist, ranging from transport (e.g. hemoglobin), signal transduction (e.g. rhodopsin), immune responses (e.g. antibodies), and hormonal regulation (e.g. insulin)~\cite{}. All natural proteins are made up of 20 different amino acids which dictate the three dimensional conformations the proteins adopt in order to function~\cite{}. One way of looking at the functional forms of proteins and classifying their structural properties is by looking at protein residue or contact networks~\cite{Vendruscolo2002,DiPaola2013,Estrada2011}. Protein Contact Networks (PCN), have shown promise in understanding protein folding patterns as well as revealing allosteric communication pathways~\cite{https://pubs.acs.org/doi/10.1021/acs.jcim.9b00320, and others}. 
+Prom a physicist perspective it is interesting to understand the emergent behaviour in protein structure from PCNs, by investigating common network measures and their behaviour for PCNs. For example Bartoli et al. observe that proteins have a sequence separation distribution that follows $\frac{1}{\ell}$, where $\ell$ is the separation of two connected amino acids along the backbone chain. However, they do not provide an explanation for this observation~\cite{bartoli2008effect}. 
+Here, we will show how a simple geometrical model can capture this behaviour well, even providing a simple analytical approximation. The analytical approximation and geometrical model build on the idea that inherently geometrical objects, such as amino acids, imply that any resulting PCN network ensemble modelling them has to be spatially embedded~\cite{}. 
+Different approaches have been used in the past for geometrical models describing protein folding, some of which derived characteristics of the secondary structure from constraints on bond and torsion angles~\cite{Danielsson2010,Molkenthin2011} and others focused on the formation mechanisms of the tertiary structure~\cite{molkenthin2016scaling, molkenthin2020self}. Based on such considerations, we have constructed a network formation process, in which random connections are added to a chain of unit disks, without causing them to intersect~\cite{molkenthin2016scaling}. Such a model can now be used to investigate the emergenct behaviour of sequence separation distributions as observed by Bartoli et al.~\cite{bartoli2008effect}. To this end, we analyze the sequence separation distribution that emerge from the geometric model, where the length $\ell$ of a link is defined as the distance of the two ends along the original chain.
+This is then compared to the sequence separation distribution extracted from protein residue networks (PRN) generated from protein data bank data. 
 
 \todo[inline, color={green!40}]{@Nora: Summary of our findings and why this is cool.}
 
 
-\section*{Model}
-\begin{enumerate}
-    \item Model in General
-    \item Simplified 2D version
-\end{enumerate}
-\todo[inline, color={green!40}]{@Nora: Add model information}
+\section*{Protein Residue Networks and their synthetic counterparts}
+The complex interaction pattern between the amino acids in a protein can be very naturally expressed as a network, in which each amino acid is represented by a node and spatial proximity is encoded as a link. Whenever two central $C_\alpha$ atoms are closer together than a threshold $d_c$, they are connected. These connections are encoded in the adjacency matrix of the folded protein, which is the binary matrix
+\begin{equation}
+  A^{\textsf{PDB}}_{ij}=
+  \begin{cases}
+   0, & \text{ if } d_{i,j}>d_c \text{ or } i=j\\
+      1, & \text{ if } d_{i,j}\leq d_c .
+      \end{cases}
+    \label{eq:aij}
+\end{equation}
+Adjacency matrices are commonly used to describe networks and in this case represent the PRN.
+
+The underlying formation mechanisms of individual protein folds are incredibly complex and depend on the surrounding solvent as well as the specific amino acid sequence and their quantum-mechanical interactions. Here we want to study the ensemble of all proteins, however, and will thus "average out" such specifics.
+
+Based on the basic assumption that amino acids are objects in space, that can not overlap indefinitely, we introduced a model in \cite{molkenthin2020self} starting from a chain of identical spheres, each in contact only with the neighbours it is connected to. Then additional connections form by randomly selecting two spheres and moving them towards each other until they touch, the new links formed that way can not be broken in later steps and function as constraints on subsequent links. If contact of the two selected spheres is geometrically impossible without breaking previously made connections or leading to overlaps of any spheres, the link is not made and taken out of the pool of possible connections. This process is repeated until no more links can be formed without violating the geometric constraints.
+
+In \cite{molkenthin2016scaling}, we have introduced a simplified, two-dimensional version of this model, which starts from a closed chain of $N$ unit discs and subsequently adds links, such that connected discs touch, yet no discs intersect. The advantage of this model is, that it can be approximated by a purely topological simplification, which can be treated analytically.
+
+The topological constraints in the resulting network model are:
+(a) New links always form between two units that are part of the same face of the graph (region enclosed by a cycle in the network). This prevents the overlapping of discs. (b) No links form across the outer face. This prevents the enclosure of a unit by less than six other units (which is geometrically impossible) such that. (c) The maximum degree of each unit is six, as six is the maximum number of unit discs, one central unit disc can touch. (d) Once connected by a link, pairs of units do not disconnect.
+
 \section*{Analytic approximation}
-Starting from a closed chain of $N$ unit discs, as introduced for the analytic calculations in \cite{molkenthin2016scaling}. \red{briefly explain that here too.}
+Here we want to analytically approximate the sequence separation distribution for the simplified 2D model, that is the separation along the backbone chain of two nodes connected by a link, as illustrated in Fig~\ref{fig:fig_prn_vis}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\columnwidth]{figures/prn_vis.pdf}
+    \caption{The sequence separation distribution is defined as the separation along the chain (blue) of two connected units (red).}
+    \label{fig:fig_prn_vis}
+\end{figure}
+
 Let us start by introducing the auxiliary variable $F(s)$, defined to be the number of possible links with a sequence separation of $s$. Before any links are added all sequence separations are equally likely, as there are $N$ possibilities of making a link of each separation $s$ with $2\leq s < N/2$.
 
 As we add more links, not only are links taken out of this pool, because they have already been realized, each existing link can also geometrically prohibit other connections.
 Let us call the pools of available links after $i$ links have been added $F_i(s)$.
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\columnwidth]{figures/prn_vis.pdf}
-    \caption{Caption}
-    \label{fig:fig_prn_vis}
-\end{figure}
+\\
 
--------------- Add Figure explaining which links are geometrically excluded --------------
+\red{----------- Add Figure explaining which links are geometrically excluded, maybe include in fig 1 -----------}
+\\
 
 The expected distribution of possible links after one step is given by the average over available link pools taken over all possible lengths of the initial link
 \begin{equation}
@@ -131,21 +149,23 @@ where $0<\alpha<1$ \red{why cant $\alpha$ be >1?}.
 \section*{Data and simulations}
  For large values of the chain length $N$ we thus find an approximate power law probability distribution for the sequence separation with an exponent of -1 \red{include note of correction}. Here we use simulations, as introduced in \cite{molkenthin2020self} and networks extracted from measured protein data from the PDB \cite{PDB} to compare this behaviour in realistic 3D settings and show that the basic principle persists, indicating that the sequence distance separation distribution is largely determined by simple geometric constraints.
  
-The complex interaction pattern between the amino acids in a protein can be very naturally expressed as a network, in which each amino acid is represented by a node and spatial proximity is encoded as a link. Whenever two central $C_\alpha$ atoms are closer together than a threshold $d_c$, they are connected. These connections are encoded in the adjacency matrix, which is the binary matrix
-\begin{equation}
-  A^{\textsf{PDB}}_{ij}=
-  \begin{cases}
-   0, & \text{ if } d_{i,j}>d_c \text{ or } i=j\\
-      1, & \text{ if } d_{i,j}\leq d_c .
-      \end{cases}
-    \label{eq:aij}
-\end{equation}
-  
+
+\begin{figure}[h]
+        \centering
+	\includegraphics[width=0.45\textwidth]{figures/both_200.pdf}
+	\includegraphics[width=0.45\textwidth]{figures/both_400.pdf}
+        \caption{Sequence distance distributions for real and simulated folds for a) Chain lengths around 200 b) chain lengths around 400. The theoretical curve for 2D rings works okay for 3D open chains (because the rings are closed sequence separations of more than N/2 are a bit meaningless and thus not accounted for) The parameters used in this are $A=80$ and $\alpha=0.2$ in a) and $0.3$ in b). I thought in b) it makes sense for $\alpha$ to be larger as there are even larger exponents $k$ coming into relevance. I'm not sure we want to use that whole $\alpha$ argument too much though as it's a but ad-hoc and would be nicer to just fit $A$ and be done with it, but then it may look a bit more off.
+        }
+        \label{fig:time_scaling}
+\end{figure}
+\red{We observe that, while the general shape seems to match, in real proteins sequence separations of 20 to 60 amino acids are slightly over represented. We need to comment on that somehow. Also links of length 2 and 3 are over represented, we need to discuss that too.}
+
+\red{To check if the bump has something to do with the secondary structure that is present in real proteins but not in the model, we have generated a sample of intrinsically disordered proteins, that also do not contain secondary structures. The bump does indeed disappear. The over representation of 2 and 3 does not though and there os probably a simple explanation for that and maybe we can simply take those points out and redo the mean degree matching and get to lines that are not just parallel but actually on top of one another that way.}
 \begin{figure}[h]
         \centering
 	\includegraphics[width=0.45\textwidth]{figures/idp_200.pdf}
 	\includegraphics[width=0.45\textwidth]{figures/idp_400.pdf}
-        \caption{Sequence distance distributions for real and simulated folds for a) Chain lengths around 200 b) chain lengths around 400. The theoretical curve for 2D rings works okay for 3D open chains (because the rings are closed sequence separations of more than N/2 are a bit meaningless and thus not accounted for) The parameters used in this are $A=80$ and $\alpha=0.2$ in a) and $0.3$ in b). I thought in b) it makes sense for $\alpha$ to be larger as there are even larger exponents $k$ coming into relevance. I'm not sure we want to use that whole $\alpha$ argument too much though as it's a but ad-hoc and would be nicer to just fit $A$ and be done with it, but then it may look a bit more off.
+        \caption{Sequence distance distributions for intrinsically disordered proteins and simulated folds for a) Chain lengths around 200 b) chain lengths around 400. The theoretical curve for 2D rings works okay for 3D open chains (because the rings are closed sequence separations of more than N/2 are a bit meaningless and thus not accounted for) The parameters used in this are $A=80$ and $\alpha=0.2$ in a) and $0.3$ in b). I thought in b) it makes sense for $\alpha$ to be larger as there are even larger exponents $k$ coming into relevance. I'm not sure we want to use that whole $\alpha$ argument too much though as it's a but ad-hoc and would be nicer to just fit $A$ and be done with it, but then it may look a bit more off.
         }
         \label{fig:time_scaling}
 \end{figure}
