@@ -167,11 +167,22 @@ We expect the mid-separation bump to be the result of secondary structure effect
         \centering
 	\includegraphics[width=0.35\textwidth]{paper/figures/neighbouring_helices.pdf}
         \caption{The average length of a link between two subsequent helices is the average length of a helix plus the average length of a loop. \red{Does this suffice or do we want a fancy 3d image of this? If so, do you have the software that makes those?}
+        \green{I can make a prettier thing provided we can actually make this argument based on the pdb data. I still struggle make the pdb data comply.}
         }
         \label{fig:bumpexplain}
 \end{figure}
 
-For a more direct comparison between simulation results and PRN's, we have generated a sample of intrinsically disordered proteins \red{cite something}, that also do not contain secondary structures. The results are shown in Fig.~\ref{fig:sdd_idp}.
+For a more direct comparison between simulation results and PRNs, we have generated a sample of intrinsically disordered proteins \red{cite something}, that also do not contain secondary structures. The results are shown in Fig.~\ref{fig:sdd_idp}.
+In order to compare the 3D protein model simulations to PRNs, we selected protein structure lengths based on frequency and comparable length to the simulations. Fig.~\ref{fig:pdb_stats} shows that most proteins in the PDB have chain lengths between 100-400 protein residues. Therefore using example lengths of 200 and 400 residues seemed appropriate. From each of the over 20000 structures around the 200 and 400 residue length, we made the following choices for selecting different types of structures:
+\red{now fill in what we actually did once we finalise this}.
+
+\begin{figure}[h]
+        \centering
+	\includegraphics[width=0.45\textwidth]{figures/pdb_statistics.pdf}
+        \caption{Statistics on all PDB entries based on the number of amino acid residues, with most entries found in the interval of 100-400 residues as of May 26th 2020. 
+        }
+        \label{fig:pdb_stats}
+\end{figure}
 \red{Maybe write how we found those samples and how many there are and all that.}
 We find that the over representation of connections with $20<s<50$ disappears, further confirming our expectation.
 \begin{figure}[h]
