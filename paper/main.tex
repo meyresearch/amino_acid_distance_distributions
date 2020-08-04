@@ -11,18 +11,19 @@
 \newcommand{\red}[1]{\textcolor{red!80!black}{#1}}
 \newcommand{\blue}[1]{\textcolor{blue!80!black}{#1}}
 \newcommand{\green}[1]{\textcolor{green!70!black}{#1}}
+\newcommand{\gray}[1]{\textcolor{gray!80!black}{#1}}
 \usepackage{mathtools}
 \DeclarePairedDelimiter{\evdel}{\langle}{\rangle}
 \usepackage[colorinlistoftodos]{todonotes}
 
 \begin{document}
 \title{The role of geometry in the chain separation distribution of links in protein contact networks}
-\title{\red{We need a better title, the old one is too long}}
-%\title{}
+\title{\red{We need a better title, the old one is too long} \green{Yes! But no better ideas at the moment}}
+\title{\red{Chain separation distribution in protein contact networks}}
 %\title{}
 \author{Nora Molkenthin}
-\affiliation{Potsdam Institut für Klimafolgenforschung, Potsdam}
-\affiliation{Center for Advancing Electronics Dresden (cfaed), Technical University of Dresden, 01069 Dresden}
+\affiliation{Potsdam Institut für Klimafolgenforschung}
+\affiliation{Center for Advancing Electronics Dresden (cfaed), Technical University of Dresden}
 \author{Steffen Mühle}
 \affiliation{Uni Göttingen, 37077 Göttingen, Germany}
 \author{Antonia S J S Mey}
@@ -33,19 +34,21 @@
 % \affiliation{Chair for Network Dynamics, Institute for Theoretical Physics and Center for Advancing Electronics Dresden (cfaed), Technical University of Dresden, 01069 Dresden}
 
 \begin{abstract}
-The distribution of chain separations of interacting amino acids in proteins roughly follows a power law. Here we show, analytically and in simulations, that a geometrical stochastic model of folding chains can explain this behaviour. %Separating the data in $\alpha$-dominated, $\beta$-dominated and intrinsically disordered proteins (IDP's) shows characteristic structures in the distribution due to the secondary structure.
+The distribution of chain separations of interacting amino acids in proteins roughly follows a power law. Here we show, analytically and in simulations, that a geometrical stochastic model of folding chains can explain this behaviour. 
 \end{abstract}
 \maketitle
 
 \section*{Introduction}
-Proteins, the molecular machines of every living organism perform vital tasks required for life to persist, ranging from transport (e.g. hemoglobin), signal transduction (e.g. rhodopsin), immune responses (e.g. antibodies), and hormonal regulation (e.g. insulin)~\cite{}. All natural proteins are made up of 20 different amino acids which dictate the three dimensional conformations the proteins adopt in order to function~\cite{}. One way of looking at the functional forms of proteins and classifying their structural properties is by looking at protein residue or contact networks~\cite{Vendruscolo2002,DiPaola2013,Estrada2011}. Protein Contact Networks (PCN), have shown promise in understanding protein folding patterns as well as revealing allosteric communication pathways~\cite{https://pubs.acs.org/doi/10.1021/acs.jcim.9b00320, and others}. 
-From a physicist perspective it is interesting to understand the emergent behaviour in protein structure from PCNs, by investigating common network measures and their behaviour for PCNs. For example Bartoli et al.~\cite{bartoli2008effect} assume that proteins have a sequence separation distribution that follows $\frac{1}{\ell}$, where $\ell$ is the separation of two connected amino acids along the backbone chain as the simplest implementation of a connection probability, that decreases with the distance along the sequence. However, they do not provide a quantitative explanation for this assumption. 
+Proteins, the molecular machines of every living organism perform vital tasks required for life to persist, ranging from transport (e.g. hemoglobin), signal transduction (e.g. rhodopsin), immune responses (e.g. antibodies), and hormonal regulation (e.g. insulin)~\cite{something}. All natural proteins are made up of 20 different amino acids which dictate the three dimensional conformations the proteins adopt in order to function~\cite{stuff}. One way of looking at the functional forms of proteins and classifying their structural properties is by looking at protein residue or contact networks~\cite{Vendruscolo2002,DiPaola2013,Estrada2011}. Protein Contact Networks (PCN), have shown promise in understanding protein folding patterns as well as revealing allosteric communication pathways~\cite{https://pubs.acs.org/doi/10.1021/acs.jcim.9b00320, and others}. 
+From a physicist perspective it is interesting to understand the emergent behaviour in protein structure from PCNs, by investigating common network measures and their behaviour for PCNs. For example Bartoli et al.~\cite{bartoli2008effect} build a model in which they assume that proteins have a sequence separation distribution that follows $\frac{1}{\ell}$, where $\ell$ is the separation of two connected amino acids along the backbone chain as the simplest implementation of a connection probability, that decreases with the distance along the sequence. However, they do not provide a quantitative explanation for this assumption. 
 
-Here, we will show how a simple geometrical model can capture this behaviour well, even providing a simple analytical approximation. The analytical approximation and geometrical model build on the idea that inherently geometrical objects, such as amino acids, imply that any resulting PCN network ensemble modelling them has to be spatially embedded~\cite{}. 
-Different approaches have been used in the past for geometrical models describing protein folding, some of which derived characteristics of the secondary structure from constraints on bond and torsion angles~\cite{Danielsson2010,Molkenthin2011} and others focused on the formation mechanisms of the tertiary structure~\cite{molkenthin2016scaling, molkenthin2020self}. Based on such considerations, we have constructed a network formation process, in which random connections are added to a chain of unit disks, without causing them to intersect~\cite{molkenthin2016scaling}. Such a model can now be used to investigate the emergenct behaviour of sequence separation distributions as observed by Bartoli et al.~\cite{bartoli2008effect}. To this end, we analyze the sequence separation distribution that emerge from the geometric model, where the length $\ell$ of a link is defined as the distance of the two ends along the original chain.
+Here, we show how a simple geometrical model can reproduce this heuristically found behaviour well, even providing a simple analytical approximation. The analytical approximation and geometrical model build on the idea that inherently geometrical objects, such as amino acids, imply that any resulting PCN network ensemble modelling them has to be spatially embedded~\cite{molkenthin2016scaling, molkenthin2020self}. 
+Different approaches have been used in the past for geometrical models describing protein folding, some of which derived characteristics of the secondary structure from constraints on bond and torsion angles~\cite{maybe cite Flory stuff here as well?,Danielsson2010,Molkenthin2011} and others focused on the formation mechanisms of the tertiary structure~\cite{molkenthin2016scaling, molkenthin2020self}. 
+
+Based on such considerations, the network formation process, repeatedly \red{(this may not be the adverb i'm looking for, but subsequently also doesnt quite work)} connects random pairs of units, without causing any intersections along the chain ~\cite{molkenthin2016scaling}. Such a model can now be used to investigate the emergent behaviour of sequence separation distributions as observed by Bartoli et al.~\cite{bartoli2008effect}. To this end, we analyze the sequence separation distributions that emerge from the geometric model, where the \emph{sequence separation} $\ell$ of a link is defined as the distance of the two end units along the original chain.
 This is then compared to the sequence separation distribution extracted from protein residue networks (PRN) generated from protein data bank data. 
 
-\todo[inline, color={green!40}]{@Nora: Summary of our findings and why this is cool.}
+\red{We find that, despite the highly simplified model, the generated sequence distance distribution is in agreement with the one observed in networks generated from PDB data and roughly consistent with the heuristic $1/\ell$ finding. The analytical approximation provides a correction term on top of the $1/\ell$ heuristic.}
 
 
 \section*{Protein Residue Networks and their synthetic counterparts}
@@ -152,54 +155,55 @@ where $0<\alpha<<1$ \red{, I think this is because we want $\alpha$ to be a smal
         \centering
 	\includegraphics[width=0.45\textwidth]{figures/both_200.pdf}
 	\includegraphics[width=0.45\textwidth]{figures/both_400.pdf}
-        \caption{Sequence distance distributions for real and simulated folds for a) Chain lengths around 200 b) chain lengths around 400. The theoretical curve for 2D rings works okay for 3D open chains (because the rings are closed sequence separations of more than N/2 are a bit meaningless and thus not accounted for) The parameters used in this are $A=80$ and $\alpha=0.2$ in a) and $0.3$ in b). I thought in b) it makes sense for $\alpha$ to be larger as there are even larger exponents $k$ coming into relevance. I'm not sure we want to use that whole $\alpha$ argument too much though as it's a but ad-hoc and would be nicer to just fit $A$ and be done with it, but then it may look a bit more off. \red{Should I remove the fits? (grey line and blue line) and only leave in the theory line? Also axes labels and stuff.}
+        \caption{Sequence distance distributions for real and simulated folds for a) Chain lengths around 200 b) chain lengths around 400. The theoretical curve for 2D rings works okay for 3D open chains (because the rings are closed sequence separations of more than N/2 are a bit meaningless and thus not accounted for) The parameters used in this are $A=80$ and $\alpha=0.2$ in a) and $0.3$ in b). I thought in b) it makes sense for $\alpha$ to be larger as there are even larger exponents $k$ coming into relevance. I'm not sure we want to use that whole $\alpha$ argument too much though as it's a but ad-hoc and would be nicer to just fit $A$ and be done with it, but then it may look a bit more off. \red{Redo figure fancier, with more data, axis labels and possibly different lines (remove fit lines, maybe add just one 1/l heuristic line or something).}
         }
         \label{fig:sdd}
 \end{figure}
-We observe that, while the general shape seems to match, in real proteins sequence separations of 2 to 4 as well as 20 to 50 amino acids are slightly over-represented (see Fig.\ref{fig:sdd}).
+We observe that, while the general shape seems to match, in real proteins sequence separations of 2 to 4 as well as 20 to 50 amino acids are slightly over-represented (see Fig.\ref{fig:sdd}) \red{I have a vague memory of figures with more data where the hump was less pronounced? Depending on this rephrase the above.}.
 
 The over-representation of very short sequence separations is an artefact of the different network construction for simulated networks and PRNs. While in the simulation all links are equally long and links are made until no longer possible, the parameter, determining the connectivity in PRNs is the cutoff distance $d_c$, which is chosen such that the number of links in the PRN is comparable to those in a simulated network of the same $N$. This leads to a larger range of bond angles randomly resulting in connections for small $s$ and thus an over-representation of those links.
 
-We expect the mid-separation bump to be the result of secondary structure effects. While in the simulation all links are made with equal probability apart from geometric constraints, real protein chains have preferred bond angles leading to the energetic preference for $\alpha-$helix and $\beta-$sheet structures, within which connections only short connections can occur. Longer connections thus tend to be between different helices.
-
-\red{With helices ranging in length from a minimum of about 2 to 3 turns or 7-11 residues up to beyond 30 residues \cite{manning1988circular}, with the (rarer) longer helices accounting relatively for more connections, sequence separations of 20 to 50 seem likely to result from connections between subsequent helices. (I guess we could test this somehow, though i'm not sure how I would go about interpreting the results. I think the PDB files contain information on which residues belong to which structure, so we could do an analysis of how many connections of $s>4$ there are a) within one helix b) between a helix and the following loop) c) between 2 subsequent helices etc. Where I would count helices and sheets the same...)}
+\gray{We expect the mid-separation bump to be the result of secondary structure effects. While in the simulation all links are made with equal probability apart from geometric constraints, real protein chains have preferred bond angles leading to the energetic preference for $\alpha-$helix and $\beta-$sheet structures, within which connections only short connections can occur. Longer connections thus tend to be between different helices.
+With helices ranging in length from a minimum of about 2 to 3 turns or 7-11 residues up to beyond 30 residues \cite{manning1988circular}, with the (rarer) longer helices accounting relatively for more connections, sequence separations of 20 to 50 seem likely to result from connections between subsequent helices. (I guess we could test this somehow, though i'm not sure how I would go about interpreting the results. I think the PDB files contain information on which residues belong to which structure, so we could do an analysis of how many connections of $s>4$ there are a) within one helix b) between a helix and the following loop) c) between 2 subsequent helices etc. Where I would count helices and sheets the same...)}
 \begin{figure}[h]
         \centering
 	\includegraphics[width=0.35\textwidth]{paper/figures/neighbouring_helices.pdf}
-        \caption{The average length of a link between two subsequent helices is the average length of a helix plus the average length of a loop. \red{Does this suffice or do we want a fancy 3d image of this? If so, do you have the software that makes those?}
-        \green{I can make a prettier thing provided we can actually make this argument based on the pdb data. I still struggle make the pdb data comply.}
+        \caption{\gray{The average length of a link between two subsequent helices is the average length of a helix plus the average length of a loop. \red{Does this suffice or do we want a fancy 3d image of this? If so, do you have the software that makes those?}
+        \green{I can make a prettier thing provided we can actually make this argument based on the pdb data. I still struggle make the pdb data comply.}}
         }
         \label{fig:bumpexplain}
 \end{figure}
 
-For a more direct comparison between simulation results and PRNs, we have generated a sample of intrinsically disordered proteins \red{cite something}, that also do not contain secondary structures. The results are shown in Fig.~\ref{fig:sdd_idp}.
+\gray{For a more direct comparison between simulation results and PRNs, we have generated a sample of intrinsically disordered proteins \cite{something}, that also do not contain secondary structures. The results are shown in Fig.~\ref{fig:sdd_idp}.
 In order to compare the 3D protein model simulations to PRNs, we selected protein structure lengths based on frequency and comparable length to the simulations. Fig.~\ref{fig:pdb_stats} shows that most proteins in the PDB have chain lengths between 100-400 protein residues. Therefore using example lengths of 200 and 400 residues seemed appropriate. From each of the over 20000 structures around the 200 and 400 residue length, we made the following choices for selecting different types of structures:
-\red{now fill in what we actually did once we finalise this}.
+...}
 
 \begin{figure}[h]
         \centering
 	\includegraphics[width=0.45\textwidth]{figures/pdb_statistics.pdf}
-        \caption{Statistics on all PDB entries based on the number of amino acid residues, with most entries found in the interval of 100-400 residues as of May 26th 2020. 
+        \caption{Statistics on all PDB entries based on the number of amino acid residues, with most entries found in the interval of 100-400 residues as of May 26th 2020. \red{should this figure be before the current fig 2? Because it's the reason we do 200 +- and 400 +-}
         }
         \label{fig:pdb_stats}
 \end{figure}
-\red{Maybe write how we found those samples and how many there are and all that.}
-We find that the over representation of connections with $20<s<50$ disappears, further confirming our expectation.
+
+\gray{We find that the over representation of connections with $20<s<50$ disappears, further confirming our expectation.}
 \begin{figure}[h]
         \centering
 	\includegraphics[width=0.45\textwidth]{figures/idp_200.pdf}
 	\includegraphics[width=0.45\textwidth]{figures/idp_400.pdf}
-        \caption{Sequence distance distributions for intrinsically disordered proteins and simulated folds for a) Chain lengths around 200 b) chain lengths around 400. The theoretical curve for 2D rings works okay for 3D open chains (because the rings are closed sequence separations of more than N/2 are a bit meaningless and thus not accounted for) The parameters used in this are $A=80$ and $\alpha=0.2$ in a) and $0.3$ in b). I thought in b) it makes sense for $\alpha$ to be larger as there are even larger exponents $k$ coming into relevance. I'm not sure we want to use that whole $\alpha$ argument too much though as it's a but ad-hoc and would be nicer to just fit $A$ and be done with it, but then it may look a bit more off.
+        \caption{\gray{Sequence distance distributions for intrinsically disordered proteins and simulated folds for a) Chain lengths around 200 b) chain lengths around 400. The theoretical curve for 2D rings works okay for 3D open chains (because the rings are closed sequence separations of more than N/2 are a bit meaningless and thus not accounted for) The parameters used in this are $A=80$ and $\alpha=0.2$ in a) and $0.3$ in b). I thought in b) it makes sense for $\alpha$ to be larger as there are even larger exponents $k$ coming into relevance. I'm not sure we want to use that whole $\alpha$ argument too much though as it's a but ad-hoc and would be nicer to just fit $A$ and be done with it, but then it may look a bit more off.}
         }
         \label{fig:sdd_idp}
 \end{figure}
-\red{Anything else we want to say to that? Maybe write down more fit parameters? Somehow i'm reluctant to do that because we wouldnt learn anything new from that, that i can think of and it doesnt look great number wise i guess.}
+\red{Anything else we want to say to that? This is a bit short now}
 \section*{Conclusion}
 We have demonstrated in analytical calculations and direct simulations how a random linking models with geometric constraints, such as the ones introduced in \cite{molkenthin2016scaling, molkenthin2020self} generate sequence distance distributions, that resemble a power-law, similar to the one found in folded proteins. This feature of protein network structure has been used to generate protein-like structures in \cite{bartoli2008effect}.
 
-For proteins with a high percentage of $\alpha$-helix structures, however, we find an over-representation of links with a sequence separation of 20 to 50 residues, implying a higher number of connections between neighbouring helices. We show that this is indeed the case by analyzing the sequence separation distributions of intrinsically disordered proteins. As helix structures arise from local bond angle preferences \cite{Danielsson2010}, rather than geometric constraints, these are not replicated in the model and thus the bump is absent in our theoretical calculations as well as simulations.
+\red{I remember we agreed on just deleting all the stuff about idp's beause the bump wasn't very pronounced once we used more data and thus the whole narrative of helix lengths and stuff wasn't particularly convincing. Additionally this means less work and thus sooner publication, so we were actually quite happy about it. But then we need to come up with something to write in the conclusion, so far it's a bit short.}
 
-\red{This makes the sequence separation distribution an indicator for the disorderedness of a protein structure. If such a thing is interesting we could try to formalize this measure and see how good it is at identifying idp's, but i'm guessing they are quite easy to identify already.}
+\gray{For proteins with a high percentage of $\alpha$-helix structures, however, we find an over-representation of links with a sequence separation of 20 to 50 residues, implying a higher number of connections between neighbouring helices. We show that this is indeed the case by analyzing the sequence separation distributions of intrinsically disordered proteins. As helix structures arise from local bond angle preferences \cite{Danielsson2010}, rather than geometric constraints, these are not replicated in the model and thus the bump is absent in our theoretical calculations as well as simulations.}
+
+\gray{This makes the sequence separation distribution an indicator for the disorderedness of a protein structure. If such a thing is interesting we could try to formalize this measure and see how good it is at identifying idp's, but i'm guessing they are quite easy to identify already.}
 
 % \begin{enumerate}
 %     \item Bartoli et al. made a random network model based on a power-law sequence separation distribution \cite{bartoli2008effect}
