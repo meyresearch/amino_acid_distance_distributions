@@ -49,7 +49,7 @@ def do_analysis(calphas, link_length_list, t=8.0):
 
 if __name__ == "__main__":
     # Reading the pdb IDs
-    query = pd.read_csv('../data/mix.txt')
+    query = pd.read_csv('../data/mix')
     hundred = []
     twohundered = []
     threehundred = []
@@ -58,7 +58,11 @@ if __name__ == "__main__":
     ll_200 = []
     ll_300 = []
     ll_400 = []
+    counter = 0
+    n_pdbs = len(query.columns)
     for pdb in query.columns:
+        if counter%1000 == 0:
+            print("We are at entry %d/%d!" %(counter,n_pdbs))
         #print (pdb)
         download = 'https://files.rcsb.org/download/%s.pdb' %pdb
         #print(download)
@@ -66,11 +70,11 @@ if __name__ == "__main__":
             file_name = '../data/temp/'+pdb+'.pdb'
             urllib.request.urlretrieve(download, file_name)
         except:
-            continue
+            pass
         u = Universe(file_name)
         calphas = u.select_atoms("name CA and segid " + u.residues.segments.segids[0])
         chain_len = len(calphas)
-        print(chain_len)
+        #print(chain_len)
         if chain_len in range(85,115):
             hundred.append(pdb)
             do_analysis(calphas, ll_100)
@@ -85,6 +89,7 @@ if __name__ == "__main__":
             fourhundred.append(pdb)
             do_analysis(calphas, ll_400)
         os.remove(file_name)
+        counter +=1
     # data for length 100
     sim_data_hist_100, sim_data_edges = np.histogram(ll_100, bins=range(3, 1000), normed=True)
     sim_data_hist_100 = sim_data_hist_100/len(hundred)
