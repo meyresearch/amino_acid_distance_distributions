@@ -71,25 +71,28 @@ if __name__ == "__main__":
             urllib.request.urlretrieve(download, file_name)
         except:
             pass
-        u = Universe(file_name)
-        calphas = u.select_atoms("name CA and segid " + u.residues.segments.segids[0])
-        chain_len = len(calphas)
-        #print(chain_len)
-        if chain_len in range(85,115):
-            hundred.append(pdb)
-            do_analysis(calphas, ll_100)
-            #print(len(ll_100))
-        if chain_len in range(185,215):
-            twohundered.append(pdb)
-            do_analysis(calphas, ll_200)
-        if chain_len in range(285,315):
-            threehundred.append(pdb)
-            do_analysis(calphas, ll_300)
-        if chain_len in range(385,415):
-            fourhundred.append(pdb)
-            do_analysis(calphas, ll_400)
-        os.remove(file_name)
-        counter +=1
+        if os.path.isfile(file_name):
+            u = Universe(file_name)
+            calphas = u.select_atoms("name CA and segid " + u.residues.segments.segids[0])
+            chain_len = len(calphas)
+            #print(chain_len)
+            if chain_len in range(85,115):
+                hundred.append(pdb)
+                do_analysis(calphas, ll_100)
+                #print(len(ll_100))
+            if chain_len in range(185,215):
+                twohundered.append(pdb)
+                do_analysis(calphas, ll_200)
+            if chain_len in range(285,315):
+                threehundred.append(pdb)
+                do_analysis(calphas, ll_300)
+            if chain_len in range(385,415):
+                fourhundred.append(pdb)
+                do_analysis(calphas, ll_400)
+            os.remove(file_name)
+            counter +=1
+        else:
+            continue
     # data for length 100
     sim_data_hist_100, sim_data_edges = np.histogram(ll_100, bins=range(3, 1000), normed=True)
     sim_data_hist_100 = sim_data_hist_100/len(hundred)
