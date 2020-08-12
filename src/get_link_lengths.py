@@ -49,7 +49,7 @@ def do_analysis(calphas, link_length_list, t=8.0):
 
 if __name__ == "__main__":
     # Reading the pdb IDs
-    query = pd.read_csv('../data/mix')
+    query = pd.read_csv('../data/combined_ids.txt')
     hundred = []
     twohundered = []
     threehundred = []
