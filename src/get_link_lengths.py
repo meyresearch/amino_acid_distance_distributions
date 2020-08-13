@@ -69,7 +69,7 @@ if __name__ == "__main__":
     counter = 0
     n_pdbs = len(query.columns)
     with open("log.txt", "w") as log:
-        for pdb in query.columns:
+        for pdb in query.columns[:100]:
             if counter % 500 == 0:
                 print("We are at entry %d/%d!" % (counter, n_pdbs), flush=True)
                 save_current_data('100', ll_100, hundred)
@@ -79,8 +79,10 @@ if __name__ == "__main__":
             download = 'https://files.rcsb.org/download/%s.pdb' % pdb
             try:
                 file_name = '../data/temp/'+pdb+'.pdb'
-                urllib.request.urlretrieve(download, file_name)
+                bio.retrieve_pdb_file(pdb,pdir='../data/tmep/', file_format='pbd')
+                #urllib.request.urlretrieve(download, file_name)
             except Exception:
+                print("failed at %s" % pdb)
                 traceback.print_exc(file=log)
                 continue
             if os.path.isfile(file_name):
