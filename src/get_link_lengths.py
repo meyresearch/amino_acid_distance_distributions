@@ -56,7 +56,7 @@ def save_current_data(length, ll_list, id_list):
 
 if __name__ == "__main__":
     # Reading the pdb IDs
-    socket.setdefaulttimeout(15)
+    socket.setdefaulttimeout(20)
     query = pd.read_csv('../data/combined_ids.txt')
     hundred = []
     twohundered = []
@@ -69,7 +69,7 @@ if __name__ == "__main__":
     counter = 0
     n_pdbs = len(query.columns)
     with open("log.txt", "w") as log:
-        for pdb in query.columns[:100]:
+        for pdb in query.columns:
             if counter % 500 == 0:
                 print("We are at entry %d/%d!" % (counter, n_pdbs), flush=True)
                 save_current_data('100', ll_100, hundred)
