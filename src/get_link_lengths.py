@@ -79,10 +79,10 @@ if __name__ == "__main__":
             download = 'https://files.rcsb.org/download/%s.pdb' % pdb
             try:
                 file_name = '../data/temp/'+pdb+'.pdb'
-                bio.retrieve_pdb_file(pdb,pdir='../data/tmep/', file_format='pbd')
-                #urllib.request.urlretrieve(download, file_name)
+                #bio.retrieve_pdb_file(pdb,pdir='../data/tmep/', file_format='pbd')
+                urllib.request.urlretrieve(download, file_name)
             except Exception:
-                print("failed at %s" % pdb)
+                print("failed at %s" % pdb, flush=True)
                 traceback.print_exc(file=log)
                 continue
             if os.path.isfile(file_name):
