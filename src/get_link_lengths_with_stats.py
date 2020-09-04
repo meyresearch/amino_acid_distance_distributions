@@ -58,7 +58,7 @@ def save_current_data(length, ll_list, id_list):
         np.save(fname2, id_list)
         np.save(fname1, sim_data_hist)
 
-def save_bootstrapped_current_data(length,ll_list,id_list, n_samples = 100):
+def save_bootstrapped_current_data(length,ll_list,id_list, n_samples = 1000):
     print (np.shape(ll_list), flush=True)
     if len(ll_list)>0:
 
@@ -99,8 +99,8 @@ if __name__ == "__main__":
     counter = 0
     n_pdbs = len(query.columns)
     with open("log.txt", "w") as log:
-        for pdb in query.columns[:100]:
-            if counter % 5 == 0:
+        for pdb in query.columns:
+            if counter % 500 == 0:
                 print("We are at entry %d/%d!" % (counter, n_pdbs), flush=True)
                 save_bootstrapped_current_data('100', ll_100, hundred)
                 save_bootstrapped_current_data('200', ll_200, twohundered)
