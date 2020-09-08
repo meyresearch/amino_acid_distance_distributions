@@ -83,6 +83,15 @@ def save_bootstrapped_current_data(length,ll_list,id_list, n_samples = 1000):
         np.save(fname2, std_list)
         np.save(fname3, id_list)
 
+def save_ll_lists(l_100, l_200, l_300, l_400, count):
+    name1 = '100/ll_list_%s.npy' % count
+    name2 = '200/ll_list_%s.npy' % count
+    name3 = '300/ll_list_%s.npy' % count
+    name4 = '400/ll_list_%s.npy' % count
+    np.save(name1,l_100)
+    np.save(name2,l_200)
+    np.save(name3,l_300)
+    np.save(name4,l_400)
 
 if __name__ == "__main__":
     # Reading the pdb IDs
@@ -100,12 +109,13 @@ if __name__ == "__main__":
     n_pdbs = len(query.columns)
     with open("log.txt", "w") as log:
         for pdb in query.columns:
-            if counter % 500 == 0:
+            if counter % 5000 == 0:
                 print("We are at entry %d/%d!" % (counter, n_pdbs), flush=True)
                 save_bootstrapped_current_data('100', ll_100, hundred)
                 save_bootstrapped_current_data('200', ll_200, twohundered)
                 save_bootstrapped_current_data('300', ll_300, threehundred)
                 save_bootstrapped_current_data('400', ll_400, fourhundred)
+                save_ll_lists(ll_100,ll_200,ll_300,ll_400, counter)
             download = 'https://files.rcsb.org/download/%s.pdb' % pdb
             try:
                 file_name = '../data/temp/'+pdb+'.pdb'
