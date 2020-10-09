@@ -14,7 +14,7 @@
    viewBox="0 0 814.64368 1105.1408"
    id="svg2"
    version="1.1"
-   inkscape:version="0.91 r13725"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
    sodipodi:docname="Fig1.svg">
   <defs
      id="defs4">
@@ -133,12 +133,12 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.76"
      inkscape:cx="518.89466"
-     inkscape:cy="762.2055"
+     inkscape:cy="446.41603"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1600"
-     inkscape:window-height="847"
+     inkscape:window-width="1920"
+     inkscape:window-height="1016"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -154,7 +154,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -223,15 +223,15 @@
        r="62.068966" />
     <text
        xml:space="preserve"
-       style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45px;line-height:125%;font-family:'Century Schoolbook L';-inkscape-font-specification:'Century Schoolbook L Italic';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Century Schoolbook L';-inkscape-font-specification:'Century Schoolbook L Italic';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="741.03455"
        y="223.94841"
-       id="text4160"
-       sodipodi:linespacing="125%"><tspan
+       id="text4160"><tspan
          sodipodi:role="line"
          id="tspan4162"
          x="741.03455"
-         y="223.94841">l=4</tspan></text>
+         y="223.94841"
+         style="font-size:45px;line-height:1.25">l=4</tspan></text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#3a407a;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
        d="M 515.72414,214.43117 464,242.01738"
@@ -245,19 +245,20 @@
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:45px;line-height:125%;font-family:'Century Schoolbook L';-inkscape-font-specification:'Century Schoolbook L Medium';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;line-height:0%;font-family:'Century Schoolbook L';-inkscape-font-specification:'Century Schoolbook L Medium';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="156.63748"
        y="522.26239"
-       id="text4160-7"
-       sodipodi:linespacing="125%"><tspan
+       id="text4160-7"><tspan
          sodipodi:role="line"
          id="tspan4162-2"
          x="156.63748"
-         y="522.26239">non-covalent</tspan><tspan
+         y="522.26239"
+         style="font-size:45px;line-height:1.25">non-covalent</tspan><tspan
          sodipodi:role="line"
          x="156.63748"
          y="578.51239"
-         id="tspan6720">link</tspan></text>
+         id="tspan6720"
+         style="font-size:45px;line-height:1.25">link</tspan></text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-2-4)"
        d="m 146.75593,253.62837 75.86206,20.68966"
@@ -266,58 +267,58 @@
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:45px;line-height:125%;font-family:'Century Schoolbook L';-inkscape-font-specification:'Century Schoolbook L Medium';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;line-height:0%;font-family:'Century Schoolbook L';-inkscape-font-specification:'Century Schoolbook L Medium';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="33.682304"
        y="239.29686"
-       id="text4160-7-5"
-       sodipodi:linespacing="125%"><tspan
+       id="text4160-7-5"><tspan
          sodipodi:role="line"
          id="tspan4162-2-7"
          x="33.682304"
-         y="239.29686">main</tspan><tspan
+         y="239.29686"
+         style="font-size:45px;line-height:1.25">main</tspan><tspan
          sodipodi:role="line"
          x="33.682304"
          y="295.54688"
-         id="tspan6718">chain</tspan></text>
+         id="tspan6718"
+         style="font-size:45px;line-height:1.25">chain</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:45px;line-height:125%;font-family:'Century Schoolbook L';-inkscape-font-specification:'Century Schoolbook L Medium';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;line-height:0%;font-family:'Century Schoolbook L';-inkscape-font-specification:'Century Schoolbook L Medium';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="535.65771"
        y="166.96988"
-       id="text4160-7-3"
-       sodipodi:linespacing="125%"><tspan
+       id="text4160-7-3"><tspan
          sodipodi:role="line"
          x="535.65771"
          y="166.96988"
-         id="tspan6720-7">distance along</tspan><tspan
+         id="tspan6720-7"
+         style="font-size:45px;line-height:1.25">distance along</tspan><tspan
          sodipodi:role="line"
          x="535.65771"
          y="223.21988"
-         id="tspan3391">the chain</tspan></text>
+         id="tspan3391"
+         style="font-size:45px;line-height:1.25">the chain</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="20.413784"
        y="138.85721"
-       id="text4232"
-       sodipodi:linespacing="125%"><tspan
+       id="text4232"><tspan
          sodipodi:role="line"
          id="tspan4234"
          x="20.413784"
          y="138.85721"
-         style="font-size:50px">a)</tspan></text>
+         style="font-size:50px;line-height:1.25">a)</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="20.468983"
        y="632.97565"
-       id="text4232-3"
-       sodipodi:linespacing="125%"><tspan
+       id="text4232-3"><tspan
          sodipodi:role="line"
          id="tspan4234-6"
          x="20.468983"
          y="632.97565"
-         style="font-size:50px">b)</tspan></text>
+         style="font-size:50px;line-height:1.25">b)</tspan></text>
     <g
        id="g4518"
        transform="matrix(1.3067179,0,0,1.3393666,-37.121423,-207.02497)">
@@ -546,29 +547,27 @@
          id="path4140-7-7-1-9"
          style="fill:#9cf4f4;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.93218517;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
       <text
-         sodipodi:linespacing="125%"
          id="text4446"
          y="635.8125"
          x="171.98155"
-         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:35px;font-family:'Century Schoolbook L';-inkscape-font-specification:'Century Schoolbook L Medium';fill:#3a407a;fill-opacity:1;stroke:none;stroke-opacity:1"
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:35px;line-height:1.25;font-family:'Century Schoolbook L';-inkscape-font-specification:'Century Schoolbook L Medium';fill:#3a407a;fill-opacity:1;stroke:none;stroke-opacity:1"
            y="635.8125"
            x="171.98155"
            id="tspan4448"
            sodipodi:role="line">k=3</tspan></text>
       <text
-         sodipodi:linespacing="125%"
          id="text4566"
          y="706.93341"
          x="126.30846"
-         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:27.5px;font-family:'Century Schoolbook L';-inkscape-font-specification:'Century Schoolbook L Medium'"
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:27.5px;line-height:1.25;font-family:'Century Schoolbook L';-inkscape-font-specification:'Century Schoolbook L Medium'"
            y="706.93341"
            x="126.30846"
            id="tspan4568"
-           sodipodi:role="line">A</tspan></text>
+           sodipodi:role="line">AAA</tspan></text>
     </g>
     <g
        id="g4562"
@@ -798,29 +797,123 @@
          id="path4140-7-7-1-9-2"
          style="fill:#9cf4f4;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.93218517;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
       <text
-         sodipodi:linespacing="125%"
          id="text4446-4"
          y="870.55994"
          x="286.52417"
-         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:35px;font-family:'Century Schoolbook L';-inkscape-font-specification:'Century Schoolbook L Medium';fill:#3a407a;fill-opacity:1;stroke:none;stroke-opacity:1"
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:35px;line-height:1.25;font-family:'Century Schoolbook L';-inkscape-font-specification:'Century Schoolbook L Medium';fill:#3a407a;fill-opacity:1;stroke:none;stroke-opacity:1"
            y="870.55994"
            x="286.52417"
            id="tspan4448-5"
            sodipodi:role="line">k=7</tspan></text>
       <text
-         sodipodi:linespacing="125%"
          id="text4566-1"
          y="941.68091"
          x="126.85112"
-         style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:27.5px;font-family:'Century Schoolbook L';-inkscape-font-specification:'Century Schoolbook L Medium'"
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:27.5px;line-height:1.25;font-family:'Century Schoolbook L';-inkscape-font-specification:'Century Schoolbook L Medium'"
            y="941.68091"
            x="126.85112"
            id="tspan4568-7"
            sodipodi:role="line">A</tspan></text>
     </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375"
+       x="503.96643"
+       y="151.0679"
+       id="text137"><tspan
+         sodipodi:role="line"
+         x="503.96643"
+         y="151.0679"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'TeX Gyre Schola Math';-inkscape-font-specification:'TeX Gyre Schola Math Italic';stroke-width:0.9375"
+         id="tspan149">residue distance</tspan><tspan
+         sodipodi:role="line"
+         x="503.96643"
+         y="197.9429"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'TeX Gyre Schola Math';-inkscape-font-specification:'TeX Gyre Schola Math Italic';stroke-width:0.9375"
+         id="tspan145">(path length along </tspan><tspan
+         sodipodi:role="line"
+         x="503.96643"
+         y="246.1767"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'TeX Gyre Schola Math';-inkscape-font-specification:'TeX Gyre Schola Math Italic';stroke-width:0.9375"
+         id="tspan169"><tspan
+   id="tspan167"
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'TeX Gyre Schola Math';-inkscape-font-specification:'TeX Gyre Schola Math Italic';stroke-width:0.9375">backbone </tspan><tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'TeX Gyre Schola Math';-inkscape-font-specification:'TeX Gyre Schola Math Italic'"
+   id="tspan161">chain)</tspan> : s=4</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375"
+       x="30.282204"
+       y="241.11722"
+       id="text180"><tspan
+         sodipodi:role="line"
+         id="tspan178"
+         x="30.282204"
+         y="241.11722"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'TeX Gyre Schola Math';-inkscape-font-specification:'TeX Gyre Schola Math';stroke-width:0.9375">Backbone </tspan><tspan
+         sodipodi:role="line"
+         x="30.282204"
+         y="289.35101"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'TeX Gyre Schola Math';-inkscape-font-specification:'TeX Gyre Schola Math';stroke-width:0.9375"
+         id="tspan182">chain</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375"
+       x="148.70325"
+       y="516.19946"
+       id="text186"><tspan
+         sodipodi:role="line"
+         id="tspan184"
+         x="148.70325"
+         y="516.19946"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'TeX Gyre Schola Math';-inkscape-font-specification:'TeX Gyre Schola Math';stroke-width:0.9375">non-covalent link</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375"
+       x="186.94337"
+       y="640.78833"
+       id="text190"><tspan
+         sodipodi:role="line"
+         id="tspan188"
+         x="186.94337"
+         y="640.78833"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'TeX Gyre Schola Math';-inkscape-font-specification:'TeX Gyre Schola Math';stroke-width:0.9375">s=3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375"
+       x="342.37103"
+       y="957.81128"
+       id="text194"><tspan
+         sodipodi:role="line"
+         id="tspan192"
+         x="342.37103"
+         y="957.81128"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'TeX Gyre Schola Math';-inkscape-font-specification:'TeX Gyre Schola Math';stroke-width:0.9375">s=7</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375"
+       x="126.54865"
+       y="740.11401"
+       id="text198"><tspan
+         sodipodi:role="line"
+         id="tspan196"
+         x="126.54865"
+         y="740.11401"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'TeX Gyre Schola Math';-inkscape-font-specification:'TeX Gyre Schola Math';stroke-width:0.9375">A</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375"
+       x="127.14075"
+       y="1054.0284"
+       id="text202"><tspan
+         sodipodi:role="line"
+         id="tspan200"
+         x="127.14075"
+         y="1054.0284"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'TeX Gyre Schola Math';-inkscape-font-specification:'TeX Gyre Schola Math';stroke-width:0.9375">A</tspan></text>
   </g>
 </svg>
