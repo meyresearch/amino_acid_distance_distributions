@@ -7,9 +7,17 @@ import random
 import time
 import bisect
 from scipy.optimize import curve_fit
-from compiler.ast import flatten
+# from compiler.ast import flatten
 from operator import add
+import collections
 
+def flatten(iterable):
+    for el in iterable:
+        if isinstance(el, collections.Iterable) and not isinstance(el, str): 
+            yield from flatten(el)
+        else:
+            yield el
+            
 def func(x, a, b):
      return a * x**b
 def func2(x, a):
