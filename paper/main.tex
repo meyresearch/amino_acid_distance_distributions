@@ -31,14 +31,13 @@ pre]{revtex4-1}
 \author{Nora Molkenthin}
 \affiliation{Potsdam Institut für Klimafolgenforschung}
 \affiliation{Center for Advancing Electronics Dresden (cfaed), Technical University of Dresden}
+\author{J. J.  Güven}
+\affiliation{EaStCHEM School of Chemistry, University of Edinburgh, Edinburgh, United Kingdom}
 \author{Steffen Mühle}
 \affiliation{Uni Göttingen, 37077 Göttingen, Germany}
 \author{Antonia S J S Mey}
 \email[Electronic Address: ]{antonia.mey@ed.ac.uk}
 \affiliation{EaStCHEM School of Chemistry, University of Edinburgh, Edinburgh, United Kingdom}
-%\author{Marc Timme}
-% \affiliation{Network Dynamics, Max Planck Institute for Dynamics and Self-Organization (MPIDS), 37077 Göttingen, Germany}
-% \affiliation{Chair for Network Dynamics, Institute for Theoretical Physics and Center for Advancing Electronics Dresden (cfaed), Technical University of Dresden, 01069 Dresden}
 
 \begin{abstract}
 The mechanisms by which the folded structures of proteins are determined have long been one of the key mysteries of Biophysics. Here we approach this problem from a network ensemble perspective, analyzing the relative frequencies with which residues at different distances along the chain come into contact. We define and analyze the residue distance distribution for measured protein structures and structures resulting from a geometrically constrained random interaction model and find that the distributions are compatible. We furthermore derive an analytic approximation for the two dimensional analog of the model and find this approximation to also describe the same distribution. We therefore propose the conclusion that the approximate power-law behaviour of the residue distance distribution is largely caused by geometric constraints of chains rather than specifics of protein sequences.
@@ -50,7 +49,7 @@ The mechanisms by which the folded structures of proteins are determined have lo
 Proteins, the molecular machines of every living organism perform vital tasks required for life to persist, ranging from transport (e.g. hemoglobin), signal transduction (e.g. rhodopsin), immune responses (e.g. antibodies), and hormonal regulation (e.g. insulin)~\cite{dill2008protein,Dill1042} \red{(Actually in the last paper we focused more on modelling of proteins rather than why they are so important so i didn't find much)}. All natural proteins are made up of 20 different amino acids which dictate the three dimensional conformations the proteins adopt in order to function~\cite{scheraga2007protein}. One way of looking at the functional forms of proteins and classifying their structural properties is by looking at protein residue or contact networks~\cite{Vendruscolo2002,DiPaola2013,Estrada2011}. Protein Contact Networks (PCN) have shown promise in understanding protein folding patterns as well as revealing allosteric communication pathways~\cite{yao2019establishing, menichetti2016network,dokholyan2002topological} \red{(i found some papers that use PCN's but not necessarily for allosteric communication)}. 
 From a physicist's perspective it is interesting to understand the emergent behaviour in protein structure from PCNs, by investigating common network measures and their behaviour for PCNs. For example Bartoli et al.~\cite{bartoli2008effect} build a model in which they assume that proteins have a residue distance distribution that follows $\frac{1}{s}$, where $s$ is the separation of two connected amino acids along the backbone chain (in the following called \emph{residue distance}) as the simplest implementation of a connection probability, thus decreasing with the distance along the sequence. However, they do not provide a quantitative explanation for this assumption. 
 
-Here, we show how a simple geometrical model can reproduce this heuristically found behaviour well, and even provide a simple analytical approximation. \blue{The three-dimensional geometrical model and the analytical approximation of its two-dimensional analogue both} build on the idea that inherently geometrical objects, such as amino acids, imply that any resulting PCN network ensemble modelling them has to be spatially embedded~\cite{molkenthin2016scaling, molkenthin2020self}. 
+Here, we show how a simple geometrical model can reproduce this heuristically found behaviour well, and even provide a simple analytical approximation. The three-dimensional geometrical model and the analytical approximation of its two-dimensional analogue both build on the idea that inherently geometrical objects, such as amino acids, imply that any resulting PCN network ensemble modelling them has to be spatially embedded~\cite{molkenthin2016scaling, molkenthin2020self}. 
 Different approaches have been used in the past for geometrical models describing protein folding, some of which derived characteristics of the secondary structure from constraints on bond and torsion angles~\cite{bhattacharjee2013flory,Danielsson2010,Molkenthin2011} and others focused on the formation mechanisms of the tertiary structure~\cite{molkenthin2016scaling, molkenthin2020self}. 
 
 Based on such considerations, the network formation process repeatedly connects random pairs of units, without causing any intersections along the chain ~\cite{molkenthin2016scaling}. Such a model can now be used to investigate the emergent behaviour of residue distance distributions as used heuristically by Bartoli et al.~\cite{bartoli2008effect}. To this end, we define and analyze the residue distance distributions $P(s)$ that emerge from the geometric model, where the \emph{residue distance} $s$ of a link is defined as the distance of the two end units along the original chain.
@@ -71,11 +70,11 @@ The complex interaction pattern between the amino acids in a protein can be very
 \end{equation}
 Adjacency matrices are commonly used to describe networks and in this case represent the PCN.
 
-The underlying formation mechanisms of individual protein folds are incredibly complex and depend on the surrounding solvent as well as the specific amino acid sequence and their quantum-mechanical interactions. Here we want to study the ensemble of all \blue{folded(?)} proteins, however, and will thus "average" over such specifics.
+The underlying formation mechanisms of individual protein folds are incredibly complex and depend on the surrounding solvent as well as the specific amino acid sequence and their quantum-mechanical interactions. Here we want to study the ensemble of all folded proteins, however, and will thus "average" over such specifics.
 
-Based on the basic \blue{observation} that amino acids are objects in space which can not overlap indefinitely, we introduced a model in \cite{molkenthin2020self} starting from a chain of identical spheres, each in contact only with the neighbours it is connected to. Then additional connections form by randomly selecting two spheres and moving them towards each other until they touch, the new links formed that way can not be broken in later steps and function as constraints on subsequent links. If contact of the two selected spheres is geometrically impossible without breaking previously made connections or leading to overlaps of any spheres, the link is not made and taken out of the pool of possible connections. This process is repeated until no more links can be formed without violating the geometric constraints.
+Based on the basic observation that amino acids are objects in space which can not overlap indefinitely, we introduced a model in \cite{molkenthin2020self} starting from a chain of identical spheres, each in contact only with the neighbours it is connected to. Then additional connections form by randomly selecting two spheres and moving them towards each other until they touch, the new links formed that way can not be broken in later steps and function as constraints on subsequent links. If contact of the two selected spheres is geometrically impossible without breaking previously made connections or leading to overlaps of any spheres, the link is not made and taken out of the pool of possible connections. This process is repeated until no more links can be formed without violating the geometric constraints.
 
-In \cite{molkenthin2016scaling}, we have introduced a simplified, two-dimensional version of this model, which starts from a closed chain \blue{(i.e. a ring)} of $N$ unit discs and subsequently adds links, such that connected discs touch, yet no discs intersect. The advantage of this model is that it can be approximated by a purely topological simplification, which can be treated analytically.
+In \cite{molkenthin2016scaling}, we have introduced a simplified, two-dimensional version of this model, which starts from a closed chain (i.e. a ring) of $N$ unit discs and subsequently adds links, such that connected discs touch, yet no discs intersect. The advantage of this model is that it can be approximated by a purely topological simplification, which can be treated analytically.
 
 The topological constraints in the resulting network model are:
 (a) New links always form between two units that are part of the same face of the graph (region enclosed by a cycle in the network). This prevents the overlapping of discs. (b) No links form across the outer face. This prevents the enclosure of a unit by less than six other units (which is geometrically impossible) such that (c) the maximum degree of each unit is six, as six is the maximum number of unit discs one central unit disc can touch. (d) Once connected by a link, pairs of units do not disconnect.
@@ -95,7 +94,7 @@ Let us start by introducing the auxiliary variable $F_k(s)$, defined to be the n
 As we add more links, not only are links taken out of this pool, because they have already been realized, each existing link can also geometrically prohibit other connections. Adding a link of length $s_1$ prohibits $2(s-1)$ links of length $s<s_1$ and $2(s_1-1)$ links of length $s>s_1$ (see Fig.~\ref{fig:schematic}~b). To find the expected number of links still available in subsequent stops, we average over all possible residue distances $s_1$ of the first link added.
 
 The expected distribution of possible links after one step is given thus by the average over available link pools taken over all possible lengths of the initial link
-\blue{\begin{align}
+\begin{align}
     F_1(s)&=\frac{1}{N/2-1} \sum_{s_1=2}^{N/2}{ \begin{cases}
     F_0(s)-2(s-1) \text{ , for } s<s_1\\
     F_0(s)-2(s_1 -1)\text{ , for } s\geq s_1
@@ -105,81 +104,105 @@ The expected distribution of possible links after one step is given thus by the 
     N-2(s-1) \text{ , for } s<s_1\\
     N-2(s_1 -1)\text{ , for } s\geq s_1
     \end{cases}}
-\end{align}}
-Here we denote the size of the pool of available links after $i$ links have been added $F_i(s)$.
+\end{align}
 
-In subsequent steps we \blue{still average over $N/2-1$ possible link lengths made at step $k-1$, each occurring with probability $F_k(s)/C_k$, where $C_k=\sum_{s=2}^{N/2}F_k(s)$ and} get the same reduction \blue{(compare Fig.~\ref{fig:schematic})} but starting from the pool $F_{k-1}(s)$ of the step before rather than the full $N$ links for each length. The reduction also needs to be multiplied by a factor \blue{accounting for already removed links}
-\blue{\begin{equation}
-    P_k(s)=\frac{F_k(s)}{N/2-1} \approx F_k(s)\frac{2}{N},
+In subsequent steps we take the weighted average over new links being added at step $k-1$, where the probability that a link of length $s$ can still be made is
+\begin{equation}
+    P_{in}^k(s)=F_k(s)/C_k,
+\end{equation}
+where $C_k=\sum_{s=2}^{N/2}F_k(s)$ and get the same reduction (compare Fig.~\ref{fig:schematic}) but starting from the pool $F_{k-1}(s)$ of the step before rather than the full $N$ links for each length. To account for possible overlaps between newly removed links and links that were removed previously, we multiply by
+\begin{equation}
+    \frac{F_k(s)}{F_0(s)} \approx F_k(s)\frac{1}{N}.
     \label{eq.Pk}
-\end{equation}}
+\end{equation}
 % \begin{equation}
 %     P_k(s)=\frac{F_k(s)}{C_k},
 %     \label{eq.Pk}
 % \end{equation}
 %with $C_k=\sum_{s=2}^{N/2}F_k(s)$, 
-to only remove links that are still in the pool. This leads to the recursion
-\blue{\begin{align}
-    F_k(s)&= \sum_{s_k=2}^{N/2} F_k(s)/C_k\nonumber \\
-    &{\begin{cases}
-     F_{k-1}(s)-2(s-1) P_{k-1}(s) \text{ , for } s<s_k\\
-     F_{k-1}(s)-2(s_k -1)P_{k-1}(s)\text{ , for } s\geq s_k
-    \end{cases}}\nonumber \\
-    &\approx \frac{1}{N/2} \sum_{s_k=2}^{N/2} \nonumber \\
-    &{\begin{cases}
-     F_{k-1}(s)-2(s-1) P_{k-1}(s) \text{ , for } s<s_k\\
-     F_{k-1}(s)-2(s_k -1)P_{k-1}(s)\text{ , for } s\geq s_k
-    \end{cases}},
-    \label{eq.Fk_def}
-\end{align}}
-\blue{where we made the approximation that the probabilities $F_k(s)/C_k\approx 2/N$ remain approximately uniform. This approximation holds best for small $s$ and large $N$.} \red{Toni and Steffen, does either of you have access to a Mathematica license? I could start bugging my admin about getting one but i think that would probably take longer than we want to spend on this. If we find a license we could probably take the first line of eq. 4 and get a plot out using Rsolve or something...  And plot the result with the approximation.}
-
-\blue{We further simplify Eq.~\ref{eq.Fk_def}.}
-
-\blue{\begin{align}
-   F_k(s)&\approx \frac{4}{N^2} F_{k-1}\nonumber \\
-   &\left( \sum_{s_k=2}^{N/2}\frac{N}{2} - \sum_{s_k=2}^{s} 2(s_k-1) - \sum_{s_k=s+1}^{N/2} 2(s -1) \right) \nonumber \\
-   &= \frac{4}{N^2} F_{k-1}\nonumber \\
-   &\left(\frac{N^2}{4} -(s^2-s)
-   -2\left(\frac{N}{2}-(s+1)\right)(s-1)\right)  \nonumber \\
-   &= F_{k-1}(s)\left(1-\frac{-s^2 +(N-1)s-(N+2)}{\frac{N^2}{4}} \right)\nonumber \\
-   &=F_{k-1}(s)\left(1-\frac{f(s)}{\frac{N^2}{4}} \right)
+This ignores any bias in which links are removed, however, in small, manageable examples this assumption seemed to hold well. 
+This leads to the recursion
+\begin{align}
+    F_k(s)&= \sum_{s_k=2}^{N/2} P_{in}^k(s_k)\nonumber \\
+    & (F_{k-1}(s)-  F_k(s)\frac{1}{N}
+    {\begin{cases}
+     2(s-1) \text{ , for } s<s_k\\
+     2(s_k -1))\text{ , for } s\geq s_k
+    \end{cases}} )
+\end{align}
+which simplifies to
+\begin{align}
+   F_k(s)&=F_{k-1}(s)(1-\frac{1}{N} \sum_{s_k=2}^{s} (2 (s_k-1) P_{in}^k(s_k))\nonumber \\
+   &-\frac{1}{N} \sum_{s_k=s+1}^{N/2} (2 (s-1) P_{in}^k(s_k)))\nonumber \\
+   &=F_{k-1}(s)(1-\frac{1}{N}
+   \sum_{s_k=2}^{s} (2 (s_k-1) P_{in}^k(s_k))\nonumber \\
+   &-\frac{2 (s-1)}{N} (\sum_{s_k=2}^{N/2} P_{in}^k(s_k) - \sum_{s_k=2}^{s} P_{in}^k(s_k)))\nonumber \\
+   &=F_{k-1}(s)(1-\frac{2}{N} (s-1) 
+   +\frac{2}{N} s
+   \sum_{s_k=2}^{s}P_{in}^k(s_k)\nonumber \\
+   &-\frac{2}{N}
+   \sum_{s_k=2}^{s} s_k P_{in}^k(s_k))
    \label{eq.Fk_rec}
-\end{align}}
-% \begin{align}
-%   F_k(s)&= \frac{1}{\frac{N}{2}-2} \frac{F_{k-1}(s)}{C_{k-1}}\nonumber \\
-%   &\left( \sum_{s_k=2}^{N/2}C_{k-1} - \sum_{s_k=2}^{s} 2(s_k-1) - \sum_{s_k=s+1}^{N/2} 2(s -1) \right) \nonumber \\
-%   &= \frac{1}{\frac{N}{2}-2}\frac{F_{k-1}(s)}{C_{k-1}}\nonumber \\
-%   &\left(\left(\frac{N}{2}-2\right)C_{k-1} -(s^2-s)
-%   -2\left(\frac{N}{2}-(s+1)\right)(s-1)\right)  \nonumber \\
-%   &= F_{k-1}(s)\left(1-\frac{-s^2 +(N-1)s-(N+1)}{(\frac{N}{2}-2)C_{k-1}} \right)\nonumber \\
-%   &=F_{k-1}(s)\left(1-\frac{f(s)}{(\frac{N}{2}-2)C_{k-1}} \right)
-%   \label{eq.Fk_rec}
-% \end{align}
-Where we defined $f(s)=-s^2 +(N-1)s-(N+2) \approx N s - s^2 - N$ for notational brevity.
+\end{align}
 
-We can now use the recursive expression Eq.~\ref{eq.Fk_rec} to write down a closed expression for $F_k(s)$
+To approximately evaluate this we make a guess for $P_{in}^k(s)$ at low $k$ and at high $k$, namely
+\begin{equation}
+    P_{in}^{k\ll N/2}(s)\approx P_{in}^{k=0}(s)=2/N.
+    \label{eq.P_small}
+\end{equation}
+For later steps $k$, the probability of a link to still be in the pool decreases with $s$, we thus make the ansatz, that it drops off as $1/s$, leading to
+\begin{equation}
+    P_{in}^{k\gg 1}(s)\approx \frac{s^{-1}}{ (H_{\frac{N}{2}}-1)},
+    \label{eq.P_large}
+\end{equation}
+where $H_{\frac{N}{2}}$ is the harmonic number. 
+We suspect that the approximation for low $k$ only holds for a couple of steps while Eq.~\ref{eq.P_large} holds, at least on average for larger $k$. We have no approximation for the intermediate steps but assume that the errors roughly cancel each other out. Inserting Eq.\ref{eq.P_small} and Eq.\ref{eq.P_large} into Eq.\ref{eq.Fk_rec} results in the following two recursions for the early and late evolution of the sequence distance distribution respectively.
+\begin{align}
+   F_{k\ll N/2}(s)&\approx 
+   F_{k-1}(s)(1-\frac{2}{N} (s-1) 
+   +\frac{4}{N^2} s (s-1)\nonumber \\
+   &-\frac{2}{N^2}(s^2+s-2)\nonumber \\
+   &=F_{k-1}(s)(1-f_{low}(s)),
+   \label{eq.Fk_rec_low}
+\end{align}
+where 
+\[f_{low}(s)=-\frac{2}{N^2}s^2+(\frac{2}{N}+\frac{6}{N^2})s-(\frac{2}{N}+\frac{4}{N^2}),\]
+and
+\begin{align}
+   F_{k\gg1}(s)&\approx 
+   F_{k-1}(s)(1-\frac{2}{N} (s-1) 
+   +\frac{2}{N} s \sum_{s_k=2}^{s}\frac{1}{s_k(H_{\frac{N}{2}}-1)}\nonumber \\
+   &-\frac{2}{N}
+   \sum_{s_k=2}^{s} s_k \frac{1}{s_k(H_{\frac{N}{2}}-1)})\nonumber \\
+   &=
+   F_{k-1}(s)(1 -(\frac{2}{N}-\frac{2}{N}\frac{H_{s}-1}{H_{\frac{N}{2}}-1}+\frac{2}{N(H_{\frac{N}{2}}-1)})s \nonumber \\ 
+   &+ \frac{2}{N(H_{\frac{N}{2}}-1)} + \frac{2}{N})\nonumber \\
+   &=F_{k-1}(s)(1-f_{high}(s)).
+   \label{eq.Fk_rec_high}
+\end{align}
+where 
+\[f_{high}(s)=\frac{2}{N}(\frac{H_{\frac{N}{2}}-H_{s}+1}{H_{\frac{N}{2}}-1}s-\frac{H_{\frac{N}{2}}}{H_{\frac{N}{2}}-1}).\]
 
-\blue{\begin{equation}
-    F_k(s)=N\prod_{i}^k\left(1-\frac{f(s)}{\frac{N^2}{4}} \right) = N \left(1-\frac{f(s)}{\frac{N^2}{4}} \right)^k
-\end{equation}}
-% \begin{equation}
-%     F_k(s)=N\prod_{i}^k\left(1-\frac{f(s)}{(\frac{N}{2}-2)C_{i-1}} \right)
-% \end{equation}
+We can now use the recursive expressions to write down a closed expression for $F_k(s)$
 
-\blue{In 2D this is repeated for $N-3$ steps until no more links can be added \cite{molkenthin2016scaling}.}
+\begin{align}
+    F_k(s)&=N\prod_{i_1}^a\left(1-f_{low}(s)\right)\prod_{i=a+1}^k\left(1-f_{high}(s)\right) \nonumber \\
+    &= N\left(\frac{1-f_{low}(s)}{1-f_{high}(s)}\right)^a\left(1-f_{high}(s)\right)^{k}
+\end{align}
+
+In 2D this is repeated for $N-3$ steps until no more links can be added \cite{molkenthin2016scaling}.
 The probability distribution of the realized residue distances of all added links is then given by the average over the available pools at each link addition step, leading to
-\blue{\begin{align}
+\begin{align}
     P(s)&=\frac{1}{N-3}\sum_{k=0}^{N-4} \frac{F_k(s)}{C_k} \nonumber \\
-    &= \frac{N}{N-3}\sum_{k=0}^{N-4} \frac{1}{C_k} \left(1-\frac{f(s)}{\frac{N^2}{4}} \right)^k \nonumber \\
-    &\approx \frac{A}{f(s)},
+    &= \frac{N}{N-3}\left(\frac{1-f_{low}(s)}{1-f_{high}(s)}\right)^a
+\sum_{k=0}^{N-4} \frac{1}{C_k} \left(1-f_{high}(s)\right)^{k} \nonumber \\
+    &\approx \left(\frac{1-f_{low}(s)}{1-f_{high}(s)}\right)^a\frac{A}{f_{high}(s)},
     \label{eq.Ps}
-\end{align}}
-% \begin{align}
-%     P(s)&=\frac{1}{N-3}\sum_{k=0}^{N-3} P_k(s) \nonumber \\
-%     &= \frac{N}{N-3}\sum_{k=0}^{N-3} \frac{1}{C_k}\prod_{i}^k\left(1-\frac{f(s)}{(\frac{N}{2}-2)C_{i-1}} \right),
-% \end{align}
-\blue{for $1<s<\frac{N}{2}$. The approximation sets all $C_k=C$ to allow the use of the geometric series for solving the equation. We can do this because $C_k$ monotonically decreases with $k$ and $N>C_k>C_{N-2}$ meaning we can obtain an upper and lower bound by replacing all $C_k$ in the expression with either $N$ (underestimates all probabilities) or $C_{N-2}$ (overestimates all probabilities), however, as neither of those depend on $s$, these bounds are merely in the constant factor $A$ and do not affect the scaling as such.}
+\end{align}
+
+\red{The assumption that the sum is basically a harmonic series seems like a bit of a stretch I shall check it again but the results look good}
+
+for $1<s<\frac{N}{2}$. The approximation sets all $C_k=C$ to allow the use of the geometric series for solving the equation. We can do this because $C_k$ monotonically decreases with $k$ and $N>C_k>C_{N-2}$ meaning we can obtain an upper and lower bound by replacing all $C_k$ in the expression with either $N$ (underestimates all probabilities) or $C_{N-2}$ (overestimates all probabilities), however, as neither of those depend on $s$, these bounds are merely in the constant factor $A$ and do not affect the scaling as such.
 %which makes use of Eq.~\ref{eq.Pk}. 
 %The only unknown in this expression is $C_k$, \red{which we can not compute exactly...?}. However, since $C_k$ monotonically decreases with $k$, $N>C_k>C_{N-2}$ always holds and we can obtain an upper and lower bound by replacing all $C_k$ in the expression with either $N$ (underestimates all probabilities) or $C_{N-2}$ (overestimates all probabilities). Each time we get an expression of the form 
 % \begin{align}
@@ -189,19 +212,19 @@ The probability distribution of the realized residue distances of all added link
 % \end{align}
 % for $1<s<\frac{N}{2}$,
 % where $A$ is an unknown constant, containing an approximation of the various normalization constants $C_i$, as well as the direct effects of the chain length. 
-\blue{Since for long chains and $s \ll N/2$, $f(s)$ is dominated by the linear term, the distribution is well approximated by a power law with an exponent of $-1$.}
+Since for long chains and $s \ll N/2$, $f(s)$ is dominated by the linear term, the distribution is well approximated by a power law with an exponent of $-1$.
 
-In the last step of this approximation, we took the $C_k$ to all be approximately equal in order to apply the geometric series. However, in reality we know $1/C_k$ to increase with $k$, giving large $k$ summands relatively more weight than in a geometric series. This can be expressed as a small correction $\alpha$ in the exponent.
+%In the last step of this approximation, we took the $C_k$ to all be approximately equal in order to apply the geometric series. However, in reality we know $1/C_k$ to increase with $k$, giving large $k$ summands relatively more weight than in a geometric series. This can be expressed as a small correction $\alpha$ in the exponent.
 
-\begin{equation}
-    P_{corrected}(s)\approx A f(s)^{-1+\alpha},
-\end{equation}
-where $0<\alpha \ll 1$. \blue{The parameters $A$ and $\alpha$ in this approximation are treated as free parameters and used for fitting the theoretical result to data and simulations. While they could be estimated by evaluating the middle line of Eq.~\ref{eq.Ps}, this estimate is for the 2D model, in which the exclusion of connections is faster, leading to a steeper decrease of $C_k$, as well as a different factor $A$.}
+%\begin{equation}
+ %   P_{corrected}(s)\approx A f(s)^{-1+\alpha},
+%\end{equation}
+%where $0<\alpha \ll 1$. \blue{The parameters $A$ and $\alpha$ in this approximation are treated as free parameters and used for fitting the theoretical result to data and simulations. While they could be estimated by evaluating the middle line of Eq.~\ref{eq.Ps}, this estimate is for the 2D model, in which the exclusion of connections is faster, leading to a steeper decrease of $C_k$, as well as a different factor $A$.}
 
 \red{We could add a figure with simulated 2D results (which i should have... somewhere) and the exact evaluation with the sums and all that. I'm not super motivated to do that but i guess it might be a nice addition and the only place for the exact formula really.}
 
 \section*{Data and simulations}
-For large values of the chain length $N$ we thus find an approximate power law probability distribution for the residue distance with an exponent of $-1+\alpha$. Here we use simulations, as introduced in~\cite{molkenthin2020self}, and networks extracted from measured protein data from the PDB \cite{PDB} to compare this behaviour \blue{with the more} realistic 3D settings and show that the basic principle persists, indicating that much of the residue distance distribution can be explained by simple\blue{/generic?} geometric constraints.
+For large values of the chain length $N$ we thus find an approximate power law probability distribution for the residue distance with an exponent of $-1+\alpha$. Here we use simulations, as introduced in~\cite{molkenthin2020self}, and networks extracted from measured protein data from the PDB \cite{PDB} to compare this behaviour with the more realistic 3D settings and show that the basic principle persists, indicating that much of the residue distance distribution can be explained by generic geometric constraints.
  \begin{figure}[h]
         \centering
 	\includegraphics[width=0.45\textwidth]{paper/figures/Fig2/pdb_statistics.pdf}
@@ -209,7 +232,7 @@ For large values of the chain length $N$ we thus find an approximate power law p
         \label{fig:pdb_stats}
 \end{figure}
 
-Protein chain lengths in the PDB vary from small fragments of less than 10 amino acids to large agglomerates of over 2000 residues. The most frequently occurring chain lengths, however, are between 100 and 400 residues as shown in Fig.~\ref{fig:pdb_stats}. \red{For our analysis, we have thus chosen ............ structures of around 200, ........ structures of around 300 and .......... structures of around 400 residues from the PDB.} Those have been converted into PCN's based on the measured locations of their residues to analyze the distribution of residue distances between connected amino acids. The resulting distribution is compared to those generated in simulations in~\cite{molkenthin2020self} \blue{as well as the above derived theoretical expression scaled with a factor to account for the different dimensionality, as well as approximations made in the derivation.}
+Protein chain lengths in the PDB vary from small fragments of less than 10 amino acids to large agglomerates of over 2000 residues. The most frequently occurring chain lengths, however, are between 100 and 400 residues as shown in Fig.~\ref{fig:pdb_stats}. \red{For our analysis, we have thus chosen ............ structures of around 200, ........ structures of around 300 and .......... structures of around 400 residues from the PDB.} Those have been converted into PCN's based on the measured locations of their residues to analyze the distribution of residue distances between connected amino acids. The resulting distribution is compared to those generated in simulations in~\cite{molkenthin2020self} as well as the above derived theoretical expression scaled with a factor to account for the different dimensionality, as well as approximations made in the derivation.
 
 The results are shown logarithmically scaled in Fig.\ref{fig:sdd}. \red{For all three lengths, the distributions show an approximate power law decay with slopes of $...\pm ...$, which is consistent with both, the simulated results ans the theoretical approximation.}
 
