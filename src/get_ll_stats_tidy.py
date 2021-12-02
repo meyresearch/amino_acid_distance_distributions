@@ -46,20 +46,20 @@ def get_link_lengths(CA):
 	graph = nx.empty_graph(len(r))
 
 	# Define max and average distances
-	max_dist = 0
-	avg_dist = 0
+	max_dist = 0 # could be commented out
+	avg_dist = 0 # could be commented out
 	'''-------------------------------???-------------------------------'''
 	# Create the adjacency matrix
 	for i in range(len(r)):
 		for j in range(i):
 			# Get the norm, i.e. distnces between adjacent atoms
 			distance = np.linalg.norm(r[i] - r[j])
-			max_dist = max(distance, max_dist)
-			avg_dist += distance ** 2
+			max_dist = max(distance, max_dist) # could be commented out
+			avg_dist += distance ** 2 # could be commented out
 			# If closer than threshold, add link
 			if distance < threshold:
 				graph.add_edge(i,j)
-				linklengths.append(distance)
+				linklengths.append(distance) # could be commented out
 	'''-------------------------------???-------------------------------'''
 	# Get the average distance
 	avg_dist = np.sqrt(avg_dist) / (len(r))
@@ -79,30 +79,35 @@ def get_link_lengths(CA):
 	return link_length_list
 
 
-def bootsrap(ll_list, link_length_id_list):
-	'''Bootstrap LL data.'''
-	# Specify a sample size to use for bootstrapping
-	sample_size = 1000
-	data_histogram_list = []
-	mean_list = []
-	std_list = []
-	# Loop over number of samples
-	for n in range(sample_size):
-		# Randomly choose a list of observations from the sample
-		bts_sample = [random.choice(ll_list) for _ in ll_list]
-		# Sample with replacement
-		bts_sample = [item for items in bts_sample for item in items]
-		# Make a histogram
-		data_histogram, data_histogram_edges = np.histogram(bts_sample, bins = range(3, 1000), density = True)
-		# Normalise the histogram? But doesn't density already do this?
-		data_histogram = data_histogram / len(link_length_id_list)
-		data_histogram_list.append(data_histogram)
-	data_histogram_list = np.array(data_histogram_list)
-	mean_list = data_histogram_list.mean(axis = 0)
-	std_list = data_histogram_list.std(axis = 0)
-
-
-
+def bootsrap(length, ll_list, link_length_id_list):
+	'''Bootstrap LL data and save.'''
+	if len(ll_list) > 0:
+		# Specify a sample size to use for bootstrapping
+		sample_size = 1000
+		data_histogram_list = []
+		mean_list = []
+		std_list = []
+		# Loop over number of samples
+		for n in range(sample_size):
+			# Randomly choose a list of observations from the sample
+			bts_sample = [random.choice(ll_list) for _ in ll_list]
+			# Sample with replacement
+			bts_sample = [item for items in bts_sample for item in items]
+			# Make a histogram
+			data_histogram, data_histogram_edges = np.histogram(bts_sample, bins = range(3, 1000), density = True) 
+			# Normalise over the number of PDBs in this set
+			data_histogram = data_histogram / len(link_length_id_list)
+			data_histogram_list.append(data_histogram)
+		# Get ready for saving
+		data_histogram_list = np.array(data_histogram_list)
+		mean_list = data_histogram_list.mean(axis = 0)
+		# Change STD to CI 
+		std_list = data_histogram_list.std(axis = 0)
+		# Save
+		fname_mean = f'data_for_plotting/data_mean_list_{length}.npy'
+		fname_ids = f'data_for_plotting/ids_{length}.npy'
+		np.save(fname_mean, mean_list)
+		np.save(fname_ids, link_length_id_list)
 
 
 # Get pdbs with residue lengths in ranges [85-115], [185-215] and [285-315]
@@ -111,11 +116,12 @@ if __name__ == '__main__':
 	
 	# Get PDB ids 
 	PDBs = concat_ID_files()
-
+	n_pdbs = len(PDBs)
 	# Create lists for residue length ranges
 	hundred = [] # 85-115
 	twohundered = [] # 185-215
 	threehundred = [] # 285-315
+
 	# Create lists for link length ranges
 	ll_100 = []
 	ll_200 = []
@@ -123,27 +129,23 @@ if __name__ == '__main__':
 
 	counter = 0
 
-	# Number of PDB ids we want to retrieve 
-	#n_pdbs = len(query_DF)
-	
-	# print(n_pdb)
-	#n_pdb = 1000 
-	#PDBs = ['3UQI']
-
 	# Open log file & write to it
 	with open("log.txt", "w") as log:
+
 	# 	# Loop over PDB ids
 		for pdb in PDBs:
+			print("We are at entry %d/%d!" % (counter, n_pdbs), flush=True)
 			print(f'We\'re at PDB ID {pdb}.')
-			# Make url request
-			download = f'https://files.rcsb.org/download/{pdb}.pdb' 
-			
+
+			# # Make url request
+			# download = f'https://files.rcsb.org/download/{pdb}.pdb' 
+			# Get files from directory
 			try:
-				PDB_file = f'../data/temp/{pdb}.pdb'
-				urllib.request.urlretrieve(download,PDB_file)
+				PDB_file = f'../data/bioretrieve_PDBs/pdb{pdb}.ent'
+				#urllib.request.urlretrieve(download,PDB_file)
 			
 			except:
-				print(f'Failed at PDB ID: {pdb}')
+				print(f'Failed at PDB ID: {pdb}. File not yet downloaded.')
 				traceback.print_exc(file=log) # Log the exception
 				#continue # Jump back to the top of the loop and try another PDB
 
@@ -179,20 +181,15 @@ if __name__ == '__main__':
 					
 				# Delete the file after we're done
 				os.remove(PDB_file)
-				counter += 1
+				
 			else:
 				continue
 
-			'''----------------------------------------------------------'''
-			# print('Inside first FOR loop')
-			# if counter % 5000 == 0:
-			# 	print(f"Counter after mod: {counter}")
-			# 	print(f"")
-			# 	# print('Passed second IF at %i' %counter)
-			# 	# print("We are at entry %d/%d!" % (counter, n_pdbs), flush=True)
-			# 	# save_bootstrapped_current_data('100', ll_100, hundred)
-			# 	counter += 1
-			'''----------------------------------------------------------'''
+			bootsrap('100', ll_100, hundred)
+			bootsrap('200', ll_200, twohundered)
+			bootsrap('300', ll_300, threehundred)
+			counter += 1
+
 
 
 
