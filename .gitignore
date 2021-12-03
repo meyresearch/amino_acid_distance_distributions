@@ -4,3 +4,5 @@ K50/
 both/
 idp/
 .ipynb_checkpoints*
+*.gz
+*.ent

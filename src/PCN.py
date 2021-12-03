@@ -43,7 +43,7 @@ class PCN():
 
 			try:
 				C_alphas = self.universe.select_atoms(f'name CA and segid {segment_id}')
-				print(segment_id)
+				#print(segment_id)
 				break
 			
 			except:
