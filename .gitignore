@@ -1,0 +1,7 @@
+.DS_Store
+trans_membrane_helical/
+K50/
+both/
+idp/
+.ipynb_checkpoints*
+simulation_data/

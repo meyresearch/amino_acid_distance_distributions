@@ -1,0 +1,13 @@
+name: link_length
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - networkx
+  - matplotlib
+  - jupyter
+  - biopython
+  - mdanalysis
+  - pandas
+  - seaborn
+
