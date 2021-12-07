@@ -14,6 +14,18 @@ class PCN():
     Takes a PDB file and creates a PCN from the alpha carbons.
 
     '''
+    # @property
+    # def threshold(self):
+    #     return self._threshold
+    
+    # @threshold.setter
+    # def threshold(self, threshold_value):
+    #     self._threshold = threshold_value
+
+    # @threshold.deleter
+    # def threshold(self):
+    #     raise AttributeError('The thresold value cannot be deleted. You can set it to 0.')
+
     # Define a threshold value for defining a link between two atoms
     link_length_threshold = 8.0 # Å
     
