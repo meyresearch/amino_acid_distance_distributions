@@ -1,7 +1,7 @@
-'''
+"""
 Functions to be used in main.py. 
 
-'''
+"""
 import os
 import pandas as pd
 import Bio.PDB.PDBList as biopy
@@ -12,7 +12,7 @@ import random
 import numpy as np
 
 def concat_ID_files():
-    '''
+    """
     Opens the chunked PDB id files as a DataFrame. Returns an array with of all the IDs.
     
     Parameters
@@ -23,7 +23,7 @@ def concat_ID_files():
     ------
     PDB_ID_array: numpy array
         array containing all the PDB IDs
-    '''
+    """
     frames = []
     for filename in os.listdir('../data/ids/'):
         if filename.endswith('.txt'):
@@ -37,7 +37,7 @@ def concat_ID_files():
     return PDB_ID_array
 
 def bioretrieve_PDBs(PDB_ID_array, save_directory):
-    '''
+    """
     Take the array of PDB IDs and use BioPython to retrieve PDB files as .ent files.
 
     Parameters
@@ -50,7 +50,7 @@ def bioretrieve_PDBs(PDB_ID_array, save_directory):
     Return
     ------
     None
-    '''
+    """
     pdblist = biopy.PDBList()
     PDB_IDs = concat_ID_files()
     counter = 1
@@ -60,7 +60,7 @@ def bioretrieve_PDBs(PDB_ID_array, save_directory):
         counter += 1
 
 def bootstrap(length, link_lengths, length_range):
-    '''
+    """
     Take the link lengths and bootstrap the data. 
 
     Saves the mean and median of the bootstrapped data and the PDB ids belonging to
@@ -80,7 +80,7 @@ def bootstrap(length, link_lengths, length_range):
     Return
     ------
     None
-    '''
+    """
     if len(link_lengths) > 0:
         sample_size = 1000
         histogram_list = []
@@ -107,7 +107,7 @@ def bootstrap(length, link_lengths, length_range):
         np.save(id_save_file, length_range)
 
 def PDB_to_PCN(log_file):
-    '''
+    """
     Creates an instance of the PCN class from the PDB files. 
 
     Bootstraps the data, which in turn saves the data for plotting.
@@ -119,7 +119,7 @@ def PDB_to_PCN(log_file):
     Return
     ------
     None
-    '''
+    """
     # Get PDB IDs
     PDB_IDs = concat_ID_files()
     number_PDBs = len(PDB_IDs)
@@ -143,8 +143,7 @@ def PDB_to_PCN(log_file):
             print('--------------------------------------------------------------------------------------------------')
             print(f'At entry {counter+1} out of {number_PDBs+1} entries.')
             print(f'The PDB ID is {PDB_ID}')
-            # This will be replaced with untarring of pdb files
-            #-------------------------------------------------------------------
+
             try:
                 # PDB_tarfile = tarfile.open(f'../data/PDBs.tar.gz', 'r:gz')
                 PDB_ID_lower = str(PDB_ID).lower()
@@ -153,11 +152,9 @@ def PDB_to_PCN(log_file):
                 PDB_check = open(PDB_file, 'r')
                 print('Successfully opened file.')
             except:
-                #print(f'Failed at PDB ID: {PDB_ID}. Could not find file 'pdb{PDB_ID_lower}.ent.'')
-
                 traceback.print_exc(file=log) # Log the exception
                 continue # Jump back to the top of the loop and try another PDB
-            #-------------------------------------------------------------------
+
 
             if os.path.isfile(PDB_file):
                 print('Creating PCN object.')

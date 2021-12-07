@@ -1,40 +1,99 @@
-'''
+"""
 Base class for PCNs. 
 
-'''
+"""
 import networkx as nx
 import MDAnalysis as mda
 import numpy as np
 import random
 
 class PCN():
-    '''
+    """
     Base class for PCNs. 
     
     Takes a PDB file and creates a PCN from the alpha carbons.
 
-    '''
-    # @property
-    # def threshold(self):
-    #     return self._threshold
+    """
     
-    # @threshold.setter
-    # def threshold(self, threshold_value):
-    #     self._threshold = threshold_value
+    def __init__(self, PDB_file, default_threshold = 8.0):
+        """
+        Class constructor for PCN(). Creates an MDAnalysis Universe from supplied PDB file.
+        Initialises the link length threshold for the PCN object. 
+        Default threshold value is 8.0 Å.
+        
+        Parameters
+        ----------
+        PDB_file: str
+            Exact location and name of the PDB file. 
 
-    # @threshold.deleter
-    # def threshold(self):
-    #     raise AttributeError('The thresold value cannot be deleted. You can set it to 0.')
+        default_threshold: float
+            Link length threshold value. 
 
-    # Define a threshold value for defining a link between two atoms
-    link_length_threshold = 8.0 # Å
-    
-    def __init__(self, PDB_file):
+        Return
+        ------
+        None
+        """
         self.universe = mda.Universe(PDB_file)
+        self.threshold = default_threshold
+
+
+    @property
+    def threshold(self):
+        """
+        Get the current link length threshold value. 
+
+        Parameters
+        ----------
+        None
+
+        Return
+        ------
+        self._threshold: float
+            Current link length threshold.
+        """
+        return self._threshold
+    
+    @threshold.setter
+    def threshold(self, threshold_value):
+        """
+        Set the link length threshold value. 
+
+        Parameters
+        ----------
+        threshold_value: float
+            Link length threshold value in Å.
+
+        Return
+        ------
+        None
+        """
+        if threshold_value != float(threshold_value):
+            raise TypeError('The threshold value must be a float.')
+
+        if threshold_value >= 0:
+            self._threshold = threshold_value
+
+        else:
+            raise ValueError('The threshold value must be larger than 0.')
+            
+    @threshold.deleter
+    def threshold(self):
+        """
+        'Deleter' for link length threshold. Will raise an error if deleted. 
+
+        Parameters
+        ----------
+        None
+
+        Return
+        ------
+        None
+        """
+        raise AttributeError('The threshold value cannot be deleted. You can set it to 0.')
 
     def get_C_alphas(self):
         
-        '''
+        """
         Take a universe, get segment A and return the C-alphas for the PDB. 
 
         Parameters
@@ -45,7 +104,7 @@ class PCN():
         ------
         C_alphas: MDAnalysis AtomGroup
             contains the C-alphas from the PDB
-        '''
+        """
         "------------------------MOVE-------------------------------"
         segments = self.universe.residues.segments
             
@@ -67,7 +126,7 @@ class PCN():
         return C_alphas
 
     def get_chain_length(self, C_alphas):
-        '''
+        """
         Take C-alphas and use that to return the length of the chain.
 
         Parameters
@@ -79,13 +138,13 @@ class PCN():
         ------
         chain_length: int
             length of the chain
-        '''
+        """
         chain_length = len(C_alphas)
         
         return chain_length
 
     def create_connected_component_subgraphs(self, protein_graph):
-        '''
+        """
         Take a protein graph and create connected component subgraphs.
         
         Parameters
@@ -97,12 +156,12 @@ class PCN():
         ------
         cc_subgraph: nx.subgraph() generator
             subgraph of connected components in the protein graph
-        '''
+        """
         for components in nx.connected_components(protein_graph):
             yield protein_graph.subgraph(components)
 
     def get_link_lengths(self, C_alphas):
-        '''
+        """
         Use the C-alphas to calculate the link lengths between adjacent atoms.
         
         Get the positions of C-alphas, create a proteingraph and compute link 
@@ -121,7 +180,7 @@ class PCN():
         ------
         link_lengths: list
             list containing lengths of links 
-        '''
+        """
 
         link_lengths = []
         C_alpha_positions = C_alphas.positions
