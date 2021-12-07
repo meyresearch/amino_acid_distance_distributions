@@ -54,7 +54,7 @@ class PCN():
         "-----------------------------------------------------------"
         return C_alphas
 
-    def get_chain_length(self,C_alphas):
+    def get_chain_length(self, C_alphas):
         '''
         Take C-alphas and use that to return the length of the chain.
 
@@ -72,7 +72,7 @@ class PCN():
         
         return chain_length
 
-    def create_connected_component_subgraphs(self,protein_graph):
+    def create_connected_component_subgraphs(self, protein_graph):
         '''
         Take a protein graph and create connected component subgraphs.
         
