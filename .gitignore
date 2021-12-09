@@ -5,4 +5,4 @@ both/
 idp/
 .ipynb_checkpoints*
 simulation_data/
-__pycache__/
+src/__pycache__/
