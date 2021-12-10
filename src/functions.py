@@ -131,79 +131,73 @@ def PDB_to_PCN(log_file):
     link_lengths_200 = []
     link_lengths_300 = []
 
-    exclude_ids = []
-
     counter = 0
     exclude_counter = 0
+
+    exclude_IDs = np.load('../data/exclude.npy')
 
     # Write errors into a log file
     with open(log_file, 'w') as log:     
 
-        for PDB_ID in PDB_IDs:
-            print('--------------------------------------------------------------------------------------------------')
-            print(f'At entry {counter+1} out of {number_PDBs+1} entries.')
-            print(f'The PDB ID is {PDB_ID}')
+        for i in range(number_PDBs):
 
-            try:
-                # PDB_tarfile = tarfile.open(f'../data/PDBs.tar.gz', 'r:gz')
-                PDB_ID_lower = str(PDB_ID).lower()
-                # PDB_file = PDB_tarfile.extractfile(f'../data/PDBs/pdb{PDB_ID_lower}.ent')
-                PDB_file = f'/Volumes/Seagate_Extension_Plus/PDBs/pdb{PDB_ID_lower}.ent'
-                PDB_check = open(PDB_file, 'r')
-                print('Successfully opened file.')
-            except:
-                traceback.print_exc(file=log) # Log the exception
-                continue # Jump back to the top of the loop and try another PDB
+            if PDB_IDs[i] not in exclude_IDs:
+                print('--------------------------------------------------------------------------------------------------')
+                print(f'At entry {counter+1} out of {number_PDBs+1} entries.')
+                print(f'The PDB ID is {PDB_IDs[i]}')
+
+                try:
+                    # PDB_tarfile = tarfile.open(f'../data/PDBs.tar.gz', 'r:gz')
+                    PDB_IDs_lower = str(PDB_IDs[i]).lower()
+                    # PDB_file = PDB_tarfile.extractfile(f'../data/PDBs/pdb{PDB_IDs_lower}.ent')
+                    PDB_file = f'/Volumes/Seagate_Extension_Plus/PDBs/pdb{PDB_IDs_lower}.ent'
+                    PDB_check = open(PDB_file, 'r')
+                    print('Successfully opened file.')
+                except:
+                    traceback.print_exc(file=log) # Log the exception
+                    continue # Jump back to the top of the loop and try another PDB
 
 
-            if os.path.isfile(PDB_file):
-                print('Creating PCN object.')
-                # Create the PCN instance
-                protein_contact_network = PCN.PCN(PDB_file)
-                C_alphas = protein_contact_network.get_C_alphas()
-                chain_length = protein_contact_network.get_chain_length(C_alphas)
-                # Split into chain length ranges
-                if chain_length in range(85,116):
-                    print('This PDB is in the length range 85-115. \nGetting link lengths.')
-                    range_100_PDB.append(PDB_ID)
-                    link_lengths = protein_contact_network.get_link_lengths(C_alphas)
-                    link_lengths_100.append(link_lengths)
-                elif chain_length in range(185,216):
-                    print('This PDB is in the length range 185-215. \nGetting link lengths.')
-                    range_200_PDB.append(PDB_ID)
-                    link_lengths = protein_contact_network.get_link_lengths(C_alphas)
-                    link_lengths_200.append(link_lengths)    
-                elif chain_length in range(285,316):
-                    print('This PDB is in the length range 285-315. \nGetting link lengths.')
-                    range_300_PDB.append(PDB_ID)
-                    link_lengths = protein_contact_network.get_link_lengths(C_alphas)
-                    link_lengths_300.append(link_lengths)
-                else:
-                    print('This PDB is outside of the chosen ranges.')
-                    
-                    exclude_counter += 1
-                    exclude_ids.append(PDB_ID)
-                #    os.remove(PDB_file)
-                #os.remove(PDB_file)
-                counter += 1
+                if os.path.isfile(PDB_file):
+                    print('Creating PCN object.')
+                    # Create the PCN instance
+                    protein_contact_network = PCN.PCN(PDB_file)
+                    C_alphas = protein_contact_network.get_C_alphas()
+                    chain_length = protein_contact_network.get_chain_length(C_alphas)
+                    # Split into chain length ranges
+                    if chain_length in range(85,116):
+                        print('This PDB is in the length range 85-115. \nGetting link lengths.')
+                        range_100_PDB.append(PDB_IDs[i])
+                        link_lengths = protein_contact_network.get_link_lengths(C_alphas)
+                        link_lengths_100.append(link_lengths)
+                    elif chain_length in range(185,216):
+                        print('This PDB is in the length range 185-215. \nGetting link lengths.')
+                        range_200_PDB.append(PDB_IDs[i])
+                        link_lengths = protein_contact_network.get_link_lengths(C_alphas)
+                        link_lengths_200.append(link_lengths)    
+                    elif chain_length in range(285,316):
+                        print('This PDB is in the length range 285-315. \nGetting link lengths.')
+                        range_300_PDB.append(PDB_IDs[i])
+                        link_lengths = protein_contact_network.get_link_lengths(C_alphas)
+                        link_lengths_300.append(link_lengths)
                 
+                else:
+                    continue
+           
             else:
-                continue
-            # Only bootstrap ever so often
-            if counter % 5000 == 0: 
-                print('--------------------------------------------------------------------------------------------------')
-                print('Bootstrapping...')
-                # Bootstrap the data
-                bootstrap('100', link_lengths_100, range_100_PDB)
-                bootstrap('200', link_lengths_200, range_200_PDB)
-                bootstrap('300', link_lengths_300, range_300_PDB)
-                print('Done.')
-                print('--------------------------------------------------------------------------------------------------')
-            
-                print(f'{exclude_counter} out of {number_PDBs} PDB IDs were excluded because they were outside the range.')
+                print('This PDB is outside of the chosen ranges.')
+
+            counter += 1
+
+        print('--------------------------------------------------------------------------------------------------')
         print(f'100s: {len(range_100_PDB)}\n200s: {len(range_200_PDB)}\n300s: {len(range_100_PDB)}')
-        exclude_ids_file = '../data/exclude'
-        np.save(exclude_ids_file, exclude_ids)
+        print('Bootstrapping...')
+        # Bootstrap the data
+        bootstrap('100', link_lengths_100, range_100_PDB)
+        bootstrap('200', link_lengths_200, range_200_PDB)
+        bootstrap('300', link_lengths_300, range_300_PDB)
+        print('Done.')
+        print('--------------------------------------------------------------------------------------------------')
 
 
 def main():

@@ -190,7 +190,7 @@ class PCN():
             for j in range(i):
                 # Get the distance between two adjacent atoms
                 distance = np.linalg.norm(C_alpha_positions[i] - C_alpha_positions[j])
-                if distance < self.link_length_threshold:
+                if distance < self.threshold:
                     protein_graph.add_edge(i,j)
         # Add links to list
         if len(protein_graph.edges()) > 0:

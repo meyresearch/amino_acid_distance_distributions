@@ -1,592 +1,592 @@
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6v9t.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb3wcx.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6xw0.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6xvx.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6yqm.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tsn.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tsm.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tsp.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tso.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tsr.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tsq.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tsl.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6sqt.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6swv.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6swz.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tcx.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb4dcb.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6t42.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tid.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tif.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6i46.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6i48.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6i47.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6i4a.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb3ehd.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb3k6e.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb5yhk.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb4med.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb4abz.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6kem.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6kel.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6keo.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6ken.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6keq.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6kep.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6ker.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6thy.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tjq.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tkn.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tkm.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tkp.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tkr.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tkq.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tks.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tn1.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tq2.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tq1.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tul.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6t8s.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6sxs.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6twp.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6two.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6ed8.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb5mx7.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb5nmb.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6qzc.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6sgg.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6sgm.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6sgl.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6sgn.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6y0k.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6y70.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6y7m.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6y6w.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6xwk.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6yh0.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6z2e.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6yqd.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6yth.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6yt8.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6yvp.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6yz6.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6zbp.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6sqq.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6t29.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6t28.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6t44.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6teg.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6x5i.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb5ydt.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6r8d.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6y2m.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6y25.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6y33.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6y2t.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6y34.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6y3q.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6yb4.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6ypr.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6z7l.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6z7m.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6z7f.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6z7g.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6zb1.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6zb0.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6zb3.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6zb2.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6zf9.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6zel.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6zed.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6trg.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tt5.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tsb.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tvi.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6sqv.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6sr7.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6t9m.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6syp.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tc5.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tby.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tef.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tee.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6txs.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6txq.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6sg2.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6ss5.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tg4.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tig.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6wks.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb5xwq.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6y0r.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6xtj.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6xy7.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6z6s.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6n5r.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6n5l.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tpz.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tpy.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tpx.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6ts0.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6ts1.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tr9.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tss.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tsf.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tsj.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tsa.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6trz.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6tsx.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6swo.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6swn.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6swq.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6swp.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6sjt.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6slb.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6sl9.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb6t2r.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb2mnt.ent'
 Traceback (most recent call last):
-  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 153, in PDB_to_PCN
+  File "/Users/jasminguven/Documents/GitHub/sequence_distance_distribution/src/functions.py", line 154, in PDB_to_PCN
     PDB_check = open(PDB_file, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Seagate_Extension_Plus/PDBs/pdb5jn1.ent'
