@@ -15,8 +15,6 @@ import random
 import operator
 warnings.filterwarnings('ignore')
 
-
-
 def connected_component_subgraphs(G):
     for c in nx.connected_components(G):
         yield G.subgraph(c)
@@ -96,7 +94,7 @@ def save_ll_lists(l_100, l_200, l_300, l_400, count):
 if __name__ == "__main__":
     # Reading the pdb IDs
     socket.setdefaulttimeout(20)
-    query = pd.read_csv('../data/combined_ids.txt')
+    query = pd.read_csv('../data/combined_ids.csv')
     hundred = []
     twohundered = []
     threehundred = []
@@ -124,7 +122,7 @@ if __name__ == "__main__":
             except Exception:
                 print("failed at %s" % pdb, flush=True)
                 traceback.print_exc(file=log)
-                continue
+                continue 
             if os.path.isfile(file_name):
                 u = Universe(file_name)
                 calphas = u.select_atoms("name CA and segid " + u.residues.segments.segids[0])
