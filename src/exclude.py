@@ -90,7 +90,7 @@ for PDB_ID in PDB_IDs:
 
 print(f'{exclude_counter} out of {number_PDBs} PDB IDs were excluded because they were outside the range.')
 
-print(f'100s: {len(range_100_PDB)}\n200s: {len(range_200_PDB)}\n300s: {len(range_100_PDB)}')
+print(f'100s: {len(range_100_PDB)}\n200s: {len(range_200_PDB)}\n300s: {len(range_300_PDB)}')
 exclude_ids_file = 'exclude'
 np.save(exclude_ids_file, exclude_ids)
 

@@ -81,29 +81,36 @@ def bootstrap(length, link_lengths, length_range):
     ------
     None
     """
+
     if len(link_lengths) > 0:
         sample_size = 1000
         histogram_list = []
+        edges_list = []
         means = []
+
+        # Flatten the link lengths list to find max values for bins
+        flat_link_lengths_list = [link_length for ll_list in link_lengths for link_length in ll_list]
+        
+        max_link_length = max(flat_link_lengths_list)
 
         for n in range(sample_size):
             # Randomly choose a list of observations from the sample
             bootstrap_sample = [random.choice(link_lengths) for _ in link_lengths]
             # Sample with replacement
             bootstrap_sample = [item for items in bootstrap_sample for item in items]
-            histogram, _ = np.histogram(bootstrap_sample, bins = range(3, 1000), density = True)
+            histogram, edges = np.histogram(bootstrap_sample, bins = range(3, max_link_length), density = True)
             # Normalise over the number of PDBs in the set
             histogram = histogram / len(length_range)
             histogram_list.append(histogram)
+            edges_list.append(edges)
         histogram_array = np.array(histogram_list)
         means = histogram_array.mean(axis = 0)
-        medians = np.median(histogram_array, axis = 0)
-
-        mean_save_file = f'data_for_plotting/means_{length}.npy'
-        median_save_file = f'data_for_plotting/medians_{length}.npy'
-        id_save_file = f'data_for_plotting/ids_{length}.npy'
+        edges_array = np.array(edges_list)
+        mean_save_file = f'../data/data_for_plotting/means_{length}.npy'
+        edges_save_file = f'../data/data_for_plotting/edges_{length}.npy'
+        id_save_file = f'../data/data_for_plotting/ids_{length}.npy'
         np.save(mean_save_file, means)
-        np.save(median_save_file, medians)
+        np.save(edges_save_file, edges_array)
         np.save(id_save_file, length_range)
 
 def PDB_to_PCN(log_file):
@@ -140,8 +147,8 @@ def PDB_to_PCN(log_file):
     with open(log_file, 'w') as log:     
 
         for i in range(number_PDBs):
-
-            if PDB_IDs[i] not in exclude_IDs:
+            if i <= 1000:
+            #if PDB_IDs[i] not in exclude_IDs:
                 print('--------------------------------------------------------------------------------------------------')
                 print(f'At entry {counter+1} out of {number_PDBs+1} entries.')
                 print(f'The PDB ID is {PDB_IDs[i]}')
@@ -190,7 +197,7 @@ def PDB_to_PCN(log_file):
             counter += 1
 
         print('--------------------------------------------------------------------------------------------------')
-        print(f'100s: {len(range_100_PDB)}\n200s: {len(range_200_PDB)}\n300s: {len(range_100_PDB)}')
+        print(f'100s: {len(range_100_PDB)}\n200s: {len(range_200_PDB)}\n300s: {len(range_300_PDB)}')
         print('Bootstrapping...')
         # Bootstrap the data
         bootstrap('100', link_lengths_100, range_100_PDB)
