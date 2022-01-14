@@ -13,9 +13,9 @@ all_list = DF['ALL'].astype(str).tolist()
 duplicates = []
 
 for i in range(len(all_list)):
-	print(f'We are at entry: {i}')
-	duplicates.append(down_list[i])
-	duplicates.append(all_list[i])
+    print(f'We are at entry: {i}')
+    duplicates.append(down_list[i])
+    duplicates.append(all_list[i])
 
 
 duplicate_dict = {'duplicates':duplicates}

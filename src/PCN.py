@@ -6,6 +6,9 @@ import networkx as nx
 import MDAnalysis as mda
 import numpy as np
 import random
+import warnings
+warnings.filterwarnings("ignore")
+import pandas as pd
 
 class PCN():
     """
@@ -90,8 +93,8 @@ class PCN():
         None
         """
         raise AttributeError('The threshold value cannot be deleted. You can set it to 0.')
-
-    def get_C_alphas(self):
+        
+    def get_alpha_carbons(self):
         
         """
         Take a universe, get segment A and return the C-alphas for the PDB. 
@@ -102,20 +105,40 @@ class PCN():
 
         Return
         ------
-        C_alphas: MDAnalysis AtomGroup
+        alpha_carbons: MDAnalysis AtomGroup
             contains the C-alphas from the PDB
         """
         "------------------------MOVE-------------------------------"
         segments = self.universe.residues.segments
             
-        number_of_segments = len(segments)
+        n_segments = len(segments)
 
-        for index in range(number_of_segments):
-            segment_id = self.universe.residues.segments.segids[index]
+        for i in range(n_segments):
+            segment_id = self.universe.residues.segments.segids[i]
 
             try:
-                C_alphas = self.universe.select_atoms(f'name CA and segid {segment_id}')
-                #print(segment_id)
+                protein_atoms = self.universe.select_atoms('protein')
+                MDA_altlocs = protein_atoms.altLocs
+                alternative_locations = []
+                for loc in MDA_altlocs:
+                    if loc != '':
+                        alternative_locations.append(loc)
+                # Remove duplicates and sort alphabetically
+                alternative_locations = np.sort(list(set(alternative_locations)))
+                n_altlocs = len(alternative_locations)
+
+                if n_altlocs > 1:
+                    first_altloc = alternative_locations[0]
+                    residue_ids = protein_atoms.residues.resids
+                    alpha_carbons = self.universe.select_atoms(f'resid {residue_ids[0]}:{residue_ids[-1]} and name CA and segid {segment_id}')
+
+                    for i in range(1, n_altlocs):
+                        exclude_atoms = self.universe.select_atoms(f'resid {residue_ids[0]}:{residue_ids[-1]} and name CA and segid {segment_id} and altLoc {alternative_locations[i]}')
+                        alpha_carbons -= exclude_atoms
+                else:
+                    residue_ids = protein_atoms.residues.resids
+                    alpha_carbons = self.universe.select_atoms(f'resid {residue_ids[0]}:{residue_ids[-1]} and name CA and segid {segment_id}')
+
                 break
             
             except:
@@ -123,15 +146,15 @@ class PCN():
                 continue
 
         "-----------------------------------------------------------"
-        return C_alphas
+        return alpha_carbons
 
-    def get_chain_length(self, C_alphas):
+    def get_chain_length(self, alpha_carbons):
         """
         Take C-alphas and use that to return the length of the chain.
 
         Parameters
         ----------
-        C_alphas: MDAnalysis AtomGroup
+        alpha_carbons: MDAnalysis AtomGroup
             contains the C-alphas from the PDB
 
         Return
@@ -139,17 +162,17 @@ class PCN():
         chain_length: int
             length of the chain
         """
-        chain_length = len(C_alphas)
+        chain_length = len(alpha_carbons)
         
         return chain_length
 
-    def create_connected_component_subgraphs(self, protein_graph):
+    def create_connected_component_subgraphs(self, graph):
         """
         Take a protein graph and create connected component subgraphs.
         
         Parameters
         ----------
-        protein_graph: nx.graph()
+        graph: nx.graph()
             protein graph containing the links
 
         Return
@@ -157,10 +180,10 @@ class PCN():
         cc_subgraph: nx.subgraph() generator
             subgraph of connected components in the protein graph
         """
-        for components in nx.connected_components(protein_graph):
-            yield protein_graph.subgraph(components)
+        for components in nx.connected_components(graph):
+            yield graph.subgraph(components)
 
-    def get_link_lengths(self, C_alphas):
+    def get_link_lengths(self, alpha_carbons, PDB_ID):
         """
         Use the C-alphas to calculate the link lengths between adjacent atoms.
         
@@ -173,7 +196,7 @@ class PCN():
 
         Parameters
         ----------
-        C_alphas: MDAnalysis AtomGroup
+        alpha_carbons: MDAnalysis AtomGroup
             contains the C-alphas from the PDB
 
         Return
@@ -183,23 +206,54 @@ class PCN():
         """
 
         link_lengths = []
-        C_alpha_positions = C_alphas.positions
-        protein_graph = nx.empty_graph(len(C_alpha_positions))
+        alpha_carbon_positions = alpha_carbons.positions
+        n_alpha_carbons = len(alpha_carbons)
+        parent_graph = nx.empty_graph(n_alpha_carbons)
 
-        for i in range(len(C_alpha_positions)):
+        for i in range(n_alpha_carbons):
             for j in range(i):
                 # Get the distance between two adjacent atoms
-                distance = np.linalg.norm(C_alpha_positions[i] - C_alpha_positions[j])
+                distance = np.linalg.norm(alpha_carbon_positions[i] - alpha_carbon_positions[j])
                 if distance < self.threshold:
-                    protein_graph.add_edge(i,j)
+                    parent_graph.add_edge(i,j)
+        n_parent_graph_edges = len(parent_graph.edges())
+        n_parent_graph_nodes = len(parent_graph.nodes())
         # Add links to list
-        if len(protein_graph.edges()) > 0:
-            protein_graph = list(self.create_connected_component_subgraphs(protein_graph))[0]
-            number_protein_nodes = len(protein_graph.nodes())
-            links = list(set(protein_graph.edges()) - set(nx.cycle_graph(number_protein_nodes).edges()))
-            for link in links:
-                link_lengths.append(abs(link[0] - link[1]))
-
+        if n_parent_graph_edges > 0:
+            subgraphs = list(self.create_connected_component_subgraphs(parent_graph))
+            n_subgraphs = len(subgraphs)
+            protein_graph = subgraphs[0] # changed [0]
+            n_protein_graph_nodes = len(protein_graph.nodes())
+            if n_subgraphs > 1: # more than one subgraph
+                print('More than one subgraph. This PDB will be excluded.')
+                # if n_parent_graph_nodes != n_protein_graph_nodes: # number of nodes do not match
+                #     print('The parent graph nodes does not equal protein graph nodes.')
+                #     cycle_graph = nx.cycle_graph(n_parent_graph_nodes)
+                #     links = list(set(protein_graph.edges()) - set(cycle_graph.edges()))
+                #     for link in links:
+                #         link_length = abs(link[0] - link[1])
+                #         if link_length <= 1:
+                #             print('There is a link of length 1.')
+                #         else:
+                #             link_lengths.append(link_length)
+                # else: # same number of nodes
+                #     cycle_graph = nx.cycle_graph(n_parent_graph_nodes)
+                #     links = list(set(protein_graph.edges()) - set(cycle_graph.edges()))
+                #     for link in links:
+                #         link_length = abs(link[0] - link[1])
+                #         if link_length <= 1:
+                #             print('There is a link of length 1.')
+                #         else:
+                #             link_lengths.append(link_length)
+            else: # just one subgraph
+                cycle_graph = nx.cycle_graph(n_parent_graph_nodes)
+                links = list(set(protein_graph.edges()) - set(cycle_graph.edges()))
+                for link in links:
+                    link_length = abs(link[0] - link[1])
+                    if link_length <= 1:
+                        print('There is a link of length 1.')
+                    else:
+                        link_lengths.append(link_length)   
         return link_lengths
 
 

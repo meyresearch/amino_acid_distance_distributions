@@ -6,3 +6,4 @@ idp/
 .ipynb_checkpoints*
 simulation_data/
 src/__pycache__/
+data/alphafold_data/

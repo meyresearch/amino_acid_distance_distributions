@@ -12,7 +12,9 @@ import numpy as np
 import warnings
 warnings.filterwarnings('ignore')
 import matplotlib.pyplot as plt
-
+from sklearn.metrics import r2_score
+import scipy.stats as stats
+import pylab
 def nth_harmonic(n):
     '''
     Compute the nth harmonic number, i.e. the sum of the reciprocals of the first n natural numbers.
@@ -183,7 +185,7 @@ def F_k(f_low, f_high, chain_length, a, k):
     F_k = chain_length * (((1 - f_low)/(1 - f_high))**a) * (1 - f_high)**k
     return F_k
 
-def powerlaw(link_length_array, chain_length):
+def powerlaw(scale_factor, link_length_array, chain_length):
     '''
     Compute the power law relationship: N * (1/x^1.2)
     
@@ -200,7 +202,7 @@ def powerlaw(link_length_array, chain_length):
     pwr: float
         Power law relationship N * (1/x^1.2)
     '''
-    pwr = N * (1/pow(link_length_array, 1.2))
+    pwr =  N * (1/pow(link_length_array * scale_factor, 1.2))
     return pwr
 
 
@@ -264,76 +266,158 @@ def normalise_data(data_array, bin_width):
 
 
 link_length_ranges = ['100', '200', '300']
-constant_A = [0.001, 0.001, 0.001] # check these
+constant_A = [0.005, 0.001, 0.001] # check these
 constant_a = [3, 3, 3] # check these
-#shift_x = [9, 8.5, 8.5] 
-#shift_y = [500, 1000, 1000]
-for ll_index in range(len(link_length_ranges)):
-    
-    # Load PDB data
-    pdb_ids = np.load(f'../data/data_for_plotting/ids_{link_length_ranges[ll_index]}.npy')
-    pdb_mean_data = np.load(f'../data/data_for_plotting/means_{link_length_ranges[ll_index]}.npy')
-    
-    # Get PDB bin widths and centres
-    pdb_edges = np.load(f'../data/data_for_plotting/edges_{link_length_ranges[ll_index]}.npy')[0]
-    pdb_bin_centres = pdb_edges[:-1] + np.diff(pdb_edges)/2
-    pdb_bin_width = pdb_edges[1] - pdb_edges[0]
-    
-    # Normalise PDB data
-    pdb_mean_data = normalise_data(pdb_mean_data, pdb_bin_width)
-    
-    # Load simulation data
-    if link_length_ranges[ll_index] == '200':
-        sim_data, sim_edges = get_simulation_data('209')
-    elif link_length_ranges[ll_index] == '300':
-        sim_data, sim_edges = get_simulation_data('302')
-    else: 
-        sim_data, sim_edges = get_simulation_data(link_length_ranges[ll_index])
 
-    # Get simulation bin widths and centres
-    sim_bin_centres = sim_edges[:-1] + np.diff(sim_edges)/2
-    sim_bin_width = sim_edges[1] - sim_edges[0]
-    
-    # Normalise simulation data
-    sim_data = normalise_data(sim_data, sim_bin_width)
-    
-    # Plotting
-    fig = plt.figure(figsize = (8,4))
-    ax = fig.add_subplot()
-    
-    # Plot PDB data
-    ax.scatter(pdb_bin_centres, pdb_mean_data, marker = '.', c='#e41a1c',label = f'PDB {link_length_ranges[ll_index]} means')
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 
-    # Plot simulation data 
-    ax.scatter(sim_bin_centres, sim_data, marker = '^', label = f'SIM {link_length_ranges[ll_index]}', c = '#999999')
-    
-    # Plot theory 
-    N=int(link_length_ranges[ll_index])
-    H_N_2=nth_harmonic(N//2)
-    A=constant_A[ll_index]
-    a=constant_a[ll_index]
-    sumrange=range(2,N//2)
-    plotrange=range(20,N//2)
-    ax.plot(np.array(sumrange),[P_link_lengths(s,N,H_N_2,a,A) for s in sumrange],c='#984ea3',label='Theory')
-    ax.plot(np.array(sumrange), powerlaw(np.array(sumrange), N), c='black',label = 'Power law')
-    
-    # Plot 97% confidence interval      
-    means_sorted = np.sort(pdb_mean_data)
-    lower_bound = means_sorted[len(pdb_mean_data)//3]
-    upper_bound = means_sorted[len(pdb_mean_data)*2//3]        
-    ax.fill_between(pdb_bin_centres, (pdb_mean_data-lower_bound), (pdb_mean_data+upper_bound), color = 'red', alpha = 0.2, label = '3$\sigma$ C.I.', zorder = -1)
-
-    ax.set_yscale('log')
-    ax.set_xscale('log')
-    ax.set_xlim([2,500])    
-    ax.set_ylim([0, 10])
-    
-    ax.legend(loc='lower left')
-    ax.set_ylabel('P(s)', fontsize = 15)
-    ax.set_xlabel('s / a.u.', fontsize = 15)
-    plt.show()
-    #plt.savefig(f'../data/{link_length_ranges[ll_index]}_plot.svg', format = 'svg')
+bs = pd.read_csv('../data/data_for_plotting/bs_100_df.csv')
+n_pdbs = len(np.load('../data/exclude_subgraphs/ids_100.npy'))
+bs_m = bs.melt().astype(np.float64)
 
 
+bs_stats = bs_m.groupby('variable', as_index = False).agg(mean = ('value', np.mean),
+                                                          lower_bound = ('value', lambda val: np.quantile(val, q = 0.05)),
+                                                          upper_bound = ('value', lambda val: np.quantile(val, q = 0.95)))
+
+means = bs_stats['mean'].to_numpy()
+
+lower_b = bs_stats['lower_bound'].to_numpy()
+upper_b = bs_stats['upper_bound'].to_numpy()
+var = bs_stats['variable'].to_numpy()
+# means = bs_stats['mean'].to_numpy()[3:]
+
+# lower_b = bs_stats['lower_bound'].to_numpy()[3:]
+# upper_b = bs_stats['upper_bound'].to_numpy()[3:] 
+# var = bs_stats['variable'].to_numpy()[3:]
+#print(var)
+sim_data, sim_edges = get_simulation_data('302')
+sim_bin_centres = sim_edges[:-1] + np.diff(sim_edges)/2
+sim_bin_width = sim_edges[1] - sim_edges[0]
+sim_data = normalise_data(sim_data, sim_bin_width)
+
+normed_means = normalise_data(means, 1)
+normed_lower_b = normalise_data(lower_b, 1)
+normed_upper_b = normalise_data(upper_b, 1)
+
+#plt.scatter(var,normed_means, s = 10, c = 'k', label = 'PDB 100s')
+
+#plt.scatter(sim_edges, sim_data, s=10, c = 'r', label = 'SIM 100s')
+
+# N = int(var[-1]+1)
+N = int(var[-1]+1)
+#print(N)
+H_N_2 = nth_harmonic(N)
+
+
+A = np.arange(0.0005, 0.003, 0.0005)
+a = np.arange(0, 5, 1)
+
+#print(A)
+
+power_scale_factor = 1000/7
+
+fig = plt.figure()
+ax = fig.subplots(len(a), len(A), sharex=True, sharey=True)
+sumrange = np.array(range(int(var[0]),N))
+#print(sumrange)
+
+for row in range(len(ax)):
+    for col in range(len(ax)):
+        ax[row][col].scatter(var,normed_means, s = 10, c = 'k', label = 'PDB 300s')
+        #ax[row][col].scatter(sim_bin_centres, sim_data, s=10, marker = '^', c='red', label='SIM 300s')
+        ax[row][col].fill_between(var, normed_lower_b, normed_upper_b, color = 'gray', alpha = 0.6, label = '95% C.L.')
+        ax[row][col].plot(sumrange, [P_link_lengths(s,N,H_N_2,a[row],A[col]) for s in sumrange],c='#984ea3',label='Theory')
+
+        #ax[row][col].plot(np.array(sumrange), powerlaw(power_scale_factor, np.array(sumrange), N), c='green',label = 'Power law')
+        ax[row][-1].set_ylabel(f'a = {a[row]}', fontsize = 13, rotation = 0, labelpad=21)
+        ax[row][-1].yaxis.set_label_position('right')
+        ax[0][col].set_title(f'A = {A[col]}')
+        #plt.xlabel('s', fontsize=14)
+        #plt.ylabel('P(s)', fontsize=14)
+        ax[row][col].set_yscale('log')
+        ax[row][col].set_xscale('log')
+        ax[row][col].set_xlim(0,320)
+
+
+fig.text(0.5, 0.025, 's / a.u. ', ha='center',fontsize=15.5) # shared x label
+fig.text(0.005, 0.5, 'P(s)', va='center', rotation='vertical',fontsize=15.5) # shared y label 
+# plt.subplots_adjust(left = 0.055, bottom = 0.17, wspace=0.14, right = 0.97)
+plt.subplots_adjust(left = 0.06, bottom = 0.08, top=0.95, wspace=0.1, right = 0.9)
+
+
+plt.legend(bbox_to_anchor = [1.6,4.85])
+
+#plt.show()
+
+# fig = plt.figure()
+# ax = fig.add_subplot()
+
+# ax.scatter(var,normed_means, s = 10, c = 'k', label = 'PDB 100s')
+# ax.fill_between(var, normed_lower_b, normed_upper_b, color = 'gray', alpha = 0.6, label = '95% C.L.')
+# ax.plot(sumrange, [P_link_lengths(s,N,H_N_2,a[1],A[1]) for s in sumrange],c='#984ea3',label='Theory')
+# ax.set_yscale('log')
+# ax.set_xscale('log')
+# plt.show()
+
+fig = plt.figure()
+A = np.arange(0.0005, 0.003, 0.0005)
+a = np.arange(0, 5, 1)
+
+
+
+ax = fig.subplots(len(a), len(A), sharex=True, sharey=True)
+
+# new_var = var[4:]
+# new_means = normed_means[4:]
+# N = int(new_var[-1]+1)
+# H_N_2 = nth_harmonic(N)
+
+# sumrange = np.array(range(2,N))
+
+
+for row in range(len(ax)):
+    for col in range(len(ax)):
+        f = [P_link_lengths(s,N,H_N_2,a[row],A[col]) for s in sumrange]
+
+        residuals = normed_means - f
+        mean_of_residuals = np.mean(residuals)
+        std_of_residuals = np.std(residuals)
+        sum_of_residuals = np.sum(residuals)
+        r_squared = r2_score(normed_means, f)
+        #print(f'R^2 score: {r_squared}')
+        #print(f'Residuals mean: {mean_of_residuals} and std: {std_of_residuals}, sum: {sum_of_residuals}')
+        RSS = np.sum(residuals**2)
+        ax[row][col].scatter(sumrange, residuals, s=10, marker = '.', c='red', label = 'Residuals')
+        ax[row][col].hlines(0, sumrange[0], sumrange[-1], ls = '--', color='k', label = 'Zero')
+        # plt.yscale('log')
+        # plt.xscale('log')
+        ax[row][col].plot([],[], ls=' ',label = f'RSS: {RSS:.4f}')
+        ax[row][col].plot([],[], ls=' ',label = f'$R^2$: {r_squared:.4f}')
+        ax[row][col].plot([],[], ls=' ',label = f'R mean: {mean_of_residuals:.4f}')
+        # ax[row][col].set_ylim(-0.08,0.0)
+        ax[row][-1].set_ylabel(f'a = {a[row]}', fontsize = 13, rotation = 0, labelpad=21)
+        ax[row][-1].yaxis.set_label_position('right')
+        ax[0][col].set_title(f'A = {A[col]}')
+        ax[row][col].legend(fontsize = 8 )
+
+        
+# min_square_residual = min(squared_residuals)
+#print(f'Minimum residual is: {min_square_residual}')
+plt.show()
+
+# stats.probplot(normed_means, dist="norm", plot=pylab)
+# pylab.show()
+# import numpy as np
+# import statsmodels.api as sm
+# import pylab
+
+# test = np.random.normal(0,1, 1000)
+
+# sm.qqplot(normed_means, line='r')
+# pylab.show()
+#plt.plot(model, squared_residuals)
 
 
