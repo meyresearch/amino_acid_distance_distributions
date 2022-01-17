@@ -106,7 +106,7 @@ def bootstrap():
     bootstrapped_samples = {}
 
     if len(link_lengths) > 0:
-        print('Bootstrapping...')
+        print('Chunking...')
         for n in range(bootstrap_sample_size):
             print(f'At step {n+1}')
             # Randomly choose a list of observations from the sample            
@@ -128,7 +128,7 @@ def bootstrap():
         # Create a DataFrame from the dictionary
         bootstrap_df_T = pd.DataFrame.from_dict(bootstrapped_samples, orient = 'index')
         bootstrap_df = bootstrap_df_T.transpose() 
-        bootstrap_df.to_csv(f'../data/data_for_plotting/bs_300_df.csv', index = False)
+        bootstrap_df.to_csv(f'../data/alphafold_data/raw_chunked_300_df.csv', index = False)
 
         # Melt the columns into the link length bin and their corresponding values
         melted_bootstrap_df = bootstrap_df.melt()
@@ -138,12 +138,12 @@ def bootstrap():
         
         # Group all the values into the corresponding bins, i.e. by the default 'variable' column
         bootstrap_df_stats = melted_bootstrap_df.groupby('variable', as_index = False).agg(mean = ('value', np.mean),
-                                                                                           lower_bound = ('value', lambda val: np.quantile(val, q = 0.341)),
-                                                                                           upper_bound = ('value', lambda val: np.quantile(val, q = 0.682)))
+                                                                                           lower_bound = ('value', lambda val: np.quantile(val, q = 0.05)),
+                                                                                           upper_bound = ('value', lambda val: np.quantile(val, q = 0.95)))
         print(bootstrap_df_stats.head())
         output_file = input('Please enter filename for output file: ')
-        print(f'The file {output_file} will be saved in \'../data/exclude_subgraphs/\'')
-        bootstrap_df_stats.to_csv(f'../data/exclude_subgraphs/{output_file}', index = False)
+        print(f'The file {output_file} will be saved in \'../data/alphafold_data/\'')
+        bootstrap_df_stats.to_csv(f'../data/alphafold_data/{output_file}', index = False)
 
         #     # Sample with replacement
         #     bootstrap_sample = [item for items in bootstrap_sample for item in items]
@@ -180,7 +180,7 @@ def PDB_to_PCN(log_file):
     None
     """
     # Get Uniprot IDs
-    sequence_lengths = ['100', '200', '300']
+  #  sequence_lengths = ['100', '200', '300']
     sequence_length = '300'
     uniprot_IDs = get_uniprot_IDs(sequence_length)
 

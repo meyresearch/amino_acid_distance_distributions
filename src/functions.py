@@ -173,7 +173,7 @@ def bootstrap():
     number_of_link_lengths = link_lengths.shape[0]
     max_link_length = max(link_lengths)
 
-    bootstrap_sample_size = 1000
+    bootstrap_sample_size = 10
     histogram_list = []
     edges_list = []
     means = []
@@ -216,8 +216,8 @@ def bootstrap():
         
         # Group all the values into the corresponding bins, i.e. by the default 'variable' column
         bootstrap_df_stats = melted_bootstrap_df.groupby('variable', as_index = False).agg(mean = ('value', np.mean),
-                                                                                           lower_bound = ('value', lambda val: np.quantile(val, q = 0.341)),
-                                                                                           upper_bound = ('value', lambda val: np.quantile(val, q = 0.682)))
+                                                                                           lower_bound = ('value', lambda val: np.quantile(val, q = 0.05)),
+                                                                                           upper_bound = ('value', lambda val: np.quantile(val, q = 0.95)))
         print(bootstrap_df_stats.head())
         output_file = input('Please enter filename for output file: ')
         print(f'The file {output_file} will be saved in \'../data/exclude_subgraphs/\'')

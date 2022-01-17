@@ -273,14 +273,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-bs = pd.read_csv('../data/data_for_plotting/bs_100_df.csv')
-n_pdbs = len(np.load('../data/exclude_subgraphs/ids_100.npy'))
-bs_m = bs.melt().astype(np.float64)
+bs_stats = pd.read_csv('../data/exclude_subgraphs/bootstrapped_100.csv')
+# n_pdbs = len(np.load('../data/exclude_subgraphs/ids_100.npy'))
+# bs_m = bs.melt().astype(np.float64)
 
 
-bs_stats = bs_m.groupby('variable', as_index = False).agg(mean = ('value', np.mean),
-                                                          lower_bound = ('value', lambda val: np.quantile(val, q = 0.05)),
-                                                          upper_bound = ('value', lambda val: np.quantile(val, q = 0.95)))
+# bs_stats = bs_m.groupby('variable', as_index = False).agg(mean = ('value', np.mean),
+#                                                           lower_bound = ('value', lambda val: np.quantile(val, q = 0.05)),
+#                                                           upper_bound = ('value', lambda val: np.quantile(val, q = 0.95)))
 
 means = bs_stats['mean'].to_numpy()
 
