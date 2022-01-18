@@ -19,7 +19,7 @@ def concat_ID_files():
 
     Return
     ------
-    PDB_ID_array: numpy array
+    pdb_id_array: numpy array
         array containing all the PDB IDs
     '''
     frames = []

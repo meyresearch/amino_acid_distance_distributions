@@ -8,7 +8,7 @@ import functions
 import urllib
 
 sequence_length = '100'
-uniprot_IDs = functions.get_uniprot_IDs(sequence_length)
+uniprot_IDs = functions.get_uniprot_ids(sequence_length)
 
 download = f'https://alphafold.ebi.ac.uk/files/AF-{uniprot_IDs[0]}-F1-model_v2.pdb'
 

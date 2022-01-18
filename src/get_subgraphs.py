@@ -5,7 +5,7 @@ import networkx as nx
 import os 
 
 
-PDB_IDs = functions.concat_ID_files()
+PDB_IDs = functions.concat_id_files()
 number_PDBs = len(PDB_IDs)
 
 counter = 0

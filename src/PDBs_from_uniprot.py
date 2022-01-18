@@ -7,7 +7,7 @@ sequence_lengths = ['100', '200', '300']
 for sequence_length in sequence_lengths:
     counter = 0
 
-    uniprot_IDs = functions.get_uniprot_IDs(sequence_length)
+    uniprot_IDs = functions.get_uniprot_ids(sequence_length)
     for uniprot_ID in uniprot_IDs:
         print(f'At entry {counter}/{len(uniprot_IDs)}')
         download = f'https://alphafold.ebi.ac.uk/files/AF-{uniprot_ID}-F1-model_v2.pdb'

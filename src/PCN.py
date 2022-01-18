@@ -93,7 +93,7 @@ class PCN():
         None
         """
         raise AttributeError('The threshold value cannot be deleted. You can set it to 0.')
-        
+
     def get_alpha_carbons(self):
         
         """
@@ -226,25 +226,6 @@ class PCN():
             n_protein_graph_nodes = len(protein_graph.nodes())
             if n_subgraphs > 1: # more than one subgraph
                 print('More than one subgraph. This PDB will be excluded.')
-                # if n_parent_graph_nodes != n_protein_graph_nodes: # number of nodes do not match
-                #     print('The parent graph nodes does not equal protein graph nodes.')
-                #     cycle_graph = nx.cycle_graph(n_parent_graph_nodes)
-                #     links = list(set(protein_graph.edges()) - set(cycle_graph.edges()))
-                #     for link in links:
-                #         link_length = abs(link[0] - link[1])
-                #         if link_length <= 1:
-                #             print('There is a link of length 1.')
-                #         else:
-                #             link_lengths.append(link_length)
-                # else: # same number of nodes
-                #     cycle_graph = nx.cycle_graph(n_parent_graph_nodes)
-                #     links = list(set(protein_graph.edges()) - set(cycle_graph.edges()))
-                #     for link in links:
-                #         link_length = abs(link[0] - link[1])
-                #         if link_length <= 1:
-                #             print('There is a link of length 1.')
-                #         else:
-                #             link_lengths.append(link_length)
             else: # just one subgraph
                 cycle_graph = nx.cycle_graph(n_parent_graph_nodes)
                 links = list(set(protein_graph.edges()) - set(cycle_graph.edges()))

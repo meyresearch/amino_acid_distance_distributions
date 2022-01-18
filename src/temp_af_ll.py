@@ -47,7 +47,7 @@ def get_uniprot_IDs(sequence_length):
     
     Return
     ------
-    uniprot_IDs: numpy.array
+    uniprot_iss: numpy.array
         array containing all the uniprot IDs of the given sequence length
     """
     uniprot_IDs_df = pd.read_excel(f'../data/alphafold_data/uniprot_{sequence_length}s.xlsx')
