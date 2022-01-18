@@ -168,7 +168,7 @@ def pdb_to_pcn(log_file: str) -> None:
                     # PDB_tarfile = tarfile.open(f"../data/PDBs.tar.gz", "r:gz")
                     pdb_ids_lower = str(pdb_ids[i]).lower()
                     # PDB_file = PDB_tarfile.extractfile(f"../data/PDBs/pdb{pdb_ids_lower}.ent")
-                    PDB_file = f"/Volumes/Seagate_Extension_Plus/PDBs/pdb{pdb_ids_lower}.ent"
+                    PDB_file = f"/Volumes/Seagate_Extension_Plus/PDBs/pdb{pdb_ids_lower}.ent" # replace with get_pdbs.py
                     PDB_check = open(PDB_file, "r")
                     print("Successfully opened file.")
                 except:

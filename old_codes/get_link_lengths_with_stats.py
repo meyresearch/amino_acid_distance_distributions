@@ -105,7 +105,7 @@ if __name__ == "__main__":
     ll_400 = []
     counter = 0
     n_pdbs = len(query.columns)
-    with open("log.txt", "w") as log:
+    with open("../src/log.txt", "w") as log:
         for pdb in query.columns:
             if counter % 5000 == 0:
                 print("We are at entry %d/%d!" % (counter, n_pdbs), flush=True)

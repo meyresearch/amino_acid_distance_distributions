@@ -130,7 +130,7 @@ if __name__ == '__main__':
     counter = 0
 
     # Open log file & write to it
-    with open("log.txt", "w") as log:
+    with open("../src/log.txt", "w") as log:
 
     #     # Loop over PDB ids
         for pdb in PDBs:

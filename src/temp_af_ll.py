@@ -55,7 +55,7 @@ def get_uniprot_IDs(sequence_length):
 
     return uniprot_IDs
 
-def get_alphafold_PDBs(uniprot_IDs):
+def get_alphafold_PDBs(uniprot_IDs):  # not in use currently
     """
     Parameters
     ----------

@@ -116,7 +116,7 @@ if __name__ == '__main__':
 print(count, nameslen)
 # np.savetxt('/home/nora/Desktop/research/Göttingen/protein folding/3d/meaniesnewidp.txt',meanies)
 # Saving pdb analysis
-with open('pdb_results.pkl', 'wb') as f:
+with open('../old_data/pdb_results.pkl', 'wb') as f:
     pickle.dump(results, f)
 
 ##read in graph from adjacency matrix

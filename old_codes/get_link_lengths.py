@@ -68,7 +68,7 @@ if __name__ == "__main__":
     ll_400 = []
     counter = 0
     n_pdbs = len(query.columns)
-    with open("log.txt", "w") as log:
+    with open("../src/log.txt", "w") as log:
         for pdb in query.columns:
             if counter % 500 == 0:
                 print("We are at entry %d/%d!" % (counter, n_pdbs), flush=True)
@@ -110,25 +110,25 @@ if __name__ == "__main__":
     # data for length 100
     sim_data_hist_100, sim_data_edges = np.histogram(ll_100, bins=range(3, 1000), normed=True)
     sim_data_hist_100 = sim_data_hist_100/len(hundred)
-    np.save('simdata_hist_100.npy', sim_data_hist_100)
-    np.save('100_Ids.npy', hundred)
+    np.save('../old_data/simdata_hist_100.npy', sim_data_hist_100)
+    np.save('../old_data/100_Ids.npy', hundred)
 
     # data for length 200
     sim_data_hist_200, sim_data_edges = np.histogram(ll_200, bins=range(3, 1000), normed=True)
     sim_data_hist_200 = sim_data_hist_200/len(twohundered)
-    np.save('simdata_hist_200.npy', sim_data_hist_200)
-    np.save('200_Ids.npy',twohundered)
+    np.save('../old_data/simdata_hist_200.npy', sim_data_hist_200)
+    np.save('../old_data/200_Ids.npy', twohundered)
 
     # data for length 300
     sim_data_hist_300, sim_data_edges = np.histogram(ll_300, bins=range(3, 1000), normed=True)
     sim_data_hist_300 = sim_data_hist_300/len(threehundred)
-    np.save('simdata_hist_300.npy', sim_data_hist_300)
-    np.save('300_Ids.npy',threehundred)
+    np.save('../old_data/simdata_hist_300.npy', sim_data_hist_300)
+    np.save('../old_data/300_Ids.npy', threehundred)
 
     # data for length 400
     sim_data_hist_400, sim_data_edges = np.histogram(ll_400, bins=range(3, 1000), normed=True)
     sim_data_hist_400 = sim_data_hist_400/len(fourhundred)
-    np.save('simdata_hist_400.npy', sim_data_hist_400)
-    np.save('400_Ids.npy',fourhundred)
+    np.save('../old_data/simdata_hist_400.npy', sim_data_hist_400)
+    np.save('../old_data/400_Ids.npy', fourhundred)
 
 

@@ -1,27 +1,32 @@
-import random
+
 import numpy as np
 import pandas as pd
-import PCN
-import os
-import MDAnalysis as mda
-import functions
-import urllib
 
-sequence_length = '100'
-uniprot_IDs = functions.get_uniprot_ids(sequence_length)
 
-download = f'https://alphafold.ebi.ac.uk/files/AF-{uniprot_IDs[0]}-F1-model_v2.pdb'
+filepath = "/Users/jasminguven/Desktop/"
+sequence_lengths = ["100", "200", "300"]
+uniprot_id_list = []
+for sequence_length in sequence_lengths:
+    uniprot_ids_dataframe = pd.read_excel(f"{filepath}/test_{sequence_length}.xlsx")
+    uniprot_id_list.append(uniprot_ids_dataframe["Entry"].values)
+uniprot_ids = np.asarray(uniprot_id_list)
+print(uniprot_ids.flatten())
 
-try:
-    file_name = f'../data/alphafold_data/temp/AF-{uniprot_IDs[0]}-F1-model_v2.pdb'
-    #bio.retrieve_pdb_file(pdb,pdir='../data/tmep/', file_format='pbd')
-    urllib.request.urlretrieve(download, file_name)
-except Exception:
-    print("failed at %s" % pdb, flush=True)
-    traceback.print_exc(file=log)
- 
-u = mda.Universe(file_name)
-print(u)
+# sequence_length = '100'
+# uniprot_IDs = functions.get_uniprot_ids(sequence_length)
+#
+# download = f'https://alphafold.ebi.ac.uk/files/AF-{uniprot_IDs[0]}-F1-model_v2.pdb'
+#
+# try:
+#     file_name = f'../data/alphafold_data/temp/AF-{uniprot_IDs[0]}-F1-model_v2.pdb'
+#     #bio.retrieve_pdb_file(pdb,pdir='../data/tmep/', file_format='pbd')
+#     urllib.request.urlretrieve(download, file_name)
+# except Exception:
+#     print("failed at %s" % pdb, flush=True)
+#     traceback.print_exc(file=log)
+#
+# u = mda.Universe(file_name)
+# print(u)
 
 # PDB_IDs = ['5EUB']
 
