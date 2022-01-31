@@ -18,12 +18,12 @@ import pylab
 def nth_harmonic(n):
     '''
     Compute the nth harmonic number, i.e. the sum of the reciprocals of the first n natural numbers.
-    
+
     Parameters
     ----------
     n: int
         The number of natural numbers for the harmonic.
-    
+
     Return
     ------
     harmonic: float
@@ -40,22 +40,22 @@ def nth_harmonic(n):
 
 def f_high(link_length, chain_length, half_N_harmonic):
     '''
-    Calculate f for k >> 1. 
-    
+    Calculate f for k >> 1.
+
     Parameters
     ----------
     link_length: int
         The separation s betweeen each link. Bounds: 2 <= s < N/2
     chain_length: int
-        The chain length, i.e. number N of C-alphas in a chain. 
-        Also the maxium possible links at the start. 
+        The chain length, i.e. number N of C-alphas in a chain.
+        Also the maxium possible links at the start.
     half_N_harmonic: float
-        The "N/2"-th harmonic number. 
-    
+        The "N/2"-th harmonic number.
+
     Return
     ------
     f_high: float
-        The sequence distribution evaluated at a given link_length, 
+        The sequence distribution evaluated at a given link_length,
         with k >> 1.
     '''
     H_s = nth_harmonic(link_length)
@@ -66,20 +66,20 @@ def f_high(link_length, chain_length, half_N_harmonic):
 
 def f_low(link_length, chain_length):
     '''
-    Calculate f for k << N/2. 
-    
+    Calculate f for k << N/2.
+
     Parameters
     ----------
     link_length: int
         The separation s betweeen each link. Bounds: 2 <= s < N/2
     chain_length: int
-        The chain length, i.e. number N of C-alphas in a chain. 
-        Also the maxium possible links at the start. 
+        The chain length, i.e. number N of C-alphas in a chain.
+        Also the maxium possible links at the start.
 
     Return
     ------
     f_low: float
-        The sequence distribution evaluated at a given link_length, 
+        The sequence distribution evaluated at a given link_length,
         with k << N/2.
     '''
     #f_low = - (2/chain_length**2) * link_length**2 + ((2/chain_length) + (6/chain_length))*link_length - ((2/chain_length) + (4/chain_length**2))
@@ -91,21 +91,21 @@ def P_link_lengths(link_length, chain_length, half_N_harmonic, a, A):
     Evaluate the probability distribution of the realised residue distances
     of all added links, as given by the final approximation in Eq.(12) with
     all C_k = A.
-    
+
     Parameters
     ----------
     link_length: int
         The separation s betweeen each link. Bounds: 2 <= s < N/2
     chain_length: int
-        The chain length, i.e. number N of C-alphas in a chain. 
-        Also the maxium possible links at the start. 
+        The chain length, i.e. number N of C-alphas in a chain.
+        Also the maxium possible links at the start.
     half_N_harmonic: float
-        The "N/2"-th harmonic number. 
+        The "N/2"-th harmonic number.
     a: int
         The number of steps used from Eq.(7).
-    A: int 
+    A: int
         The factor from the geometric series in Eq.(12), i.e. C_k = A.
-    
+
     Return
     ------
     P: float
@@ -273,8 +273,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-bs_stats = pd.read_csv('../data/exclude_subgraphs/bootstrapped_100.csv')
-# n_pdbs = len(np.load('../data/exclude_subgraphs/ids_100.npy'))
+bs_stats = pd.read_csv('../data/rcsb_data/bootstrapped_100s_with_stats.csv')
+# n_pdbs = len(np.load('../data/pdb_data/ids_100.npy'))
 # bs_m = bs.melt().astype(np.float64)
 
 
@@ -283,20 +283,15 @@ bs_stats = pd.read_csv('../data/exclude_subgraphs/bootstrapped_100.csv')
 #                                                           upper_bound = ('value', lambda val: np.quantile(val, q = 0.95)))
 
 means = bs_stats['mean'].to_numpy()
-
 lower_b = bs_stats['lower_bound'].to_numpy()
 upper_b = bs_stats['upper_bound'].to_numpy()
 var = bs_stats['variable'].to_numpy()
-# means = bs_stats['mean'].to_numpy()[3:]
 
-# lower_b = bs_stats['lower_bound'].to_numpy()[3:]
-# upper_b = bs_stats['upper_bound'].to_numpy()[3:] 
-# var = bs_stats['variable'].to_numpy()[3:]
 #print(var)
-sim_data, sim_edges = get_simulation_data('302')
-sim_bin_centres = sim_edges[:-1] + np.diff(sim_edges)/2
-sim_bin_width = sim_edges[1] - sim_edges[0]
-sim_data = normalise_data(sim_data, sim_bin_width)
+# sim_data, sim_edges = get_simulation_data('302')
+# sim_bin_centres = sim_edges[:-1] + np.diff(sim_edges)/2
+# sim_bin_width = sim_edges[1] - sim_edges[0]
+# sim_data = normalise_data(sim_data, sim_bin_width)
 
 normed_means = normalise_data(means, 1)
 normed_lower_b = normalise_data(lower_b, 1)
@@ -312,74 +307,33 @@ N = int(var[-1]+1)
 H_N_2 = nth_harmonic(N)
 
 
-A = np.arange(0.0005, 0.003, 0.0005)
-a = np.arange(0, 5, 1)
-
-#print(A)
-
-power_scale_factor = 1000/7
-
+A = np.arange(0.0015, 0.0025, 0.0005)
+a = np.arange(0, 4, 1)
 fig = plt.figure()
-ax = fig.subplots(len(a), len(A), sharex=True, sharey=True)
-sumrange = np.array(range(int(var[0]),N))
-#print(sumrange)
+ax = fig.subplots(len(a), len(A), sharex = True, sharey = True)
+print(len(a), len(A))
+for i in range(len(a)):
+    for j in range(len(A)):
 
-for row in range(len(ax)):
-    for col in range(len(ax)):
-        ax[row][col].scatter(var,normed_means, s = 10, c = 'k', label = 'PDB 300s')
-        #ax[row][col].scatter(sim_bin_centres, sim_data, s=10, marker = '^', c='red', label='SIM 300s')
-        ax[row][col].fill_between(var, normed_lower_b, normed_upper_b, color = 'gray', alpha = 0.6, label = '95% C.L.')
-        ax[row][col].plot(sumrange, [P_link_lengths(s,N,H_N_2,a[row],A[col]) for s in sumrange],c='#984ea3',label='Theory')
+        ax[i][j].scatter(var, normed_means, s=10, c="k", label="AF PDB 300s")
+        ax[i][j].fill_between(var, normed_lower_b, normed_upper_b, color="gray", alpha=0.6, label="95% C.L.")
+        ax[i][j].plot(sumrange, [P_link_lengths(s, N, H_N_2, a[i], A[i]) for s in sumrange], c="#984ea3", label="Theory")
+        ax[i][j].set_yscale("log")
+        ax[i][j].set_xscale("log")
+        ax[i][-1].set_ylabel(f'a = {a[i]}', fontsize = 13, rotation = 0, labelpad=21)
+        ax[i][-1].yaxis.set_label_position('right')
+        ax[0][j].set_title(f'A = {A[j]:2f}')
 
-        #ax[row][col].plot(np.array(sumrange), powerlaw(power_scale_factor, np.array(sumrange), N), c='green',label = 'Power law')
-        ax[row][-1].set_ylabel(f'a = {a[row]}', fontsize = 13, rotation = 0, labelpad=21)
-        ax[row][-1].yaxis.set_label_position('right')
-        ax[0][col].set_title(f'A = {A[col]}')
-        #plt.xlabel('s', fontsize=14)
-        #plt.ylabel('P(s)', fontsize=14)
-        ax[row][col].set_yscale('log')
-        ax[row][col].set_xscale('log')
-        ax[row][col].set_xlim(0,320)
-
-
+plt.legend()
 fig.text(0.5, 0.025, 's / a.u. ', ha='center',fontsize=15.5) # shared x label
-fig.text(0.005, 0.5, 'P(s)', va='center', rotation='vertical',fontsize=15.5) # shared y label 
-# plt.subplots_adjust(left = 0.055, bottom = 0.17, wspace=0.14, right = 0.97)
-plt.subplots_adjust(left = 0.06, bottom = 0.08, top=0.95, wspace=0.1, right = 0.9)
-
-
-plt.legend(bbox_to_anchor = [1.6,4.85])
-
-#plt.show()
-
-# fig = plt.figure()
-# ax = fig.add_subplot()
-
-# ax.scatter(var,normed_means, s = 10, c = 'k', label = 'PDB 100s')
-# ax.fill_between(var, normed_lower_b, normed_upper_b, color = 'gray', alpha = 0.6, label = '95% C.L.')
-# ax.plot(sumrange, [P_link_lengths(s,N,H_N_2,a[1],A[1]) for s in sumrange],c='#984ea3',label='Theory')
-# ax.set_yscale('log')
-# ax.set_xscale('log')
-# plt.show()
+fig.text(0.005, 0.5, 'P(s)', va='center', rotation='vertical',fontsize=15.5) # shared y label
+plt.subplots_adjust(left = 0.06, bottom = 0.08, top=0.95, wspace=0.1, right = 0.95)
 
 fig = plt.figure()
-A = np.arange(0.0005, 0.003, 0.0005)
-a = np.arange(0, 5, 1)
+ax = fig.subplots(len(a), len(A), sharex = True, sharey = True)
 
-
-
-ax = fig.subplots(len(a), len(A), sharex=True, sharey=True)
-
-# new_var = var[4:]
-# new_means = normed_means[4:]
-# N = int(new_var[-1]+1)
-# H_N_2 = nth_harmonic(N)
-
-# sumrange = np.array(range(2,N))
-
-
-for row in range(len(ax)):
-    for col in range(len(ax)):
+for row in range(len(a)):
+    for col in range(len(A)):
         f = [P_link_lengths(s,N,H_N_2,a[row],A[col]) for s in sumrange]
 
         residuals = normed_means - f
@@ -400,24 +354,10 @@ for row in range(len(ax)):
         # ax[row][col].set_ylim(-0.08,0.0)
         ax[row][-1].set_ylabel(f'a = {a[row]}', fontsize = 13, rotation = 0, labelpad=21)
         ax[row][-1].yaxis.set_label_position('right')
-        ax[0][col].set_title(f'A = {A[col]}')
-        ax[row][col].legend(fontsize = 8 )
-
-        
-# min_square_residual = min(squared_residuals)
-#print(f'Minimum residual is: {min_square_residual}')
+        ax[0][col].set_title(f'A = {A[col]:2f}')
+        ax[row][col].legend()
+fig.text(0.5, 0.025, 's / a.u. ', ha='center',fontsize=15.5) # shared x label
+fig.text(0.005, 0.5, 'Residuals', va='center', rotation='vertical',fontsize=15.5) # shared y label
+plt.subplots_adjust(left = 0.06, bottom = 0.08, top=0.95, wspace=0.1, right = 0.95)
+#
 plt.show()
-
-# stats.probplot(normed_means, dist="norm", plot=pylab)
-# pylab.show()
-# import numpy as np
-# import statsmodels.api as sm
-# import pylab
-
-# test = np.random.normal(0,1, 1000)
-
-# sm.qqplot(normed_means, line='r')
-# pylab.show()
-#plt.plot(model, squared_residuals)
-
-
