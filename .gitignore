@@ -4,3 +4,4 @@ K50/
 both/
 idp/
 .ipynb_checkpoints*
+src/__pycache__/*
