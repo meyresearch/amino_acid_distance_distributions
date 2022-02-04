@@ -9,8 +9,10 @@ import pandas as pd
 import numpy as np
 from numpy import ndarray
 from sklearn.metrics import r2_score
-_COLOUR_PALETTE = {"PDB_SCATTER_COLOUR": "#009E73", "SIM_SCATTER_COLOUR": "#E69F00", "CL_COLOUR": "#56B4E9",
-                   "THEORY_COLOUR": "k", "RESIDUALS_COLOUR": "#009E73"}
+import seaborn as sns
+
+_COLOUR_PALETTE = {"PDB_SCATTER_COLOUR": "#009e73", "SIM_SCATTER_COLOUR": "#E69F00", "CL_COLOUR": "#56b4e9",
+                   "THEORY_COLOUR": "#cc79a7", "RESIDUALS_COLOUR": "#009E73"}
 
 
 def normalise_data(data_array: np.ndarray) -> np.ndarray:
@@ -298,11 +300,15 @@ def plot_single_link_length_plot(constant_A: float, constant_a: int, n_points: i
                     zorder=-100)
     ax.plot(plotting_sumrange, [link_length_distribution(s, n_points, half_n_harmonic_number, constant_a, constant_A)
                                 for s in plotting_sumrange], c=_COLOUR_PALETTE["THEORY_COLOUR"], label="Theory")
+
     ax.set_yscale("log")
     ax.set_xscale("log")
-    ax.set_xlabel("s", fontsize=14)
-    ax.set_ylabel("P(s)", fontsize=14)
-    ax.set_ylim(0.0001, 0.5)
+    ax.set_xlabel("s", fontsize=18)
+    ax.set_ylabel("P(s)", fontsize=18)
+    ax.set_ylim(0.001, 0.2)
+    ax.set_xlim(2.5, int(command_line_link_length))
+    ax.set_aspect(aspect=0.5)
+    ax.tick_params(axis="both", labelsize=14)
     plt.legend(fontsize=14)
     plt.subplots_adjust(left=0.075, bottom=0.08, top=0.95, wspace=0.05, right=0.98)
 
@@ -317,29 +323,77 @@ def compare_link_length_plots(command_line_link_length: str, command_line_algori
                               c_constant_a: int, c_constant_A: float) -> None:
     plot_label = create_link_length_plot_label(command_line_link_length, command_line_algorithm)
     fig = plt.figure()
+    sns.set_theme(style="whitegrid", palette="colorblind")
     ax = fig.subplots(1, 1)
-    ax.scatter(bs_variables, bs_means, s=15, c=_COLOUR_PALETTE["PDB_SCATTER_COLOUR"], label=plot_label)
-    ax.scatter(c_variables, c_means, s=15, c="#0071b2", marker="s", label="AF " + plot_label)
-    ax.scatter(bin_centres, normed_sim_data, s=15, marker="^", c=_COLOUR_PALETTE["SIM_SCATTER_COLOUR"],
+    ax.scatter(bs_variables, bs_means, c="gray", label=plot_label)
+    ax.scatter(c_variables, c_means, c=_COLOUR_PALETTE["PDB_SCATTER_COLOUR"], marker="s", label="AF " + plot_label)
+    ax.scatter(bin_centres, normed_sim_data, marker="^", c=_COLOUR_PALETTE["SIM_SCATTER_COLOUR"],
                label=f"SIM {command_line_link_length}s",
                zorder=-50)
-    ax.fill_between(bs_variables, bs_lower_conf_lev, bs_upper_conf_lev, color=_COLOUR_PALETTE["PDB_SCATTER_COLOUR"],
-                    alpha=0.6, label=r"$95\%$ C.L.", zorder=-100)
-    ax.fill_between(c_variables, c_lower_conf_lev, c_upper_conf_lev, color="#0071b2", alpha=0.6,
-                    label=r"AF $95\%$ C.L.", zorder=-100)
+    # ax.fill_between(bs_variables, bs_lower_conf_lev, bs_upper_conf_lev, color=_COLOUR_PALETTE["PDB_SCATTER_COLOUR"],
+    # alpha=0.6, label=r"$95\%$ C.L.", zorder=-100)
+    # ax.fill_between(c_variables, c_lower_conf_lev, c_upper_conf_lev, color="#0071b2", alpha=0.6,
+    #                 label=r"AF $95\%$ C.L.", zorder=-100)
     ax.plot(bs_plotting_sumrange, [link_length_distribution(s, bs_n_points, bs_half_n_harmonic_number, bs_constant_a,
                                                             bs_constant_A) for s in bs_plotting_sumrange],
             c=_COLOUR_PALETTE["THEORY_COLOUR"], label="Theory PDB")
     ax.plot(c_plotting_sumrange, [link_length_distribution(s, c_n_points, c_half_n_harmonic_number, c_constant_a,
-                                                           c_constant_A) for s in c_plotting_sumrange], c="gray",
+                                                           c_constant_A) for s in c_plotting_sumrange], c="#cfb8c4",
             label="Theory AF")
     ax.set_yscale("log")
     ax.set_xscale("log")
-    ax.set_xlabel("s", fontsize=14)
-    ax.set_ylabel("P(s)", fontsize=14)
-    ax.set_ylim(0.0001, 0.5)
+    ax.set_xlabel("s", fontsize=18)
+    ax.set_ylabel("P(s)", fontsize=18)
+    ax.set_ylim(0.001, 0.2)
+    ax.set_xlim(2.5, int(command_line_link_length))
+    ax.set_aspect(aspect=0.6)
+    ax.tick_params(axis="both", labelsize=14)
     plt.legend(fontsize=14)
     plt.subplots_adjust(left=0.075, bottom=0.08, top=0.95, wspace=0.05, right=0.98)
+
+
+def compare_link_length_plots2(command_line_link_length: str, command_line_algorithm: str, bin_centres: np.ndarray,
+                               normed_sim_data: np.ndarray, bs_variables: np.ndarray, bs_means: np.ndarray,
+                               bs_lower_conf_lev: np.ndarray, bs_upper_conf_lev: np.ndarray,
+                               c_variables: np.ndarray, c_means: np.ndarray, c_lower_conf_lev: np.ndarray,
+                               c_upper_conf_lev: np.ndarray, bs_plotting_sumrange: np.ndarray, bs_n_points: int,
+                               bs_half_n_harmonic_number: float, bs_constant_a: int, bs_constant_A: float,
+                               c_plotting_sumrange: np.ndarray, c_n_points: int, c_half_n_harmonic_number: float,
+                               c_constant_a: int, c_constant_A: float) -> None:
+    pal = sns.color_palette('bright')
+    print(pal.as_hex())
+    plot_label = create_link_length_plot_label(command_line_link_length, command_line_algorithm)
+    plt.figure(figsize=(12, 8))
+    sns.set(context="notebook", palette="colorblind", style='ticks', font_scale=2,font = 'Helvetica')
+    #sns.set(font_scale=2)
+    # ax = fig.subplots(1, 1)
+    plt.scatter(bs_variables, bs_means,c="#fbafe4",label=plot_label, alpha=0.7)
+    plt.scatter(c_variables, c_means, c =  '#00d7ff' ,marker="s", label="AF " + plot_label, alpha=0.7)
+    plt.scatter(bin_centres, normed_sim_data,marker="^", c= "#1ac938",
+                label=f"SIM {command_line_link_length}s",
+                zorder=-50)
+    # ax.fill_between(bs_variables, bs_lower_conf_lev, bs_upper_conf_lev, color=_COLOUR_PALETTE["PDB_SCATTER_COLOUR"],
+    # alpha=0.6, label=r"$95\%$ C.L.", zorder=-100)
+    # ax.fill_between(c_variables, c_lower_conf_lev, c_upper_conf_lev, color="#0071b2", alpha=0.6,
+    #                 label=r"AF $95\%$ C.L.", zorder=-100)
+    plt.plot(bs_plotting_sumrange, [link_length_distribution(s, bs_n_points, bs_half_n_harmonic_number, bs_constant_a,
+                                                             bs_constant_A) for s in bs_plotting_sumrange],
+              label="Theory PDB", c='#a23582', lw=1.5)
+    plt.plot(c_plotting_sumrange, [link_length_distribution(s, c_n_points, c_half_n_harmonic_number, c_constant_a,
+                                                            c_constant_A) for s in c_plotting_sumrange],'--',
+             label=r"Theory $\alpha$F", c="#006374", lw=1.5)
+    plt.yscale("log")
+    plt.xscale("log")
+    plt.xlabel("s")
+    plt.ylabel("P(s)")
+    plt.ylim(0.0001, 0.2)
+    plt.xlim(3.5, int(command_line_link_length))
+    # ax.set_aspect(aspect=0.6)
+    # ax.tick_params(axis="both", labelsize=14)
+    plt.legend()
+    sns.despine()
+    plt.tight_layout()
+    # plt.subplots_adjust(left=0.075, bottom=0.08, top=0.95, wspace=0.05, right=0.98)
 
 
 def plot_link_lengths_grid(constant_A_range: np.ndarray, constant_a_range: np.ndarray, n_points: int,
@@ -468,8 +522,8 @@ def create_plots() -> None:
     """
 
     """
-    plt.rc('text', usetex=True)
-    plt.rc('font', family='serif')
+    # plt.rc('text', usetex=True)
+    # plt.rc('font', family='serif')
     arguments = parse_command_line_arguments()
     link_length = get_command_line_arguments(arguments)[0]
     algorithm = get_command_line_arguments(arguments)[1]
@@ -522,12 +576,12 @@ def create_plots() -> None:
         c_sumrange = np.array(range(c_starting_link_length, c_n_datapoints))
 
         # plot both on the same graph
-        compare_link_length_plots(link_length, algorithm, sim_bin_centres, normalised_simulation_data,
-                                  bs_possible_link_lengths, bs_normalised_means, bs_lower_confidence_level,
-                                  bs_upper_confidence_level, c_possible_link_lengths, c_normalised_means,
-                                  c_lower_confidence_level, c_upper_confidence_level, bs_sumrange, bs_n_datapoints,
-                                  bs_half_n_harmonic_number, bs_a, bs_A, c_sumrange, c_n_datapoints,
-                                  c_half_n_harmonic_number, c_a, c_A)
+        compare_link_length_plots2(link_length, algorithm, sim_bin_centres, normalised_simulation_data,
+                                   bs_possible_link_lengths, bs_normalised_means, bs_lower_confidence_level,
+                                   bs_upper_confidence_level, c_possible_link_lengths, c_normalised_means,
+                                   c_lower_confidence_level, c_upper_confidence_level, bs_sumrange, bs_n_datapoints,
+                                   bs_half_n_harmonic_number, bs_a, bs_A, c_sumrange, c_n_datapoints,
+                                   c_half_n_harmonic_number, c_a, c_A)
         plt.show()
 
     else:
@@ -557,7 +611,7 @@ def create_plots() -> None:
                                          possible_link_lengths, sim_bin_centres, normalised_simulation_data,
                                          lower_confidence_level, upper_confidence_level, link_length, algorithm)
 
-            plot_single_residual_plot(A, a, n_datapoints, half_n_harmonic, sumrange, normalised_means)
+            # plot_single_residual_plot(A, a, n_datapoints, half_n_harmonic, sumrange, normalised_means)
             plt.show()
         elif start_A != end_A and start_a != end_a:
             A_range, a_range = np.arange(start_A, end_A, step_A), np.arange(start_a, end_a, step_a)

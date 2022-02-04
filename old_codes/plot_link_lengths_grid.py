@@ -274,7 +274,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 bs_stats = pd.read_csv('../data/rcsb_data/bootstrapped_100s_with_stats.csv')
-# n_pdbs = len(np.load('../data/pdb_data/ids_100.npy'))
+# n_pdbs = len(np.load('../data/pdb_data_NaNs/ids_100.npy'))
 # bs_m = bs.melt().astype(np.float64)
 
 

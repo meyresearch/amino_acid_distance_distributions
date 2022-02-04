@@ -10,6 +10,7 @@ from concatenate_id_files import concat_id_files
 
 def get_rcsb_pdbs(outpath: str) -> None:
     """
+    Use BioPython to save RCSB PDB files in a directory
     @param outpath: destination directory to save pdbs, default "../../data/rcsb_data/"
     @return: None
     """
@@ -27,6 +28,7 @@ def get_rcsb_pdbs(outpath: str) -> None:
 
 def get_uniprot_ids() -> np.ndarray:
     """
+    Create an array of Uniprot ids of all link lengths
     @return: array of uniprot ids
     """
     filepath = "../data/alphafold_data"

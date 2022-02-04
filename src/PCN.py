@@ -235,7 +235,7 @@ class PCN():
                         print('There is a link of length 1.')
                     else:
                         link_lengths.append(link_length)   
-        return link_lengths
+        return np.array(link_lengths)
 
 
 
