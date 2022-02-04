@@ -33,12 +33,13 @@ rcsb_frequency = rcsb_data["Number"].to_numpy() - ll_frequency
 sns.set_theme(context="notebook", palette="colorblind", style="ticks", font_scale=1.2, font="Helvetica")
 fig = plt.figure(figsize=(10, 8))
 ax = fig.subplots(2, 1, sharex=True)
-ax[0].bar(rcsb_bins, trembl_adjusted_frequency, color="#006374", label="TrEMBL PDBs", alpha=0.8, bottom=swiss_frequency)
-ax[0].bar(rcsb_bins, swiss_adjusted_frequency, color="#00d7ff", label="Swiss-Prot PDBs", bottom=alpha_frequency)
-ax[0].bar(rcsb_bins, alpha_frequency, color="#fbafe4", label=r"Resolved $\alpha$F PDBs")
+# ax[0].bar(rcsb_bins, trembl_adjusted_frequency, color="#006374", label="TrEMBL PDBs", alpha=0.8, bottom=swiss_frequency)
+ax[0].bar(rcsb_bins, swiss_adjusted_frequency, color="#006374", label="Swiss-Prot PDBs", alpha=0.8,
+          bottom=alpha_frequency)
+ax[0].bar(rcsb_bins, alpha_frequency, color="#fbafe4", label=r"$\alpha$F PDBs")
 
 ax[0].tick_params(axis="x", labelrotation=90)
-ax[0].set_yscale("log")
+# ax[0].set_yscale("log")
 ax[0].legend()
 
 ax[1].bar(rcsb_bins, rcsb_frequency, color="#006374", label="RCSB PDBs", alpha=0.8, bottom=ll_frequency)
