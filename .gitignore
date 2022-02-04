@@ -4,6 +4,4 @@ K50/
 both/
 idp/
 .ipynb_checkpoints*
-src/__pycache__/
-data/alphafold_data/
-data/simulation_data/
+simulation_data/
