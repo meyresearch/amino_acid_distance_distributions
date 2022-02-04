@@ -4,6 +4,9 @@ K50/
 both/
 idp/
 .ipynb_checkpoints*
-src/__pycache__/
+simulation_data/
+data/2d_linklengths/
 data/alphafold_data/
-data/simulation_data/
+data/exclude.npy
+data/idp.tar.gz
+data/ids/
