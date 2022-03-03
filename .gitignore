@@ -7,3 +7,4 @@ idp/
 simulation_data/
 src/__pycache__/
 data/alphafold_data/AF_PDBs/
+new_repo/data/rcsb/ids/
