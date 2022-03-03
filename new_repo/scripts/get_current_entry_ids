@@ -1,0 +1,2 @@
+cd ../data
+wget https://data.rcsb.org/rest/v1/holdings/current/entry_ids -O combined_ids.txt
