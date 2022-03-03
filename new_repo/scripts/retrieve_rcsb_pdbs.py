@@ -1,5 +1,5 @@
 """
-Opens each chunked ID file and retrieves PDB files from RCSB to data directory.
+Opens each chunked ID file and retrieves PDB files from RCSB to ../data/rcsb/pdb_files/.
 """
 from Bio.PDB.PDBList import PDBList
 import os

@@ -9,3 +9,4 @@ src/__pycache__/
 data/alphafold_data/AF_PDBs/
 new_repo/data/rcsb/ids/
 new_repo/data/rcsb/pdb_files/
+new_repo/data/alphafold/uniprot_ids/
