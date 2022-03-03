@@ -5,7 +5,7 @@ Read in combined_ids_tr.csv and save files containing chunks of 1000 IDs.
 import pandas as pd
 import numpy as np
 
-infile = "../data/combined_ids_tr.csv"
+infile = "../data/rcsb/combined_ids_tr.csv"
 chunk = 1000
 filename_counter = 0
 

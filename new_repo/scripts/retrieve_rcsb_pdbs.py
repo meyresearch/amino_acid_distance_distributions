@@ -1,15 +1,16 @@
 """
 Opens each chunked ID file and retrieves PDB files from RCSB to ../data/rcsb/pdb_files/.
 """
+import numpy as np
 from Bio.PDB.PDBList import PDBList
 import os
 import pandas as pd
 
 
-def concatenate_id_files():
+def concatenate_id_files() -> np.array:
     """
     Opens id_file_N.txt as a DF and concatenates them all into one DF
-    @return:
+    @return: pdb_array
     """
     frames = []
     for filename in os.listdir("../data/rcsb/ids/"):
