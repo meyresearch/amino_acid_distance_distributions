@@ -6,7 +6,12 @@ idp/
 .ipynb_checkpoints*
 simulation_data/
 src/__pycache__/
+new_repo/scripts/__pycache__/
 data/alphafold_data/AF_PDBs/
 new_repo/data/rcsb/ids/
 new_repo/data/rcsb/pdb_files/
 new_repo/data/alphafold/uniprot_ids/
+new_repo/data/alphafold/pdb_files/
+new_repo/data/alphafold/pdb_files.zip
+new_repo/data/rcsb/lls*
+data/alphafold_data/pdb_files/
