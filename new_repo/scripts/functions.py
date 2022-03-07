@@ -1,6 +1,5 @@
 """
 Functions for getting link lengths and bootstrapping.
-
 """
 import traceback
 import pcm
@@ -71,7 +70,7 @@ def pdb_to_pcm(log_file: str, given_algorithm: str, length_range: str) -> None:
     @return:
     """
     ids_100, ids_200, ids_300 = [], [], []
-    distances = []
+    distances_100, distances_200, distances_300 = [], [], []
     pdb_ids = None
     n_pdbs = 0
     if given_algorithm == "PDB":
@@ -89,9 +88,10 @@ def pdb_to_pcm(log_file: str, given_algorithm: str, length_range: str) -> None:
             print(f"At entry {counter + 1} out of {n_pdbs + 1}.")
             try:
                 pdb_id = str(pdb_ids[i]).lower()
+                print(f"PDB ID is: {pdb_id}")
                 pdb_file = None
                 if given_algorithm == "PDB":
-                    pdb_file = f"../data/rcsb/pdb_files/pdb{pdb_id}.ent"
+                    pdb_file = f"/Volumes/Samsung T5/PhD/First_year/Papers/pdb_files/pdb_files/pdb{pdb_id}.ent"
                 elif given_algorithm == "aF":
                     pdb_file = f"../data/alphafold/pdb_files/AF-{pdb_id}-F1-model_v2.pdb"
                 print("Successfully opened file.")
@@ -107,18 +107,15 @@ def pdb_to_pcm(log_file: str, given_algorithm: str, length_range: str) -> None:
                 if chain_length in range(85, 116):
                     print("This PDB is in the length range 85-115. \nGetting amino acid distances.")
                     ids_100.append(pdb_id)
-                    distances.append(protein_contact_map.get_link_lengths(alpha_carbons))
-                    length_range = "100"
+                    distances_100.append(protein_contact_map.get_link_lengths(alpha_carbons))
                 elif chain_length in range(185, 216):
                     print("This PDB is in the length range 185-215. \nGetting link lengths.")
                     ids_200.append(pdb_id)
-                    distances.append(protein_contact_map.get_link_lengths(alpha_carbons))
-                    length_range = "200"
+                    distances_200.append(protein_contact_map.get_link_lengths(alpha_carbons))
                 elif chain_length in range(285, 316):
                     print("This PDB is in the length range 285-315. \nGetting link lengths.")
                     ids_300.append(pdb_id)
-                    distances.append(protein_contact_map.get_link_lengths(alpha_carbons))
-                    length_range = "300"
+                    distances_300.append(protein_contact_map.get_link_lengths(alpha_carbons))
                 else:
                     print("PDB is outside chosen length ranges.")
             else:
@@ -128,9 +125,13 @@ def pdb_to_pcm(log_file: str, given_algorithm: str, length_range: str) -> None:
 
         print(f"100s: {len(ids_100)}\n200s: {len(ids_200)}\n300s: {len(ids_300)}")
         if given_algorithm == "PDB":
-            np.save(f"../data/rcsb/lls_{length_range}.npy", distances)
+            np.save(f"../data/rcsb/lls_100.npy", distances_100)
+            np.save(f"../data/rcsb/lls_200.npy", distances_200)
+            np.save(f"../data/rcsb/lls_300.npy", distances_300)
         elif given_algorithm == "aF":
-            np.save(f'../data/alphafold/lls_{length_range}.npy', distances)
+            np.save(f"../data/alphafold/lls_100.npy", distances_100)
+            np.save(f"../data/alphafold/lls_200.npy", distances_200)
+            np.save(f"../data/alphafold/lls_300.npy", distances_300)
         print("Done.")
 
 

@@ -27,7 +27,10 @@ def get_chain_length(alpha_carbons: MDAnalysis.AtomGroup) -> int:
     @param alpha_carbons
     @return: length of chain
     """
-    return len(alpha_carbons)
+    chain_length = 0
+    if alpha_carbons:
+        chain_length = len(alpha_carbons)
+    return chain_length
 
 
 class ProteinContactMap:
