@@ -73,8 +73,11 @@ def plotting_statistics(dimensionality: float, exponent: int, n_points: int, hal
     @param normalised_means: normalised means of amino acid distance frequencies
     @return: tuple of different statistics
     """
-    theory_function = [amino_acid_distance_distribution(s, n_points, half_n_harmonic_number, exponent, dimensionality)
-                       for s in plotting_sumrange]
+    theory_function = [amino_acid_distance_distribution(s,
+                                                        n_points,
+                                                        half_n_harmonic_number,
+                                                        exponent,
+                                                        dimensionality) for s in plotting_sumrange]
     residuals = normalised_means - theory_function
     residuals_mean = np.mean(residuals)
     residuals_sum = np.sum(residuals)

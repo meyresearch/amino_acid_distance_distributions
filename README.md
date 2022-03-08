@@ -4,7 +4,5 @@ This repository contains the manuscirpt and data for project looking at geometri
 
 ### Authors:
 Nora Molkethin   
-Antonia Mey     
-Jasmin Güven   
-
-
+Antonia Mey   
+Jasmin Guven   

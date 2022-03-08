@@ -1,8 +1,12 @@
 """
 Functions used for plotting amino acid distance distributions.
 """
+import argparse
+
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+
 import theory_functions
 import seaborn as sns
 
@@ -10,15 +14,6 @@ _COLOUR_PALETTE = {"PDB_SCATTER": "#006374",
                    "SIM_SCATTER": "#fbafe4",
                    "THEORY": "#006374",
                    "RESIDUALS": "#fbafe4"}
-
-
-def normalise_data(data_array: np.ndarray) -> np.ndarray:
-    """
-    Take a data array and width of bins and normalise the data array.
-    @return: normalised_array
-    """
-    data_sum = np.sum(data_array)
-    return data_array / data_sum
 
 
 def create_plot_label(length_range: str, algorithm: str):
@@ -36,10 +31,9 @@ def create_plot_label(length_range: str, algorithm: str):
     return plot_label
 
 
-def grid_plot_distances(dimensionality_range: np.ndarray, exponent_range: np.ndarray,
-                        n_points: int, half_n_harmonic: float, plotting_sumrange: np.ndarray,
-                        normalised_means: np.ndarray, distances: np.ndarray,
-                        normalised_sim_means: np.ndarray, sim_distances: np.ndarray,
+def grid_plot_distances(dimensionality_range: np.ndarray, exponent_range: np.ndarray, n_points: int,
+                        half_n_harmonic: float, plotting_sumrange: np.ndarray, normalised_means: np.ndarray,
+                        distances: np.ndarray, normalised_sim_means: np.ndarray, sim_distances: np.ndarray,
                         lower_cl: np.ndarray, upper_cl: np.ndarray, length_range: str, algorithm: str) -> None:
     """
     Plot amino acid distances and theory plot with different values of exponent and dimensionality scaling constant
@@ -60,7 +54,7 @@ def grid_plot_distances(dimensionality_range: np.ndarray, exponent_range: np.nda
     """
     plot_label = create_plot_label(length_range, algorithm)
     fig = plt.figure(figsize=(16, 8))
-    sns.set(context="notebook", palette="colorblind", style='ticks', font_scale=2.4, font='Helvetica')
+    sns.set(context="notebook", palette="colorblind", style='ticks', font='Helvetica')
     ax = fig.subplots(len(exponent_range), len(dimensionality_range), sharex=True, sharey=True)
     for row in range(len(exponent_range)):
         for col in range(len(dimensionality_range)):
@@ -68,10 +62,10 @@ def grid_plot_distances(dimensionality_range: np.ndarray, exponent_range: np.nda
                 theory_functions.amino_acid_distance_distribution(s, n_points, half_n_harmonic, exponent_range[row],
                                                                   dimensionality_range[col]) for s in plotting_sumrange]
             ax[row][col].scatter(distances, normalised_means, s=10, c=_COLOUR_PALETTE["PDB_SCATTER"], label=plot_label)
-            ax[row][col].fill_between(distances, upper_cl, lower_cl, c=_COLOUR_PALETTE["PDB_SCATTER"], alpha=0.4,
+            ax[row][col].fill_between(distances, upper_cl, lower_cl, color=_COLOUR_PALETTE["PDB_SCATTER"], alpha=0.4,
                                       label="95% CL", zorder=-100)
-            ax[row][col].scatter(sim_distances, normalised_sim_means, s=10, m="^", c=_COLOUR_PALETTE["SIM_SCATTER"],
-                                 label=f"SIM {length_range}s", zorder=-50)
+            ax[row][col].scatter(sim_distances, normalised_sim_means, s=10, marker="^",
+                                 c=_COLOUR_PALETTE["SIM_SCATTER"], label=f"SIM {length_range}s", zorder=-50)
             ax[row][col].plot(plotting_sumrange, theory, c=_COLOUR_PALETTE["THEORY"], label="Theory")
             ax[row][col].set_yscale("log")
             ax[row][col].set_xscale("log")
@@ -103,7 +97,7 @@ def grid_plot_residuals(algorithm: str, length_range: str, dimensionality_range,
     @return:
     """
     fig = plt.figure(figsize=(16, 8))
-    sns.set(context="notebook", palette="colorblind", style='ticks', font_scale=2.4, font='Helvetica')
+    sns.set(context="notebook", palette="colorblind", style='ticks', font='Helvetica')
     ax = fig.subplots(len(exponent_range), len(dimensionality_range), sharex=True, sharey=True)
     for row in range(len(exponent_range)):
         for col in range(len(dimensionality_range)):
@@ -111,9 +105,9 @@ def grid_plot_residuals(algorithm: str, length_range: str, dimensionality_range,
                                                              n_points, half_n_harmonic_number, plotting_sumrange,
                                                              normalised_means)[0]
 
-            ax[row][col].scatter(plotting_sumrange, residuals, m=".", c=_COLOUR_PALETTE["RESIDUALS"], label="Residuals",
-                                 zorder=10)
-            ax[row][col].hlines(0, plotting_sumrange[0], plotting_sumrange[-1], c=_COLOUR_PALETTE["THEORY"],
+            ax[row][col].scatter(plotting_sumrange, residuals, marker=".", c=_COLOUR_PALETTE["RESIDUALS"],
+                                 label="Residuals", zorder=10)
+            ax[row][col].hlines(0, plotting_sumrange[0], plotting_sumrange[-1], color=_COLOUR_PALETTE["THEORY"],
                                 label="Theory")
             ax[row][-1].set_ylabel(f"a = {exponent_range[row]}", fontsize=13, rotation=0, labelpad=21)
             ax[row][-1].yaxis.set_label_position("right")
@@ -125,3 +119,141 @@ def grid_plot_residuals(algorithm: str, length_range: str, dimensionality_range,
     fig.text(0.005, 0.5, "Residuals", va="center", rotation="vertical", fontsize=15.5)
     plt.subplots_adjust(left=0.06, bottom=0.08, top=0.95, wspace=0.1, right=0.95)
     plt.savefig(f"../plots/supplementary_information/{algorithm}_{length_range}_r.pdf")
+
+
+def parse_command_line_arguments() -> argparse.Namespace:
+    """
+    Parse CL arguments for plotting.
+    @return: Namespace containing CL arguments
+    """
+    parser = argparse.ArgumentParser(description="Plot amino acid distances and residuals.")
+    parser.add_argument("length_range", type=str, choices=["100", "200", "300"],
+                        help="chain length range to be plotted")
+    parser.add_argument("algorithm", type=str, choices=["BS", "C", "BOTH"],
+                        help="get distances from bootstrapping (BS), chunking (C) or compare both")
+    parser.add_argument("--d-begin", dest="start_dimensionality", type=float, help="starting value for dimensionality "
+                                                                                   "constant (A)")
+    parser.add_argument("--d-end", dest="end_dimensionality", type=float, help="last value for dimensionality "
+                                                                               "constant (A)")
+    parser.add_argument("--e-begin", dest="start_exponent", type=int, help="starting value for exponent (constant a)")
+    parser.add_argument("--e-end", dest="end_exponent", type=int, help="starting value for exponent (constant a)")
+    parser.add_argument("--e-step", dest="step_exponent", type=int, nargs="?", const=1, default=1,
+                        help="step size for constant a range, default=1")
+    parser.add_argument("--d-step", dest="step_dimensionality", type=float, nargs="?", const=0.0001, default=0.0001,
+                        help="step size for constant A range, default=0.0001")
+    parser.add_argument("--d-BS", dest="d_bs", type=float, help="constant A for BS algorithm in comparison plot")
+    parser.add_argument("--d-C", dest="d_c", type=float, help="constant A for C algorithm in comparison plot")
+    parser.add_argument("--e-BS", dest="e_bs", type=float, help="constant a for BS algorithm in comparison plot")
+    parser.add_argument("--e-C", dest="e_c", type=float, help="constant a for C algorithm in comparison plot")
+    arguments = parser.parse_args()
+    check_required_arguments(parser, arguments.algorithm, arguments.start_dimensionality, arguments.end_dimensionality,
+                             arguments.start_exponent, arguments.end_exponent, arguments.d_bs, arguments.e_bs,
+                             arguments.d_c, arguments.e_c)
+    return arguments
+
+
+def check_required_arguments(argument_parser: argparse.ArgumentParser, given_algorithm: str, starting_d: str,
+                             ending_d: str, starting_e: str, ending_e: str, bootstrap_d: str, bootstrap_e: str,
+                             chunk_d: str, chunk_e: str) -> None:
+    """
+    Check given CL arguments so that all requirements are met
+    @param argument_parser: parser for CL arguments
+    @param given_algorithm: either BS, C or BOTH
+    @param starting_d: starting value for dimensionality (constant A)
+    @param ending_d: ending value for dimensionality (constant A)
+    @param starting_e: starting value for exponent (constant a)
+    @param ending_e: ending value for exponent (constant a)
+    @param bootstrap_d: dimensionality constant (A) for bootstrapping algorithm
+    @param bootstrap_e: exponent constant (a) for bootstrapping algorithm
+    @param chunk_d: dimensionality constant (A) for chunking algorithm
+    @param chunk_e: exponent constant (a) for chunking algorithm
+    @return: None
+    """
+    if (given_algorithm == "BS" and starting_d is None) or (given_algorithm == "BS" and ending_d is None) or \
+            (given_algorithm == "BS" and starting_e is None) or (given_algorithm == "BS" and ending_e is None):
+        argument_parser.error("BS requires --d-begin, --d-end, --e-begin, --e-end")
+    elif (given_algorithm == "C" and starting_d is None) or (given_algorithm == "C" and ending_d is None) or \
+            (given_algorithm == "C" and starting_e is None) or (given_algorithm == "C" and ending_e is None):
+        argument_parser.error("BS requires --d-begin, --d-end, --e-begin, --e-end")
+    elif (given_algorithm == "BOTH" and bootstrap_d is None) or (given_algorithm == "BOTH" and chunk_d is None) \
+            or (given_algorithm == "BOTH" and bootstrap_e is None) or (given_algorithm == "BOTH" and chunk_e is None):
+        argument_parser.error("BOTH requires --d-BS, --d-C, --e-BS, --e-C")
+
+
+def get_dataframe(arguments: argparse.Namespace) -> pd.DataFrame:
+    """
+    Get distribution of amino acid distances from csv.
+    @param arguments: command line arguments
+    @return: dataframe of bootstrapped/chunked data
+    """
+    dataframe = None
+    if arguments.algorithm == "BS":
+        dataframe = pd.read_csv(f"../data/rcsb/bootstrap_{arguments.length_range}_stats.csv")
+    elif arguments.algorithm == "C":
+        dataframe = pd.read_csv(f"../data/alphafold/chunk_{arguments.length_range}_stats.csv")
+    return dataframe
+
+
+def get_data_for_plotting(dataframe: pd.DataFrame) -> tuple:
+    """
+    Get protein data for plotting from dataframe
+    @param dataframe: contains amino acid distances and confidence levels
+    @return: tuple of number of datapoints, normalised means and confidence level bounds
+    """
+    try:
+        distances = dataframe["variable"].to_numpy()
+    except KeyError:
+        distances = dataframe["index"].to_numpy()
+    means = dataframe["mean"].to_numpy()
+    lower_bound = dataframe["lower_bound"].to_numpy()
+    upper_bound = dataframe["upper_bound"].to_numpy()
+    n_datapoints = int(distances[-1] + 1)
+    return n_datapoints, means / np.sum(means), lower_bound / np.sum(means), upper_bound / np.sum(means)
+
+
+def create_grid_plots(arguments: argparse.Namespace, pdb_dataframe: pd.DataFrame, sim_dataframe: pd.DataFrame) -> None:
+    """
+    Function to bring together everything needed to plot the grid plots of amino acid distance distributions
+    and residuals
+    @param arguments:
+    @param pdb_dataframe:
+    @param sim_dataframe:
+    @return:
+    """
+    pdb_plotting_tuple = get_data_for_plotting(pdb_dataframe)
+    pdb_distances = pdb_dataframe["variable"].to_numpy()
+    half_n_harmonic = theory_functions.harmonic_number(n_numbers=(pdb_plotting_tuple[0] // 2))
+    pdb_plotting_sum_range = np.array(range(int(pdb_distances[0]), pdb_plotting_tuple[0]))
+    sim_distances = sim_dataframe["index"].to_numpy()
+    sim_plotting_tuple = get_data_for_plotting(sim_dataframe)
+
+    dimensionality_range = np.arange(arguments.start_dimensionality,
+                                     arguments.end_dimensionality,
+                                     arguments.step_dimensionality)
+    exponent_range = np.arange(arguments.start_exponent,
+                               arguments.end_exponent,
+                               arguments.step_exponent)
+    grid_plot_distances(dimensionality_range=dimensionality_range,
+                        exponent_range=exponent_range,
+                        n_points=pdb_plotting_tuple[0],
+                        half_n_harmonic=half_n_harmonic,
+                        plotting_sumrange=pdb_plotting_sum_range,
+                        normalised_means=pdb_plotting_tuple[1],
+                        distances=pdb_distances,
+                        normalised_sim_means=sim_plotting_tuple[1],
+                        sim_distances=sim_distances,
+                        lower_cl=pdb_plotting_tuple[2],
+                        upper_cl=pdb_plotting_tuple[3],
+                        length_range=arguments.length_range,
+                        algorithm=arguments.algorithm)
+    grid_plot_residuals(algorithm=arguments.algorithm,
+                        length_range=arguments.length_range,
+                        dimensionality_range=dimensionality_range,
+                        exponent_range=exponent_range,
+                        n_points=pdb_plotting_tuple[0],
+                        half_n_harmonic_number=half_n_harmonic,
+                        plotting_sumrange=pdb_plotting_sum_range,
+                        normalised_means=pdb_plotting_tuple[1])
+    plt.show()
+
+
