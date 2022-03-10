@@ -4,8 +4,6 @@ Handle all plotting functions and actually make the plots
 import pandas as pd
 
 import plot_functions
-import theory_functions
-import numpy as np
 
 
 def plot() -> None:
@@ -21,6 +19,8 @@ def plot() -> None:
         # plot comparison plot
         # Fig.4.
         pass
+    elif algorithm == "B":
+        plot_functions.create_bar_plots()
     else:
         dimensionality_start = arguments.start_dimensionality
         dimensionality_end = arguments.end_dimensionality

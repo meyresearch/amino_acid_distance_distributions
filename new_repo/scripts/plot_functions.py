@@ -13,7 +13,9 @@ import seaborn as sns
 _COLOUR_PALETTE = {"PDB_SCATTER": "#006374",
                    "SIM_SCATTER": "#fbafe4",
                    "THEORY": "#006374",
-                   "RESIDUALS": "#fbafe4"}
+                   "RESIDUALS": "#fbafe4",
+                   "DATABANK": "#006374",
+                   "USED": "#fbafe4"}
 
 
 def create_plot_label(length_range: str, algorithm: str):
@@ -127,10 +129,10 @@ def parse_command_line_arguments() -> argparse.Namespace:
     @return: Namespace containing CL arguments
     """
     parser = argparse.ArgumentParser(description="Plot amino acid distances and residuals.")
-    parser.add_argument("length_range", type=str, choices=["100", "200", "300"],
+    parser.add_argument("-r", dest="length_range", type=str, choices=["100", "200", "300", None],
                         help="chain length range to be plotted")
-    parser.add_argument("algorithm", type=str, choices=["BS", "C", "BOTH"],
-                        help="get distances from bootstrapping (BS), chunking (C) or compare both")
+    parser.add_argument("algorithm", type=str, choices=["BS", "C", "BOTH", "B"],
+                        help="get distances from bootstrapping (BS), chunking (C), compare both or plot bars (B)")
     parser.add_argument("--d-begin", dest="start_dimensionality", type=float, help="starting value for dimensionality "
                                                                                    "constant (A)")
     parser.add_argument("--d-end", dest="end_dimensionality", type=float, help="last value for dimensionality "
@@ -146,17 +148,18 @@ def parse_command_line_arguments() -> argparse.Namespace:
     parser.add_argument("--e-BS", dest="e_bs", type=float, help="constant a for BS algorithm in comparison plot")
     parser.add_argument("--e-C", dest="e_c", type=float, help="constant a for C algorithm in comparison plot")
     arguments = parser.parse_args()
-    check_required_arguments(parser, arguments.algorithm, arguments.start_dimensionality, arguments.end_dimensionality,
-                             arguments.start_exponent, arguments.end_exponent, arguments.d_bs, arguments.e_bs,
-                             arguments.d_c, arguments.e_c)
+    check_required_arguments(parser, arguments.algorithm, arguments.length_range, arguments.start_dimensionality,
+                             arguments.end_dimensionality, arguments.start_exponent, arguments.end_exponent,
+                             arguments.d_bs, arguments.e_bs, arguments.d_c, arguments.e_c)
     return arguments
 
 
-def check_required_arguments(argument_parser: argparse.ArgumentParser, given_algorithm: str, starting_d: str,
-                             ending_d: str, starting_e: str, ending_e: str, bootstrap_d: str, bootstrap_e: str,
-                             chunk_d: str, chunk_e: str) -> None:
+def check_required_arguments(argument_parser: argparse.ArgumentParser, given_algorithm: str, given_length: str,
+                             starting_d: str, ending_d: str, starting_e: str, ending_e: str, bootstrap_d: str,
+                             bootstrap_e: str, chunk_d: str, chunk_e: str) -> None:
     """
     Check given CL arguments so that all requirements are met
+    @param given_length: given chain length range
     @param argument_parser: parser for CL arguments
     @param given_algorithm: either BS, C or BOTH
     @param starting_d: starting value for dimensionality (constant A)
@@ -170,14 +173,19 @@ def check_required_arguments(argument_parser: argparse.ArgumentParser, given_alg
     @return: None
     """
     if (given_algorithm == "BS" and starting_d is None) or (given_algorithm == "BS" and ending_d is None) or \
-            (given_algorithm == "BS" and starting_e is None) or (given_algorithm == "BS" and ending_e is None):
-        argument_parser.error("BS requires --d-begin, --d-end, --e-begin, --e-end")
+            (given_algorithm == "BS" and starting_e is None) or (given_algorithm == "BS" and ending_e is None) \
+            or (given_algorithm == "BS" and given_length is None):
+        argument_parser.error("BS requires -r, --d-begin, --d-end, --e-begin, --e-end")
     elif (given_algorithm == "C" and starting_d is None) or (given_algorithm == "C" and ending_d is None) or \
-            (given_algorithm == "C" and starting_e is None) or (given_algorithm == "C" and ending_e is None):
-        argument_parser.error("BS requires --d-begin, --d-end, --e-begin, --e-end")
+            (given_algorithm == "C" and starting_e is None) or (given_algorithm == "C" and ending_e is None) \
+            or (given_algorithm == "C" and given_length is None):
+        argument_parser.error("BS requires -r, --d-begin, --d-end, --e-begin, --e-end")
     elif (given_algorithm == "BOTH" and bootstrap_d is None) or (given_algorithm == "BOTH" and chunk_d is None) \
-            or (given_algorithm == "BOTH" and bootstrap_e is None) or (given_algorithm == "BOTH" and chunk_e is None):
-        argument_parser.error("BOTH requires --d-BS, --d-C, --e-BS, --e-C")
+            or (given_algorithm == "BOTH" and bootstrap_e is None) or (given_algorithm == "BOTH" and chunk_e is None) \
+            or (given_algorithm == "BOTH" and given_length is None):
+        argument_parser.error("BOTH requires -r, --d-BS, --d-C, --e-BS, --e-C")
+    elif given_algorithm == "B" and given_length is not None:
+        argument_parser.error("B requires -r=None")
 
 
 def get_dataframe(arguments: argparse.Namespace) -> pd.DataFrame:
@@ -254,6 +262,78 @@ def create_grid_plots(arguments: argparse.Namespace, pdb_dataframe: pd.DataFrame
                         half_n_harmonic_number=half_n_harmonic,
                         plotting_sumrange=pdb_plotting_sum_range,
                         normalised_means=pdb_plotting_tuple[1])
+    plt.show()
+
+
+def get_data_for_bars(path_to_data: str) -> tuple:
+    """
+    Read csv file from path and return numpy arrays as tuple
+    @param path_to_data:
+    @return:
+    """
+    dataframe = pd.read_csv(path_to_data)
+    bins = dataframe["Bins"].to_numpy()
+    frequencies = dataframe["Number"].to_numpy()
+    return bins, frequencies
+
+
+def calculate_adjusted_frequency(frequency_to_adjust: np.ndarray, bottom_frequency: np.ndarray) -> np.ndarray:
+    """
+
+    @param frequency_to_adjust: "top" bars i.e. either all SwissProt or all RCSB frequencies
+    @param bottom_frequency: "bottom" bars i.e. the used PDBs' frequencies
+    @return: difference between top and bottom bars
+    """
+    return frequency_to_adjust - bottom_frequency
+
+
+def create_bar_plots() -> None:
+    """
+    Bring all stats together and plot subplots of PDB statistics
+    @return: None
+    """
+    path = "../data/pdb_statistics/"
+    alphafold_file = "AlphaFold_used.csv"
+    pdb_file = "ll_used.csv"
+    swissprot_file = "UniProt_Swiss_Prot.csv"
+    rcsb_file = "RCSB_by_length.csv"
+
+    alpha_bins, alpha_frequencies = get_data_for_bars(path+alphafold_file)
+    swiss_bins, swiss_frequencies = get_data_for_bars(path+swissprot_file)
+    pdb_bins, pdb_frequencies = get_data_for_bars(path+pdb_file)
+    rcsb_bins, rcsb_frequencies = get_data_for_bars(path+rcsb_file)
+
+    adjusted_swiss = calculate_adjusted_frequency(swiss_frequencies, alpha_frequencies)
+    adjusted_rcsb = calculate_adjusted_frequency(rcsb_frequencies, pdb_frequencies)
+
+    fig = plt.figure(figsize=(10, 8))
+    ax = fig.subplots(2, 1, sharex=True)
+
+    ax[0].bar(swiss_bins, adjusted_swiss,
+              color=_COLOUR_PALETTE["DATABANK"],
+              label="Swiss-Prot Frequencies",
+              bottom=alpha_frequencies)
+    ax[0].bar(alpha_bins, alpha_frequencies,
+              color=_COLOUR_PALETTE["USED"],
+              label="Used AlphaFold Frequencies")
+    ax[1].bar(rcsb_bins, adjusted_swiss,
+              color=_COLOUR_PALETTE["DATABANK"],
+              label="RCSB Frequencies",
+              bottom=pdb_frequencies)
+    ax[1].bar(pdb_bins, pdb_frequencies,
+              color=_COLOUR_PALETTE["USED"],
+              label="Used RCSB Frequencies")
+
+    ax[0].tick_params(axis="x", labelrotation=90)
+    ax[1].tick_params(axis="x", labelrotation=90)
+
+    ax[0].legend()
+    ax[1].legend()
+
+    fig.text(0.5, 0.027, "Chain length", ha="center")
+    plt.subplots_adjust(left=0.09, bottom=0.08, top=0.99, wspace=0.05, right=1)
+    plt.tight_layout()
+    sns.despine()
     plt.show()
 
 

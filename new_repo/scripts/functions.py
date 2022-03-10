@@ -45,8 +45,8 @@ def commandline_arguments() -> argparse.Namespace:
     parser.add_argument("algorithm", type=str, choices=["PDB", "aF", "BS", "C"], help="Get link lengths from RCSB ("
                                                                                       "PDB) or AlphaFold (aF), "
                                                                                       "bootstrap (BS) or chunk (C)")
-    parser.add_argument("-r", dest="length_range", type=str, choices=[None,"100", "200", "300"], help="Chain length "
-                                                                                                      "range")
+    parser.add_argument("-r", dest="length_range", type=str, choices=[None, "100", "200", "300"], help="Chain length "
+                                                                                                       "range")
     parser.add_argument("-i", dest="inputfile", type=str, help="Full path and name of input file")
     cl_arguments = parser.parse_args()
 
@@ -158,7 +158,7 @@ def bootstrap(inputfile: str, sample_replacement: bool, length_range: str) -> No
                                                                              size=n_distances)
             bootstrapping_sample = [distances[i] for i in random_observations_from_sample]
             values, counts = np.unique(bootstrapping_sample, return_counts=True)
-            for value, count in zip(values,counts):
+            for value, count in zip(values, counts):
                 try:
                     bootstrapped_samples[value].append(count)
                 except KeyError:
@@ -174,11 +174,10 @@ def bootstrap(inputfile: str, sample_replacement: bool, length_range: str) -> No
                 bootstrap_dataframe_no_nan.to_csv(f"../data/alphafold/chunk_{length_range}_raw.csv", index=False)
 
             melted_bootstrap_dataframe = bootstrap_dataframe_no_nan.melt()
-            bootstrap_dataframe_stats = melted_bootstrap_dataframe.groupby("variable",as_index=False).agg(
+            bootstrap_dataframe_stats = melted_bootstrap_dataframe.groupby("variable", as_index=False).agg(
                 mean=("value", np.mean), lower_bound=("value", lambda val: np.quantile(val, q=0.05)),
                 upper_bound=("value", lambda val: np.quantile(val, q=0.95)))
             if sample_replacement:
                 bootstrap_dataframe_stats.to_csv(f"../data/rcsb/bootstrap_{length_range}_stats.csv", index=False)
             elif not sample_replacement:
                 bootstrap_dataframe_stats.to_csv(f"../data/alphafold/chunk_{length_range}_stats.csv", index=False)
-
