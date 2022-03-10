@@ -16,9 +16,7 @@ def plot() -> None:
     algorithm = arguments.algorithm
 
     if algorithm == "BOTH":
-        # plot comparison plot
-        # Fig.4.
-        pass
+        plot_functions.create_comparison_plot(arguments)
     elif algorithm == "B":
         plot_functions.create_bar_plots()
     else:
