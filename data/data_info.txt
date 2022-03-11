@@ -1,4 +1,0 @@
-60186 out of 81482 PDB IDs were excluded because they were outside the range.
-100s: 8033
-200s: 8028
-300s: 8033
