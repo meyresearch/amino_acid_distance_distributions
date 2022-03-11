@@ -2,7 +2,6 @@
 Handle all plotting functions and actually make the plots
 """
 import pandas as pd
-
 import plot_functions
 
 
