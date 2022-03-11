@@ -6,6 +6,7 @@ old_data/
 old_codes/
 old_plots/
 old_src/
+plots/
 new_repo/scripts/__pycache__/
 new_repo/data/rcsb/ids/
 new_repo/data/rcsb/pdb_files/
