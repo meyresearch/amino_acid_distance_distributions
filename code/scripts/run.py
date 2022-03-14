@@ -19,6 +19,8 @@ def handle_commandline_options(cl_arguments: argparse.Namespace) -> None:
         functions.pdb_to_pcm(log_file="log.txt", given_algorithm=given_algorithm, length_range=given_linklength)
     elif given_algorithm == "aF":
         functions.pdb_to_pcm(log_file="log.txt", given_algorithm=given_algorithm, length_range=given_linklength)
+    elif given_algorithm == "SIM":
+        functions.compute_simulation_distribution(length_range=given_linklength)
     elif given_algorithm == "BS":
         functions.bootstrap(inputfile=given_inputfile, sample_replacement=True, length_range=given_linklength)
     elif given_algorithm == "C":

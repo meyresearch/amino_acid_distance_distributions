@@ -1,7 +1,11 @@
 """
 Functions for getting link lengths and bootstrapping.
 """
+import glob
 import traceback
+
+import networkx as nx
+
 import pcm
 import numpy as np
 import os
@@ -42,9 +46,9 @@ def commandline_arguments() -> argparse.Namespace:
     """
 
     parser = argparse.ArgumentParser(description="Get amino acid distance distributions.")
-    parser.add_argument("algorithm", type=str, choices=["PDB", "aF", "BS", "C"], help="Get link lengths from RCSB ("
-                                                                                      "PDB) or AlphaFold (aF), "
-                                                                                      "bootstrap (BS) or chunk (C)")
+    parser.add_argument("algorithm", type=str, choices=["PDB", "aF", "SIM", "BS", "C"],
+                        help="Get amino acid distances from RCSB (PDB), AlphaFold (aF) or simulations (SIM), bootstrap "
+                             "(BS) or chunk (C)")
     parser.add_argument("-r", dest="length_range", type=str, choices=[None, "100", "200", "300"], help="Chain length "
                                                                                                        "range")
     parser.add_argument("-i", dest="inputfile", type=str, help="Full path and name of input file")
@@ -58,15 +62,17 @@ def commandline_arguments() -> argparse.Namespace:
         parser.error("PDB requires -r=None")
     elif cl_arguments.algorithm == "aF" and cl_arguments.length_range is None:
         parser.error("aF requires -r")
+    elif cl_arguments.algorithm == "SIM" and cl_arguments.length_range is None:
+        parser.error("SIM requires -r")
     return cl_arguments
 
 
 def pdb_to_pcm(log_file: str, given_algorithm: str, length_range: str) -> None:
     """
     Convert given PDB files to ProteinContactNetworks.
-    @param length_range:
+    @param length_range: chain length range
     @param given_algorithm: PDB or aF
-    @param log_file:
+    @param log_file: log.txt to save errors
     @return:
     """
     ids_100, ids_200, ids_300 = [], [], []
@@ -95,7 +101,7 @@ def pdb_to_pcm(log_file: str, given_algorithm: str, length_range: str) -> None:
                 elif given_algorithm == "aF":
                     pdb_file = f"../data/alphafold/pdb_files/AF-{pdb_id}-F1-model_v2.pdb"
                 print("Successfully opened file.")
-            except:
+            except FileNotFoundError:
                 traceback.print_exc(file=log)
                 continue
 
@@ -181,3 +187,71 @@ def bootstrap(inputfile: str, sample_replacement: bool, length_range: str) -> No
                 bootstrap_dataframe_stats.to_csv(f"../data/rcsb/bootstrap_{length_range}_stats.csv", index=False)
             elif not sample_replacement:
                 bootstrap_dataframe_stats.to_csv(f"../data/alphafold/chunk_{length_range}_stats.csv", index=False)
+
+
+def get_sim_files(length_range: str) -> list:
+    """
+    Get all the simulation adjacency matrix files belonging to the length range
+    @param length_range: chain length range
+    @return: list containing all simulation files
+    """
+    return glob.glob(f"../data/simulations/3d/matrices/matrix_{length_range}_*")
+
+
+def sim_to_pcm(length_range: str) -> None:
+    """
+    Open 3D simulation adjacency matrix files and compute amino acid distances with statistics
+    @param length_range: chain length range
+    @return: None
+    """
+    files = get_sim_files(length_range)
+    all_distances = []
+    for file in files:
+        distances_list = []
+        adjacency_matrix = np.loadtxt(file)
+        adjacency_matrix[adjacency_matrix > 1] = 0
+        protein_graph = nx.from_numpy_matrix(adjacency_matrix)
+        distances = list(protein_graph.edges())
+        for distance in distances:
+            distances_list.append(abs(distance[0] - distance[1]))
+        all_distances.append(np.asarray(distances_list))
+        np.save(f"../data/simulations/3d/lls_{length_range}.npy", all_distances)
+
+
+def sim_statistics(length_range: str) -> None:
+    """
+
+    @param length_range:
+    @return: None
+    """
+    simulation_samples = np.load(f"../data/simulations/3d/lls_{length_range}.npy", allow_pickle=True)
+    distances_dict = {}
+    for sample in simulation_samples:
+        values, counts = np.unique(sample, return_counts=True)
+        for value, count in zip(values, counts):
+            try:
+                distances_dict[value].append(count)
+            except KeyError:
+                distances_dict[value] = []
+                distances_dict[value].append(count)
+    dataframe_from_dict = pd.DataFrame.from_dict(distances_dict, orient="index").reset_index()
+    dataframe_no_nans = dataframe_from_dict.fillna(0)
+    dataframe_no_nans.to_csv(f"../data/simulations/3d/simulation_{length_range}_raw.csv")
+    melted_dataframe = dataframe_no_nans.melt(id_vars="index")
+    stats_dataframe = melted_dataframe.groupby("index", as_index=False).agg(mean=("value", np.mean),
+                                                                            lower_bound=("value", lambda val:
+                                                                            np.quantile(val, q=0.05)),
+                                                                            upper_bound=("value", lambda val:
+                                                                            np.quantile(val, q=0.95)))
+    stats_dataframe.to_csv(f"../data/simulations/3d/simulation_{length_range}_stats.csv")
+
+
+def compute_simulation_distribution(length_range: str) -> None:
+    """
+
+    @param length_range:
+    @return:
+    """
+    sim_to_pcm(length_range=length_range)
+    sim_statistics(length_range=length_range)
+
