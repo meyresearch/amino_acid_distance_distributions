@@ -3,6 +3,7 @@ Theoretical functions for plotting.
 """
 import numpy as np
 from sklearn.metrics import r2_score
+import networkx as nx
 
 
 def harmonic_number(n_numbers: int) -> float:
@@ -89,3 +90,12 @@ def plotting_statistics(dimensionality: float, exponent: int, n_points: int, hal
     print(f"r-squared statistic: {r_square_value}")
     print(f"residual sum of squares: {residual_sum_of_squares}")
     return residuals, residuals_mean, r_square_value, residual_sum_of_squares
+
+
+def get_adjacency_matrix(protein_graph: nx.Graph) -> np.ndarray:
+    """
+    Take a protein graph and convert it to an adjacency matrix (Numpy array)
+    @param protein_graph: protein contact map (graph)
+    @return: adjacency matrix
+    """
+    return nx.convert_matrix.to_numpy_array(protein_graph)

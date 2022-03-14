@@ -18,7 +18,7 @@ def plot() -> None:
         plot_functions.create_comparison_plot(arguments)
     elif algorithm == "B":
         plot_functions.create_bar_plots()
-    else:
+    elif algorithm == "BS" or algorithm == "C":
         dimensionality_start = arguments.start_dimensionality
         dimensionality_end = arguments.end_dimensionality
         exponent_start = arguments.start_exponent
@@ -30,6 +30,8 @@ def plot() -> None:
             pass
         elif dimensionality_start != dimensionality_end and exponent_start != exponent_end:
             plot_functions.create_grid_plots(arguments, pdb_dataframe, sim_dataframe)
+    elif algorithm == "A":
+        plot_functions.plot_adjacency_matrix(arguments.file, arguments.data_type)
 
 
 def main():

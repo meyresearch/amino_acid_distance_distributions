@@ -3,10 +3,11 @@ Functions used for plotting amino acid distance distributions.
 """
 import argparse
 
+import matplotlib.axes
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-
+import pcm
 import theory_functions
 import seaborn as sns
 
@@ -16,7 +17,9 @@ _COLOUR_PALETTE = {"PDB_SCATTER": "#006374",
                    "THEORY": "#006374",
                    "RESIDUALS": "#fbafe4",
                    "DATABANK": "#006374",
-                   "USED": "#fbafe4"}
+                   "USED": "#fbafe4",
+                   "CONTACT": "#fbafe4",
+                   "NO_CONTACT": "#006374"}
 
 
 def create_plot_label(length_range: str, algorithm: str):
@@ -132,8 +135,11 @@ def parse_command_line_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Plot amino acid distances and residuals.")
     parser.add_argument("-r", dest="length_range", type=str, choices=["100", "200", "300", None],
                         help="chain length range to be plotted")
-    parser.add_argument("algorithm", type=str, choices=["BS", "C", "BOTH", "B"],
-                        help="get distances from bootstrapping (BS), chunking (C), compare both or plot bars (B)")
+    parser.add_argument("algorithm", type=str, choices=["BS", "C", "BOTH", "A", "B"],
+                        help="get distances from bootstrapping (BS), chunking (C), compare both, plot adjacency matrix "
+                             "(A) or plot bar plots (B)")
+    parser.add_argument("-t", dest="data_type", type=str, choices=["PDB", "SIM"], help="data type for adjacency matrix")
+    parser.add_argument("-f", dest="file", type=str, help="PDB file or simulation matrix for adjacency matrix")
     parser.add_argument("--d-begin", dest="start_dimensionality", type=float, help="starting value for dimensionality "
                                                                                    "constant (A)")
     parser.add_argument("--d-end", dest="end_dimensionality", type=float, help="last value for dimensionality "
@@ -151,15 +157,19 @@ def parse_command_line_arguments() -> argparse.Namespace:
     arguments = parser.parse_args()
     check_required_arguments(parser, arguments.algorithm, arguments.length_range, arguments.start_dimensionality,
                              arguments.end_dimensionality, arguments.start_exponent, arguments.end_exponent,
-                             arguments.d_bs, arguments.e_bs, arguments.d_c, arguments.e_c)
+                             arguments.d_bs, arguments.e_bs, arguments.d_c, arguments.e_c, arguments.data_type,
+                             arguments.file)
     return arguments
 
 
 def check_required_arguments(argument_parser: argparse.ArgumentParser, given_algorithm: str, given_length: str,
                              starting_d: str, ending_d: str, starting_e: str, ending_e: str, bootstrap_d: str,
-                             bootstrap_e: str, chunk_d: str, chunk_e: str) -> None:
+                             bootstrap_e: str, chunk_d: str, chunk_e: str,
+                             data_type: str, file: str) -> None:
     """
     Check given CL arguments so that all requirements are met
+    @param file: PDB file or simulation matrix
+    @param data_type: SIM or PDB
     @param given_length: given chain length range
     @param argument_parser: parser for CL arguments
     @param given_algorithm: either BS, C or BOTH
@@ -187,6 +197,9 @@ def check_required_arguments(argument_parser: argparse.ArgumentParser, given_alg
         argument_parser.error("BOTH requires -r, --d-BS, --d-C, --e-BS, --e-C")
     elif given_algorithm == "B" and given_length is not None:
         argument_parser.error("B requires -r=None")
+    elif (given_algorithm == "A" and data_type is None) or (given_algorithm == "A" and file is None) or \
+            (given_algorithm == "A" and given_length is not None):
+        argument_parser.error("A requires -t, -f")
 
 
 def get_dataframe(arguments: argparse.Namespace) -> pd.DataFrame:
@@ -302,7 +315,7 @@ def create_bar_plots() -> None:
     alpha_bins, alpha_frequencies = get_data_for_bars(path+alphafold_file)
     swiss_bins, swiss_frequencies = get_data_for_bars(path+swissprot_file)
     pdb_bins, pdb_frequencies = get_data_for_bars(path+pdb_file)
-    rcsb_bins, rcsb_frequencies = get_data_for_bars(path+rcsb_file)
+    bins, rcsb_frequencies = get_data_for_bars(path+rcsb_file)
 
     adjusted_swiss = calculate_adjusted_frequency(swiss_frequencies, alpha_frequencies)
     adjusted_rcsb = calculate_adjusted_frequency(rcsb_frequencies, pdb_frequencies)
@@ -310,28 +323,27 @@ def create_bar_plots() -> None:
     fig = plt.figure(figsize=(10, 8))
     ax = fig.subplots(2, 1, sharex=True)
 
-    ax[0].bar(swiss_bins, adjusted_swiss,
+    ax[0].bar(bins, adjusted_swiss,
               color=_COLOUR_PALETTE["DATABANK"],
               label="Swiss-Prot Frequencies",
               bottom=alpha_frequencies)
-    ax[0].bar(alpha_bins, alpha_frequencies,
+    ax[0].bar(bins, alpha_frequencies,
               color=_COLOUR_PALETTE["USED"],
               label="Used AlphaFold Frequencies")
-    ax[1].bar(rcsb_bins, adjusted_swiss,
+    ax[1].bar(bins, adjusted_rcsb,
               color=_COLOUR_PALETTE["DATABANK"],
               label="RCSB Frequencies",
               bottom=pdb_frequencies)
-    ax[1].bar(pdb_bins, pdb_frequencies,
+    ax[1].bar(bins, pdb_frequencies,
               color=_COLOUR_PALETTE["USED"],
               label="Used RCSB Frequencies")
 
     ax[0].tick_params(axis="x", labelrotation=90)
     ax[1].tick_params(axis="x", labelrotation=90)
 
-    ax[0].legend()
-    ax[1].legend()
+    ax[0].legend(fontsize=14)
+    ax[1].legend(fontsize=14)
 
-    fig.text(0.5, 0.027, "Chain length", ha="center")
     plt.subplots_adjust(left=0.09, bottom=0.08, top=0.99, wspace=0.05, right=1)
     plt.tight_layout()
     sns.despine()
@@ -415,16 +427,71 @@ def create_comparison_plot(arguments: argparse.Namespace) -> None:
     plt.show()
 
 
+def get_simulation_matrix(matrix_file: str) -> np.ndarray:
+    """
+    Open a 3D simulation file and return the adjacency matrix
+    @param matrix_file: matrix_<length_range>_<file_no>.txt
+    @return: adjacency matrix as a Numpy array
+    """
+    adjacency_matrix = np.loadtxt(matrix_file)
+    adjacency_matrix[adjacency_matrix > 1] = 0
+    return adjacency_matrix
 
 
+def get_pdb_matrix(pdb_file: str) -> np.ndarray:
+    """
+    Open a PDB file, create a graph and return its adjacency matrix
+    @param pdb_file: PDB file from either RCSB or AlphaFold (default)
+    @return: adjacency matrix as a Numpy array
+    """
+    protein_contact_map = pcm.ProteinContactMap(pdb_file)
+    alpha_carbons = protein_contact_map.get_alpha_carbons
+    protein_graph = protein_contact_map.get_protein_graph(alpha_carbons)
+    return theory_functions.get_adjacency_matrix(protein_graph)
 
 
+def set_adjacency_matrix_ticks(plot: matplotlib.axes.Axes) -> None:
+    """
+    Format tick labels for adjacency matrix plots
+    @param plot: seaborn heatmap
+    @return:
+    """
+    for index, label in enumerate(plot.get_xticklabels()):
+        if index % 5 == 0:
+            label.set_visible(True)
+            label.set_rotation(360)
+            label.set_font("Helvetica")
+            label.set_fontsize(14)
+        else:
+            label.set_visible(False)
+    for index, label in enumerate(plot.get_yticklabels()):
+        if index % 5 == 0:
+            label.set_visible(True)
+            label.set_font("Helvetica")
+            label.set_fontsize(14)
+        else:
+            label.set_visible(False)
 
 
+def plot_adjacency_matrix(file: str, data_type: str) -> None:
+    """
+    Plot adjacency matrix for given protein file (or simulation matrix)
+    @param file: PDB or matrix file
+    @param data_type: PDB or SIM
+    @return: None
+    """
+    adjacency_matrix = []
+    if data_type == "SIM":
+        adjacency_matrix = get_simulation_matrix(file)
+    elif data_type == "PDB":
+        adjacency_matrix = get_pdb_matrix(file)
 
-
-
-
-
-
-
+    plt.figure(figsize=(8, 8))
+    colormap = [_COLOUR_PALETTE["NO_CONTACT"], _COLOUR_PALETTE["CONTACT"]]
+    heatmap = sns.heatmap(adjacency_matrix, cmap=colormap, cbar=False)
+    set_adjacency_matrix_ticks(heatmap)
+    heatmap.set_xlabel("Amino acid", fontsize=20, font="Helvetica")
+    heatmap.set_ylabel("Amino acid", fontsize=20, font="Helvetica")
+    sns.despine()
+    plt.savefig(f"../plots/adjacency_matrices/{data_type}_matrix.jpeg", dpi=900)
+    plt.show()
