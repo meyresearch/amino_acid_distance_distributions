@@ -51,6 +51,7 @@ def commandline_arguments() -> argparse.Namespace:
                              "(BS) or chunk (C)")
     parser.add_argument("-r", dest="length_range", type=str, choices=[None, "100", "200", "300"], help="Chain length "
                                                                                                        "range")
+    parser.add_argument("-p", dest="path_to_pdbs", type=str, help="Full path to directory containing PDB files")
     parser.add_argument("-i", dest="inputfile", type=str, help="Full path and name of input file")
     cl_arguments = parser.parse_args()
 
@@ -60,16 +61,22 @@ def commandline_arguments() -> argparse.Namespace:
         parser.error("C requires -i")
     elif cl_arguments.algorithm == "PDB" and cl_arguments.length_range is not None:
         parser.error("PDB requires -r=None")
+    elif cl_arguments.algorithm == "PDB" and cl_arguments.path_to_pdbs is None:
+        parser.error("PDB requires -p")
     elif cl_arguments.algorithm == "aF" and cl_arguments.length_range is None:
         parser.error("aF requires -r")
+    elif cl_arguments.algorithm == "aF" and cl_arguments.path_to_pdbs is None:
+        parser.error("aF requires -p")
     elif cl_arguments.algorithm == "SIM" and cl_arguments.length_range is None:
         parser.error("SIM requires -r")
     return cl_arguments
 
 
-def pdb_to_pcm(log_file: str, given_algorithm: str, length_range: str) -> None:
+def pdb_to_pcm(log_file: str, given_algorithm: str, length_range: str, path_to_pdbs: str) -> None:
     """
     Convert given PDB files to ProteinContactNetworks.
+    @rtype: object
+    @param path_to_pdbs: path to directory contiaining PDB files
     @param length_range: chain length range
     @param given_algorithm: PDB or aF
     @param log_file: log.txt to save errors
@@ -97,9 +104,9 @@ def pdb_to_pcm(log_file: str, given_algorithm: str, length_range: str) -> None:
                 print(f"PDB ID is: {pdb_id}")
                 pdb_file = None
                 if given_algorithm == "PDB":
-                    pdb_file = f"/Volumes/Samsung T5/PhD/First_year/Papers/pdb_files/pdb_files/pdb{pdb_id}.ent"
+                    pdb_file = f"{path_to_pdbs}/pdb{pdb_id}.ent"
                 elif given_algorithm == "aF":
-                    pdb_file = f"../data/alphafold/pdb_files/AF-{pdb_id}-F1-model_v2.pdb"
+                    pdb_file = f"{path_to_pdbs}/AF-{pdb_id}-F1-model_v2.pdb"
                 print("Successfully opened file.")
             except FileNotFoundError:
                 traceback.print_exc(file=log)
