@@ -196,9 +196,9 @@ def bootstrap(inputfile: str, sample_replacement: bool, length_range: str) -> No
                 bootstrap_dataframe_stats.to_csv(f"../data/alphafold/chunk_{length_range}_stats.csv", index=False)
 
 
-def get_sim_files(length_range: str) -> list:
+def get_3d_sim_files(length_range: str) -> list:
     """
-    Get all the simulation adjacency matrix files belonging to the length range
+    Get all the 3D simulation adjacency matrix files belonging to the length range
     @param length_range: chain length range
     @return: list containing all simulation files
     """
@@ -211,7 +211,7 @@ def sim_to_pcm(length_range: str) -> None:
     @param length_range: chain length range
     @return: None
     """
-    files = get_sim_files(length_range)
+    files = get_3d_sim_files(length_range)
     all_distances = []
     for file in files:
         distances_list = []
@@ -225,11 +225,11 @@ def sim_to_pcm(length_range: str) -> None:
         np.save(f"../data/simulations/3d/lls_{length_range}.npy", all_distances)
 
 
-def sim_statistics(length_range: str) -> None:
+def get_simulation_stats(length_range: str):
     """
-
-    @param length_range:
-    @return: None
+    Open 3D simulation files and return frequencies of amino acid distances
+    @param length_range: chain length range
+    @return: pd.DataFrame
     """
     simulation_samples = np.load(f"../data/simulations/3d/lls_{length_range}.npy", allow_pickle=True)
     distances_dict = {}
@@ -253,12 +253,12 @@ def sim_statistics(length_range: str) -> None:
     stats_dataframe.to_csv(f"../data/simulations/3d/simulation_{length_range}_stats.csv")
 
 
-def compute_simulation_distribution(length_range: str) -> None:
+def compute_3d_simulation_distribution(length_range: str) -> None:
     """
 
     @param length_range:
     @return:
     """
     sim_to_pcm(length_range=length_range)
-    sim_statistics(length_range=length_range)
+    get_simulation_stats(length_range=length_range)
 

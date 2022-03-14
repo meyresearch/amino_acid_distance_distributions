@@ -2,6 +2,7 @@
 Functions used for plotting amino acid distance distributions.
 """
 import argparse
+import glob
 
 import matplotlib.axes
 import matplotlib.pyplot as plt
@@ -135,9 +136,9 @@ def parse_command_line_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Plot amino acid distances and residuals.")
     parser.add_argument("-r", dest="length_range", type=str, choices=["100", "200", "300", None],
                         help="chain length range to be plotted")
-    parser.add_argument("algorithm", type=str, choices=["BS", "C", "BOTH", "A", "B"],
-                        help="get distances from bootstrapping (BS), chunking (C), compare both, plot adjacency matrix "
-                             "(A) or plot bar plots (B)")
+    parser.add_argument("algorithm", type=str, choices=["BS", "C", "BOTH", "2D-SIM", "A", "B"],
+                        help="get distances from bootstrapping (BS), chunking (C), compare both, distances from 2D "
+                             "simulations, plot adjacency matrix (A) or plot bar plots (B)")
     parser.add_argument("-t", dest="data_type", type=str, choices=["PDB", "SIM"], help="data type for adjacency matrix")
     parser.add_argument("-f", dest="file", type=str, help="PDB file or simulation matrix for adjacency matrix")
     parser.add_argument("--d-begin", dest="start_dimensionality", type=float, help="starting value for dimensionality "
@@ -312,10 +313,10 @@ def create_bar_plots() -> None:
     swissprot_file = "UniProt_Swiss_Prot.csv"
     rcsb_file = "RCSB_by_length.csv"
 
-    alpha_bins, alpha_frequencies = get_data_for_bars(path+alphafold_file)
-    swiss_bins, swiss_frequencies = get_data_for_bars(path+swissprot_file)
-    pdb_bins, pdb_frequencies = get_data_for_bars(path+pdb_file)
-    bins, rcsb_frequencies = get_data_for_bars(path+rcsb_file)
+    alpha_bins, alpha_frequencies = get_data_for_bars(path + alphafold_file)
+    swiss_bins, swiss_frequencies = get_data_for_bars(path + swissprot_file)
+    pdb_bins, pdb_frequencies = get_data_for_bars(path + pdb_file)
+    bins, rcsb_frequencies = get_data_for_bars(path + rcsb_file)
 
     adjusted_swiss = calculate_adjusted_frequency(swiss_frequencies, alpha_frequencies)
     adjusted_rcsb = calculate_adjusted_frequency(rcsb_frequencies, pdb_frequencies)
@@ -495,3 +496,58 @@ def plot_adjacency_matrix(file: str, data_type: str) -> None:
     sns.despine()
     plt.savefig(f"../plots/adjacency_matrices/{data_type}_matrix.jpeg", dpi=900)
     plt.show()
+
+
+def get_2d_sim_files():
+    """
+    Get all the files for 2D simulations
+    @return: list containing all simulation files
+    """
+    return glob.glob(f"../data/simulations/2d/2d_sim_no_circle_*")
+
+
+def get_2d_distance_frequencies(files: list) -> np.ndarray:
+    """
+    Get the frequencies from 2D simulation files
+    @param files: 2D simulation files
+    @return: array containing frequencies for amino acid distances
+    """
+    distances_list = []
+    for file in files:
+        distances = np.loadtxt(file)
+        distances_list.append(distances)
+    return np.asarray(distances_list)
+
+
+def get_2d_simulation_stats() -> pd.DataFrame:
+    """
+    Compute the mean and confidence interval for 2D simulations
+    @return: None
+    """
+    files = get_2d_sim_files()
+    frequencies = get_2d_distance_frequencies(files)
+    simulation_dataframe = pd.DataFrame(frequencies)
+    melted_dataframe = simulation_dataframe.melt()
+    simulation_stats_dataframe = melted_dataframe.groupby("variable",
+                                                          as_index=False).agg(mean=("value", np.mean),
+                                                                              lower_bound=("value", lambda val:
+                                                                              np.quantile(val, q=0.05)),
+                                                                              upper_bound=("value", lambda val:
+                                                                              np.quantile(val, q=0.95)))
+    simulation_stats_dataframe.to_csv(f"../data/simulations/2d/simulation_stats.csv")
+    return simulation_stats_dataframe
+
+
+def get_2d_plotting_data(simulation_dataframe: pd.DataFrame) -> tuple:
+    """
+    Get 2D simulation data from dataframe
+    @param simulation_dataframe: dataframe containing 2D simulation stats
+    @return: tuple containing the mean frequencies of amino acid distances, distances and the CI bounds
+    """
+    mean_frequencies = simulation_dataframe["mean"].to_numpy()[2:]
+    distances = simulation_dataframe["variable"].to_numpy()[2:]
+    lower_bound = simulation_dataframe["lower_bound"].to_numpy()[2:]
+    upper_bound = simulation_dataframe["upper_bound"].to_numpy()[2:]
+    return mean_frequencies, distances, lower_bound, upper_bound
+
+

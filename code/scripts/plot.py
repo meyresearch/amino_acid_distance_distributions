@@ -32,6 +32,7 @@ def plot() -> None:
             plot_functions.create_grid_plots(arguments, pdb_dataframe, sim_dataframe)
     elif algorithm == "A":
         plot_functions.plot_adjacency_matrix(arguments.file, arguments.data_type)
+    elif algorithm == "2D-SIM":
 
 
 def main():
