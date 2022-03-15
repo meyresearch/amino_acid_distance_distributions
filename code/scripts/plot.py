@@ -35,6 +35,7 @@ def plot() -> None:
     elif algorithm == "2D-SIM":
         pass
 
+
 def main():
     plot()
 
