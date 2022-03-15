@@ -33,7 +33,7 @@ def plot() -> None:
     elif algorithm == "A":
         plot_functions.plot_adjacency_matrix(arguments.file, arguments.data_type)
     elif algorithm == "2D-SIM":
-
+        pass
 
 def main():
     plot()

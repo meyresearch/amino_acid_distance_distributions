@@ -25,7 +25,7 @@ def handle_commandline_options(cl_arguments: argparse.Namespace) -> None:
                              given_algorithm=given_algorithm,
                              length_range=given_linklength,
                              path_to_pdbs=given_path)
-    elif given_algorithm == "SIM":
+    elif given_algorithm == "3D-SIM":
         functions.compute_3d_simulation_distribution(length_range=given_linklength)
     elif given_algorithm == "BS":
         functions.bootstrap(inputfile=given_inputfile,

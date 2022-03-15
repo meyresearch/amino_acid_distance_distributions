@@ -46,29 +46,46 @@ def commandline_arguments() -> argparse.Namespace:
     """
 
     parser = argparse.ArgumentParser(description="Get amino acid distance distributions.")
-    parser.add_argument("algorithm", type=str, choices=["PDB", "aF", "SIM", "BS", "C"],
+    parser.add_argument("algorithm", type=str, choices=["PDB", "aF", "3D-SIM", "BS", "C"],
                         help="Get amino acid distances from RCSB (PDB), AlphaFold (aF) or simulations (SIM), bootstrap "
                              "(BS) or chunk (C)")
-    parser.add_argument("-r", dest="length_range", type=str, choices=[None, "100", "200", "300"], help="Chain length "
-                                                                                                       "range")
-    parser.add_argument("-p", dest="path_to_pdbs", type=str, help="Full path to directory containing PDB files")
-    parser.add_argument("-i", dest="inputfile", type=str, help="Full path and name of input file")
+    parser.add_argument("-r", "--range", dest="length_range", type=str, choices=[None, "100", "200", "300"],
+                        help="Chain length range")
+    parser.add_argument("-p", "--path", dest="path_to_pdbs", type=str,
+                        help="Full path to directory containing PDB files")
+    parser.add_argument("-i", "--inputfile", dest="inputfile", type=str, help="Full path and name of input file")
     cl_arguments = parser.parse_args()
 
     if cl_arguments.algorithm == "BS" and cl_arguments.inputfile is None:
-        parser.error("BS requires -i")
+        parser.error("BS requires --inputfile")
+    elif cl_arguments.algorithm == "BS" and cl_arguments.path_to_pdbs is not None:
+        parser.error("BS requires --path=None")
+    elif cl_arguments.algorithm == "BS" and cl_arguments.length_range is None:
+        parser.error("BS requires --range")
     elif cl_arguments.algorithm == "C" and cl_arguments.inputfile is None:
-        parser.error("C requires -i")
+        parser.error("C requires --inputfile")
+    elif cl_arguments.algorithm == "C" and cl_arguments.path_to_pdbs is not None:
+        parser.error("C requires --path=None")
+    elif cl_arguments.algorithm == "C" and cl_arguments.length_range is None:
+        parser.error("C requires --range")
     elif cl_arguments.algorithm == "PDB" and cl_arguments.length_range is not None:
-        parser.error("PDB requires -r=None")
+        parser.error("PDB requires --range=None")
     elif cl_arguments.algorithm == "PDB" and cl_arguments.path_to_pdbs is None:
-        parser.error("PDB requires -p")
+        parser.error("PDB requires --path")
+    elif cl_arguments.algorithm == "PDB" and cl_arguments.inputfile is not None:
+        parser.error("PDB requires --inputfile=None")
     elif cl_arguments.algorithm == "aF" and cl_arguments.length_range is None:
-        parser.error("aF requires -r")
+        parser.error("aF requires --range")
     elif cl_arguments.algorithm == "aF" and cl_arguments.path_to_pdbs is None:
-        parser.error("aF requires -p")
-    elif cl_arguments.algorithm == "SIM" and cl_arguments.length_range is None:
-        parser.error("SIM requires -r")
+        parser.error("aF requires --path")
+    elif cl_arguments.algorithm == "aF" and cl_arguments.length_range is not None:
+        parser.error("PDB requires --inputfile=None")
+    elif cl_arguments.algorithm == "3D-SIM" and cl_arguments.length_range is None:
+        parser.error("SIM requires --range")
+    elif cl_arguments.algorithm == "3D-SIM" and cl_arguments.path_to_pdbs is not None:
+        parser.error("SIM requires --path=None")
+    elif cl_arguments.algorithm == "3D-SIM" and cl_arguments.inputfile is not None:
+        parser.error("SIM requires --inputfile=None")
     return cl_arguments
 
 

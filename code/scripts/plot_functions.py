@@ -238,9 +238,9 @@ def create_grid_plots(arguments: argparse.Namespace, pdb_dataframe: pd.DataFrame
     """
     Function to bring together everything needed to plot the grid plots of amino acid distance distributions
     and residuals
-    @param arguments:
-    @param pdb_dataframe:
-    @param sim_dataframe:
+    @param arguments: command line arguments
+    @param pdb_dataframe: dataframe containing data for PDBs
+    @param sim_dataframe: 3D simulation data for plotting
     @return:
     """
     pdb_plotting_tuple = get_data_for_plotting(pdb_dataframe)
