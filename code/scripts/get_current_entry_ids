@@ -1,0 +1,4 @@
+# Get current entry ids from RCSB PDB
+# More info at: https://data.rcsb.org/redoc/index.html#operation/getCurrentEntryIds
+cd ../data/rcsb/
+wget https://data.rcsb.org/rest/v1/holdings/current/entry_ids -O combined_ids.txt
