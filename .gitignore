@@ -1,12 +1,14 @@
 .DS_Store
 .idea/
 .ipynb_checkpoints*
-data/
+old_repo_data/
 old_data/
 old_codes/
 old_plots/
 old_src/
 code/scripts/__pycache__/
+data/
+../data/
 ../scripts/__pycache__/
 ../data/rcsb/ids/
 ../data/rcsb/pdb_files/
@@ -15,3 +17,9 @@ code/scripts/__pycache__/
 ../data/alphafold/pdb_files.zip
 ../data/rcsb/lls*
 ../data/rcsb/distance_distribution_files.zip
+../data/rcsb/ids/
+../data/rcsb/distance_distribution_files/
+../data/rcsb/ids.zip
+../data/simulations/2d/
+../data/simulations/3d/
+
