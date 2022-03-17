@@ -1,5 +1,5 @@
 """
-Base class for PCNs. 
+Base class for PCMs.
 
 """
 import MDAnalysis
