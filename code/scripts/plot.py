@@ -3,6 +3,11 @@ Handle all plotting functions and actually make the plots
 """
 import pandas as pd
 import plot_functions
+import adjacency
+import bars
+import comparison
+import simulation
+import distances
 
 
 def plot() -> None:
@@ -14,26 +19,32 @@ def plot() -> None:
     length_range = arguments.length_range
     algorithm = arguments.algorithm
 
-    if algorithm == "BOTH":
-        plot_functions.create_comparison_plot(arguments)
-    elif algorithm == "B":
-        plot_functions.create_bar_plots()
-    elif algorithm == "BS" or algorithm == "C":
+    if algorithm == "comp":
+        comparison.create_comparison_plot(arguments)
+    elif algorithm == "bar":
+        bars.create_bar_plots()
+    elif algorithm == "rcsb" or algorithm == "alpha":
         dimensionality_start = arguments.start_dimensionality
         dimensionality_end = arguments.end_dimensionality
         exponent_start = arguments.start_exponent
         exponent_end = arguments.end_exponent
-        pdb_dataframe = plot_functions.get_dataframe(arguments)
-        sim_dataframe = pd.read_csv(f"../data/simulations/3d/lls_{length_range}.csv")
-
+        pdb_dataframe = distances.get_dataframe(arguments)
+        sim_dataframe = pd.read_csv(f"../data/simulations/3d/simulation_{length_range}_stats.csv")
         if dimensionality_start == dimensionality_end and exponent_start == exponent_end:
-            pass
+            distances.create_plots(arguments, exponent_start, dimensionality_start, pdb_dataframe, sim_dataframe)
         elif dimensionality_start != dimensionality_end and exponent_start != exponent_end:
-            plot_functions.create_grid_plots(arguments, pdb_dataframe, sim_dataframe)
-    elif algorithm == "A":
-        plot_functions.plot_adjacency_matrix(arguments.file, arguments.data_type)
-    elif algorithm == "2D-SIM":
-        pass
+            distances.create_grid_plots(arguments, pdb_dataframe, sim_dataframe)
+    elif algorithm == "adj":
+        adjacency.plot_adjacency_matrix(arguments.file, arguments.data_type)
+    elif algorithm == "2d-sim":
+        dimensionality_start = arguments.start_dimensionality
+        dimensionality_end = arguments.end_dimensionality
+        exponent_start = arguments.start_exponent
+        exponent_end = arguments.end_exponent
+        if dimensionality_start == dimensionality_end and exponent_start == exponent_end:
+            simulation.create_2d_plots(exponent=exponent_start, dimensionality=dimensionality_start)
+        else:
+            simulation.create_2d_grid_plots(arguments)
 
 
 def main():

@@ -6,7 +6,7 @@ import traceback
 
 import networkx as nx
 
-import pcm
+import protein_contact_map
 import numpy as np
 import os
 import pandas as pd

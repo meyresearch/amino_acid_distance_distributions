@@ -1,8 +1,8 @@
 """Functions for plotting comparison plot (Fig.4.)"""
 import argparse
 import numpy as np
-import sequence_distance_distribution.code.scripts.theory_functions as theory_functions
-from sequence_distance_distribution.code.scripts.plot_functions import _COLOUR_PALETTE
+import theory_functions
+from plot_functions import _COLOUR_PALETTE
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd

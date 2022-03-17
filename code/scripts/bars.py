@@ -2,7 +2,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from sequence_distance_distribution.code.scripts.plot_functions import _COLOUR_PALETTE
+from plot_functions import _COLOUR_PALETTE
 import numpy as np
 
 

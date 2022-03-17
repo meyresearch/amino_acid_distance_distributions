@@ -3,8 +3,9 @@ import matplotlib
 import numpy as np
 from matplotlib import pyplot as plt
 import seaborn as sns
-from sequence_distance_distribution.code.scripts import protein_contact_map, theory_functions
-from sequence_distance_distribution.code.scripts.plot_functions import _COLOUR_PALETTE
+import protein_contact_map
+import theory_functions
+from plot_functions import _COLOUR_PALETTE
 
 
 def get_simulation_matrix(matrix_file: str) -> np.ndarray:
