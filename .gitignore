@@ -1,5 +1,5 @@
 .DS_Store
-.idea/
+.idea
 .ipynb_checkpoints*
 old_repo_data/
 old_data/
