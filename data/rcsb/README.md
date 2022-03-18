@@ -1,4 +1,4 @@
-# Getting RCSB PDB data
+# RCSB PDB Data
 
 ## 1. Get all current PDB IDs 
 
@@ -19,3 +19,10 @@ Run `scripts/retrieve_rcsb_pdbs.py` to retrieve the PDB files in `data/rcsb/pdb_
 
 **Note:** This may take a long time to run. Please see the `trivial_parallelisation/` directory for an option to use 
 trivial parallelisation to retrieve the PDB files. 
+
+## 4. Get amino acid distance distributions
+
+Amino acid distance distributions are computed by running `python run.py rcsb --range=<chain-length> --path=<path-to-pdb-files>`
+where `<chain-length>` is one of `100, 200` or `300`. This creates Protein Contact Maps from each PDB in the given chain length
+range and calculates the amino acid distances. The amino acid distances will be saved in `data/rcsb/lls_<chain-length>.npy`.
+
