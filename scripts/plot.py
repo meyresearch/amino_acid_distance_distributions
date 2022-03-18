@@ -2,12 +2,12 @@
 Handle all plotting functions and actually make the plots
 """
 import pandas as pd
+import distances
 import plot_functions
-import adjacency
 import bars
 import comparison
+import adjacency
 import simulation
-import distances
 
 
 def plot() -> None:

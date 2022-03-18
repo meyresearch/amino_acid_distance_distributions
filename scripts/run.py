@@ -15,23 +15,23 @@ def handle_commandline_options(cl_arguments: argparse.Namespace) -> None:
     given_inputfile = cl_arguments.inputfile
     given_linklength = cl_arguments.length_range
     given_path = cl_arguments.path_to_pdbs
-    if given_algorithm == "PDB":
+    if given_algorithm == "rcsb":
         functions.pdb_to_pcm(log_file="log.txt",
                              given_algorithm=given_algorithm,
                              length_range=given_linklength,
                              path_to_pdbs=given_path)
-    elif given_algorithm == "aF":
+    elif given_algorithm == "alpha":
         functions.pdb_to_pcm(log_file="log.txt",
                              given_algorithm=given_algorithm,
                              length_range=given_linklength,
                              path_to_pdbs=given_path)
-    elif given_algorithm == "3D-SIM":
+    elif given_algorithm == "3d-sim":
         functions.compute_3d_simulation_distribution(length_range=given_linklength)
-    elif given_algorithm == "BS":
+    elif given_algorithm == "boots":
         functions.bootstrap(inputfile=given_inputfile,
                             sample_replacement=True,
                             length_range=given_linklength)
-    elif given_algorithm == "C":
+    elif given_algorithm == "chunk ":
         functions.bootstrap(inputfile=given_inputfile,
                             sample_replacement=False,
                             length_range=given_linklength)

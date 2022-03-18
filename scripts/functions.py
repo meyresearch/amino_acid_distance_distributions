@@ -1,16 +1,13 @@
 """
 Functions for getting link lengths and bootstrapping.
 """
-import glob
-import traceback
-
-import networkx as nx
-
-import protein_contact_map
-import numpy as np
-import os
-import pandas as pd
 import argparse
+import glob
+import os
+import traceback
+import networkx as nx
+import numpy as np
+import pandas as pd
 
 
 def concatenate_rcsb_id_files() -> np.array:
@@ -46,14 +43,13 @@ def commandline_arguments() -> argparse.Namespace:
     """
 
     parser = argparse.ArgumentParser(description="Get amino acid distance distributions.")
-    parser.add_argument("algorithm", type=str, choices=["PDB", "aF", "3D-SIM", "BS", "C"],
-                        help="Get amino acid distances from RCSB (PDB), AlphaFold (aF) or simulations (SIM), bootstrap "
-                             "(BS) or chunk (C)")
+    parser.add_argument("algorithm", type=str, choices=["rcsb", "alpha", "3d-sim", "boots", "chunk"],
+                        help="Get amino acid distances from rcsb, [alpha]fold or 3D simulations, [boots]trap or chunk")
     parser.add_argument("-r", "--range", dest="length_range", type=str, choices=[None, "100", "200", "300"],
                         help="Chain length range")
     parser.add_argument("-p", "--path", dest="path_to_pdbs", type=str,
                         help="Full path to directory containing PDB files")
-    parser.add_argument("-i", "--inputfile", dest="inputfile", type=str, help="Full path and name of input file")
+    parser.add_argument("-f", "--file", dest="inputfile", type=str, help="Full path and name of input file")
     cl_arguments = parser.parse_args()
     check_arguments(cl_arguments, parser)
     return cl_arguments
@@ -66,36 +62,36 @@ def check_arguments(arguments: argparse.Namespace, argument_parser: argparse.Arg
     @param argument_parser: parser for command line arguments
     @return: None
     """
-    if arguments.algorithm == "BS" and arguments.inputfile is None:
-        argument_parser.error("BS requires --inputfile")
-    elif arguments.algorithm == "BS" and arguments.path_to_pdbs is not None:
-        argument_parser.error("BS requires --path=None")
-    elif arguments.algorithm == "BS" and arguments.length_range is None:
-        argument_parser.error("BS requires --range")
-    elif arguments.algorithm == "C" and arguments.inputfile is None:
-        argument_parser.error("C requires --inputfile")
-    elif arguments.algorithm == "C" and arguments.path_to_pdbs is not None:
-        argument_parser.error("C requires --path=None")
-    elif arguments.algorithm == "C" and arguments.length_range is None:
-        argument_parser.error("C requires --range")
-    elif arguments.algorithm == "PDB" and arguments.length_range is not None:
-        argument_parser.error("PDB requires --range=None")
-    elif arguments.algorithm == "PDB" and arguments.path_to_pdbs is None:
-        argument_parser.error("PDB requires --path")
-    elif arguments.algorithm == "PDB" and arguments.inputfile is not None:
-        argument_parser.error("PDB requires --inputfile=None")
-    elif arguments.algorithm == "aF" and arguments.length_range is None:
-        argument_parser.error("aF requires --range")
-    elif arguments.algorithm == "aF" and arguments.path_to_pdbs is None:
-        argument_parser.error("aF requires --path")
-    elif arguments.algorithm == "aF" and arguments.length_range is not None:
-        argument_parser.error("PDB requires --inputfile=None")
-    elif arguments.algorithm == "3D-SIM" and arguments.length_range is None:
-        argument_parser.error("SIM requires --range")
-    elif arguments.algorithm == "3D-SIM" and arguments.path_to_pdbs is not None:
-        argument_parser.error("SIM requires --path=None")
-    elif arguments.algorithm == "3D-SIM" and arguments.inputfile is not None:
-        argument_parser.error("SIM requires --inputfile=None")
+    if arguments.algorithm == "boots" and arguments.inputfile is None:
+        argument_parser.error("boots requires --inputfile")
+    elif arguments.algorithm == "boots" and arguments.path_to_pdbs is not None:
+        argument_parser.error("boots requires --path=None")
+    elif arguments.algorithm == "boots" and arguments.length_range is None:
+        argument_parser.error("boots requires --range")
+    elif arguments.algorithm == "chunk" and arguments.inputfile is None:
+        argument_parser.error("chunk requires --file")
+    elif arguments.algorithm == "chunk" and arguments.path_to_pdbs is not None:
+        argument_parser.error("chunk requires --path=None")
+    elif arguments.algorithm == "chunk" and arguments.length_range is None:
+        argument_parser.error("chunk requires --range")
+    elif arguments.algorithm == "rcsb" and arguments.length_range is not None:
+        argument_parser.error("rcsb requires --range=None")
+    elif arguments.algorithm == "rcsb" and arguments.path_to_pdbs is None:
+        argument_parser.error("rcsb requires --path")
+    elif arguments.algorithm == "rcsb" and arguments.inputfile is not None:
+        argument_parser.error("rcsb requires --file=None")
+    elif arguments.algorithm == "alpha" and arguments.length_range is None:
+        argument_parser.error("alpha requires --range")
+    elif arguments.algorithm == "alpha" and arguments.path_to_pdbs is None:
+        argument_parser.error("alpha requires --path")
+    elif arguments.algorithm == "alpha" and arguments.length_range is not None:
+        argument_parser.error("rcsb requires --file=None")
+    elif arguments.algorithm == "3d-sim" and arguments.length_range is None:
+        argument_parser.error("3d-sim requires --range")
+    elif arguments.algorithm == "3d-sim" and arguments.path_to_pdbs is not None:
+        argument_parser.error("3d-sim requires --path=None")
+    elif arguments.algorithm == "3d-sim" and arguments.inputfile is not None:
+        argument_parser.error("3d-sim requires --file=None")
 
 
 def pdb_to_pcm(log_file: str, given_algorithm: str, length_range: str, path_to_pdbs: str) -> None:

@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 import protein_contact_map
 import theory_functions
-from plot_functions import _COLOUR_PALETTE
+from colour_palette import _COLOUR_PALETTE
 
 
 def get_simulation_matrix(matrix_file: str) -> np.ndarray:

@@ -3,10 +3,7 @@ Get UniProt ids and loop through them to save AlphaFold PDBs in ../data/alphafol
 /pdb_files/
 """
 import urllib.request
-import numpy as np
-import pandas as pd
-import functions
-
+from sequence_distance_distribution.scripts import functions
 
 sequence_lengths = ["100", "200", "300"]
 

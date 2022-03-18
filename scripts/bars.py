@@ -2,7 +2,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from plot_functions import _COLOUR_PALETTE
+from colour_palette import _COLOUR_PALETTE
 import numpy as np
 
 

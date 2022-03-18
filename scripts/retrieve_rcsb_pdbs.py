@@ -5,7 +5,6 @@ Opens each chunked ID file and retrieves PDB files from RCSB to ../data/rcsb/pdb
 from Bio.PDB.PDBList import PDBList
 import functions
 
-
 pdblist = PDBList()
 pdb_ids = functions.concatenate_rcsb_id_files()
 counter = 1

@@ -2,7 +2,7 @@
 import argparse
 import numpy as np
 import theory_functions
-from plot_functions import _COLOUR_PALETTE
+from colour_palette import _COLOUR_PALETTE
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd

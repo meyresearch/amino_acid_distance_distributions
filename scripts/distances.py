@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import theory_functions
-from plot_functions import _COLOUR_PALETTE
+from colour_palette import _COLOUR_PALETTE
 import pandas as pd
 import argparse
 

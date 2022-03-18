@@ -6,7 +6,7 @@ import pandas as pd
 import theory_functions
 import matplotlib.pyplot as plt
 import seaborn as sns
-from plot_functions import _COLOUR_PALETTE
+from colour_palette import _COLOUR_PALETTE
 
 
 def get_2d_files():
