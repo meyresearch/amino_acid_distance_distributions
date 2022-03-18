@@ -1,4 +1,4 @@
-#Getting RCSB PDB data
+# Getting RCSB PDB data
 
 ## 1. Get all current PDB IDs 
 
