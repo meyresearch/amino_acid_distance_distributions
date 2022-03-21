@@ -22,6 +22,9 @@ pre]{revtex4-1}
 \usepackage{mathtools}
 \DeclarePairedDelimiter{\evdel}{\langle}{\rangle}
 \usepackage[colorinlistoftodos]{todonotes}
+\newcommand{\Pin}{P_{\mathrm{in}}}
+\newcommand{\fhigh}{f_{\mathrm{high}}}
+\newcommand{\flow}{f_{\mathrm{low}}}
 
 \begin{document}
 \title{Chain separation distribution in protein contact networks}
@@ -40,60 +43,104 @@ pre]{revtex4-1}
 \affiliation{EaStCHEM School of Chemistry, University of Edinburgh, Edinburgh, United Kingdom}
 
 \begin{abstract}
-The mechanisms by which the folded structures of proteins are determined have long been one of the key mysteries of Biophysics. Here we approach this problem from a network ensemble perspective, analyzing the relative frequencies with which residues at different distances along the chain come into contact. We define and analyze the residue distance distribution for measured protein structures and structures resulting from a geometrically constrained random interaction model and find that the distributions are compatible. We furthermore derive an analytic approximation for the two dimensional analog of the model and find this approximation to also describe the same distribution. We therefore propose the conclusion that the approximate power-law behaviour of the residue distance distribution is largely caused by geometric constraints of chains rather than specifics of protein sequences.
-%The distribution of chain separations of interacting amino acids in proteins roughly follows a power law. Here we show, analytically and in simulations, that a geometrical stochastic model of folding chains can explain this behaviour. 
+The mechanisms by which we can determine a protein's 3D structure based on the protein's amino acid sequence have long been one of the key mysteries of biophysics. With the advent of AlphaFold2, making predictions for protein structures based on amino acid sequences at an accuracy similar to experiments is now possible, yet requires a lot of available structural data for training the model. Predicting contact maps from sequence \textit{de novo} is an appealing alternative. Here, we are interested in understanding the emergent behavior of protein contact maps derived from a network ensemble perspective of a geometrically constrained random interaction model. We show that the frequency distributions of amino acid distances obtained from simulations of the geometrically constrained interaction model can be described by an analytical approximation of the two-dimensional analogue of this model. To this end, we look at the scaling behavior of the simulation with the analytical approximation for different chain lengths typically found in proteins with good agreement. Furthermore, we compare our constrained model with frequency distributions of amino acid distances from contact maps of real proteins---from the protein data bank and AlphaFold2 database---showing that these follow a similar trend as the geometrically constrained model.   
+ We therefore suggest the conclusion that the approximate power-law behavior of the amino acid distance distribution can be attributed to geometric constraints of protein chains and amino acid sequences only play a secondary role.  
+%The distribution of chain separations of interacting amino acids in proteins roughly follows a power law. Here we show, analytically and in simulations, that a geometrical stochastic model of folding chains can explain this behavior. 
 \end{abstract}
 \maketitle
 
-\section*{Introduction}
-Proteins, the molecular machines of every living organism perform vital tasks required for life to persist, ranging from transport (e.g. hemoglobin), signal transduction (e.g. rhodopsin), immune responses (e.g. antibodies), and hormonal regulation (e.g. insulin)~\cite{dill2008protein,Dill1042} \red{(Actually in the last paper we focused more on modelling of proteins rather than why they are so important so i didn't find much)}. All natural proteins are made up of 20 different amino acids which dictate the three dimensional conformations the proteins adopt in order to function~\cite{scheraga2007protein}. One way of looking at the functional forms of proteins and classifying their structural properties is by looking at protein residue or contact networks~\cite{Vendruscolo2002,DiPaola2013,Estrada2011}. Protein Contact Networks (PCN) have shown promise in understanding protein folding patterns as well as revealing allosteric communication pathways~\cite{yao2019establishing, menichetti2016network,dokholyan2002topological} \red{(i found some papers that use PCN's but not necessarily for allosteric communication)}. 
-From a physicist's perspective it is interesting to understand the emergent behaviour in protein structure from PCNs, by investigating common network measures and their behaviour for PCNs. For example Bartoli et al.~\cite{bartoli2008effect} build a model in which they assume that proteins have a residue distance distribution that follows $\frac{1}{s}$, where $s$ is the separation of two connected amino acids along the backbone chain (in the following called \emph{residue distance}) as the simplest implementation of a connection probability, thus decreasing with the distance along the sequence. However, they do not provide a quantitative explanation for this assumption. 
+\section{Introduction}
+Proteins, the molecular machines of every living organism perform vital tasks required for life to persist, ranging from transport (e.g. hemoglobin)~\cite{ahmed2020hemoglobin}, signal transduction (e.g. rhodopsin)~\cite{nagata2021rhodopsins}, immune responses (e.g. antibodies), and hormonal regulation (e.g. insulin)~\cite{dill2008protein,Dill1042}. All natural proteins are made of 20 different amino acids which dictate the three-dimensional conformations the proteins adopt in order to function~\cite{scheraga2007protein}. One of the great challenges has been to understand how the primary structure, the amino acid sequence, can lead to the fully folded functional protein. The last 50 years has seen many different routes to computationally predict biologically active protein structures without having to solve a crystal structure of the protein. [input information from Rohan's presentation]. AlphaFold2, a machine learning model for structure prediction, has shown predictiveness at a level of experimental accuracy in the most recent protein structure prediction challenge~\cite{jumper2021highly, kryshtafovych2021critical}. This has lead to an explosion of available structural protein models beyond the protein database, containing structures from crystallographic, NMR, and cryo-EM experiments~\cite{berman2000protein}. Beyond the prediction of structure understanding emergent patterns in proteins on a more fundamental level is of interest, as it opens up a deeper understanding of proteins structure and function relationship.  One way of looking at the functional forms of proteins and classifying their structural properties is by looking at protein contact maps (PCM) or protein contact networks (PCN)~\cite{Vendruscolo2002,DiPaola2013,Estrada2011}. A PCM---we will use PCMs in favor of PCN in this paper---is the resulting adjacency matrix of spatially close amino acids, given a certain cut-off as determined typically from a protein structure. PCMs have shown promise in understanding protein folding patterns as well as revealing allosteric communication pathways~\cite{yao2019establishing, menichetti2016network,dokholyan2002topological}. Their use is also prominently featured in machine learning approaches. One challenge is to predict a PCM \textit{de novo} from sequence alone~\cite{bassot2019using, rives2021biological, rao2021msa}, without using structural data as part of the training set, as was done for AlphaFold2. These PCMs can then be used in e.g. graph convolutional machine learning approaches to train a model able to predict binding affinities for certain types of proteins~\cite{jiang2020drug},
+From a physicist's perspective it is interesting to understand the emergent behavior in protein structure by looking at PCMs. Since a PCM is an adjacency matrix and therefore a graph, it is possible to investigate PCMs using common network measures. For example, Bartoli \textit{et al.}~\cite{bartoli2008effecta} build a model in which they assume that proteins have an amino acid distance distribution that follows $\frac{1}{s}$, where $s$ is the separation of two connected amino acids along the backbone chain (in the following called \emph{amino acid distance}) as the simplest implementation of a connection probability, thus decreasing with the distance along the sequence. However, they do not provide a quantitative explanation for this assumption. 
 
-Here, we show how a simple geometrical model can reproduce this heuristically found behaviour well, and even provide a simple analytical approximation. The three-dimensional geometrical model and the analytical approximation of its two-dimensional analogue both build on the idea that inherently geometrical objects, such as amino acids, imply that any resulting PCN network ensemble modelling them has to be spatially embedded~\cite{molkenthin2016scaling, molkenthin2020self}. 
+Here, we show how a simple geometrical model can reproduce this heuristically found behavior well, and even provide a simple analytical approximation. The three-dimensional geometrical model and the analytical approximation of its two-dimensional analogue both build on the idea that inherently geometrical objects, such as amino acids, imply that any resulting PCM network ensemble modelling them has to be spatially embedded~\cite{molkenthin2016scaling, molkenthin2020self}. 
 Different approaches have been used in the past for geometrical models describing protein folding, some of which derived characteristics of the secondary structure from constraints on bond and torsion angles~\cite{bhattacharjee2013flory,Danielsson2010,Molkenthin2011} and others focused on the formation mechanisms of the tertiary structure~\cite{molkenthin2016scaling, molkenthin2020self}. 
 
-Based on such considerations, the network formation process repeatedly connects random pairs of units, without causing any intersections along the chain ~\cite{molkenthin2016scaling}. Such a model can now be used to investigate the emergent behaviour of residue distance distributions as used heuristically by Bartoli et al.~\cite{bartoli2008effect}. To this end, we define and analyze the residue distance distributions $P(s)$ that emerge from the geometric model, where the \emph{residue distance} $s$ of a link is defined as the distance of the two end units along the original chain.
-This distribution is then compared to the residue distance distribution extracted from protein contact networks generated from protein data bank data. 
-
-We find that, despite the highly simplified model, the generated residue distance distribution is in agreement with the one observed in networks generated from PDB data and roughly consistent with the heuristic $1/s$ finding. The analytical approximation provides a correction term on top of the $1/s$ heuristic.
+Based on such considerations, the network formation process repeatedly connects random pairs of units, without causing any intersections along the chain~\cite{molkenthin2016scaling}. Such a model can now be used to investigate the emergent behavior of amino acid distance distributions as used heuristically by Bartoli \textit{et al.}~\cite{bartoli2008effecta}. To this end, we define and analyze the amino acid distance distributions $P(s)$ that emerge from the geometric model, where the \emph{amino acid distance} $s$ of a link is defined as the distance of the two end units along the original chain.
 
 
-\section*{Protein Residue Networks and their synthetic counterparts}
-The complex interaction pattern between the amino acids in a protein can be very naturally expressed as a network, in which each amino acid is represented by a node and spatial proximity is encoded as a link. Whenever two central $C_\alpha$ atoms are closer together than a threshold $d_c$, they are connected. These connections are encoded in the adjacency matrix of the folded protein, which is the binary matrix
+This distribution is then compared to the amino acid distance distribution extracted from protein contact networks generated from protein data bank data. 
+
+We find that, despite the highly simplified model, the generated amino acid distance distribution is in agreement with the one observed in networks generated from PDB data and roughly consistent with the heuristic $1/s$ finding. The analytical approximation provides a correction term on top of the $1/s$ heuristic.
+
+%%%%%%%%%%%%%%%%%
+% Section       %
+%%%%%%%%%%%%%%%%%
+\section{Protein contact maps}
+The complex interaction pattern between the amino acids in a protein can be very naturally expressed as a network or graph, in which each amino acid is represented by a node and spatial proximity is encoded as a link. Whenever two central $C_\alpha$ atoms are closer together than a threshold $d_c$, they are connected, linked, or in `close contact'. These connections can be determined from the 3D functional or folded structure of the protein and are encoded in a so called contact map. This contact map is effectively an adjacency matrix $\textbf{A}^{\mathrm{struc}}$ or binary matrix
 \begin{equation}
-  A^{\textsf{PDB}}_{ij}=
+  A^{\mathrm{struc}}_{ij}=
   \begin{cases}
    0, & \text{ if } d_{i,j}>d_c \text{ or } i=j\\
       1, & \text{ if } d_{i,j}\leq d_c .
       \end{cases}
     \label{eq:aij}
 \end{equation}
-Adjacency matrices are commonly used to describe networks and in this case represent the PCN.
+Adjacency matrices are commonly used to describe networks and make up a \textit{protein contact map}. 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\columnwidth]{figures/Fig1/Fig1.pdf}
+    \caption{a) The amino acid distance $s$ is defined as the separation along the chain (teal) of two connected units (pink). b)~The solid green link prohibits some connections from node~$A$ (dotted pink), while others are still permitted (dotted green). Counting all newly excluded links, we find that a link of length $s$ prohibits $2(l-1)$ links of length $l$ up to a maximum of $s$ and $2(s-1)$ links of length $s$ or more. c)~Example of a protein contact map taken from a 2D simulation. Pink squares indicate a contact is present between two amino acids.}
+    \label{fig:schematic}
+\end{figure}
 
-The underlying formation mechanisms of individual protein folds are incredibly complex and depend on the surrounding solvent as well as the specific amino acid sequence and their quantum-mechanical interactions. Here we want to study the ensemble of all folded proteins, however, and will thus "average" over such specifics.
+%%%%%%%%%%%%
+% subsection
+%%%%%%%%%%%%
+\subsection{Contact maps in a geometrically constrained protein model}
 
-Based on the basic observation that amino acids are objects in space which can not overlap indefinitely, we introduced a model in \cite{molkenthin2020self} starting from a chain of identical spheres, each in contact only with the neighbours it is connected to. Then additional connections form by randomly selecting two spheres and moving them towards each other until they touch, the new links formed that way can not be broken in later steps and function as constraints on subsequent links. If contact of the two selected spheres is geometrically impossible without breaking previously made connections or leading to overlaps of any spheres, the link is not made and taken out of the pool of possible connections. This process is repeated until no more links can be formed without violating the geometric constraints.
+Based on the basic observation that amino acids are objects in space which cannot overlap indefinitely, we introduced a model in~\cite{molkenthin2020self} starting from a chain of identical spheres, each in contact only with the neighbours it is connected to. Then additional connections form by randomly selecting two spheres and moving them towards each other until they touch, the new links formed that way can not be broken in later steps and function as constraints on subsequent links. If contact of the two selected spheres is geometrically impossible without breaking previously made connections or leading to overlaps of any spheres, the link is not made and taken out of the pool of possible connections. This process is repeated until no more links can be formed without violating the geometric constraints and the final structure can be expressed as the adjacency matrix
+\begin{equation}
+  \mathbf{A}^{\mathrm{sim}}_{ij}=
+  \begin{cases}
+   1, & \text{ if }|i-j|=1 \text{ or i and j  randomly connected} \\
+      0, & \text{ otherwise }  .
+      \end{cases}
+    \label{eq:aij}
+\end{equation}
 
-In \cite{molkenthin2016scaling}, we have introduced a simplified, two-dimensional version of this model, which starts from a closed chain (i.e. a ring) of $N$ unit discs and subsequently adds links, such that connected discs touch, yet no discs intersect. The advantage of this model is that it can be approximated by a purely topological simplification, which can be treated analytically.
+In~\cite{molkenthin2016scaling}, we have introduced a simplified, two-dimensional version of this model, which starts from a closed chain (i.e. a ring) of $N$ unit discs and subsequently adds links, such that connected discs touch, yet no discs intersect. The advantage of this model is that it can be approximated by a purely topological simplification, which can be treated analytically. Fig.~\ref{fig:schematic} illustrates the construction of the 2D geometric model.
+
+
+
 
 The topological constraints in the resulting network model are:
 (a) New links always form between two units that are part of the same face of the graph (region enclosed by a cycle in the network). This prevents the overlapping of discs. (b) No links form across the outer face. This prevents the enclosure of a unit by less than six other units (which is geometrically impossible) such that (c) the maximum degree of each unit is six, as six is the maximum number of unit discs one central unit disc can touch. (d) Once connected by a link, pairs of units do not disconnect.
 
-\section*{Analytic approximation}
-Here we want to analytically approximate the residue distance distribution for the simplified 2D model, that is the separation along the backbone chain of two nodes connected by a link, as illustrated in Fig~\ref{fig:schematic}~a).
+%%%%Missing%%%%%
+% TO DO: @Nora
+% Describe how the protein contact maps are generated in the geometric constrained model %
+% Let's call the adjacency matrix in this case \mathbf{A}^{\mathrm{sim}}_{ij} where sim stands for simulation. 
+%%%%%%%%%%%%%%%
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.7\columnwidth]{figures/Fig1/Fig1.pdf}
-    \caption{a) The residue distance $s$ is defined as the separation along the chain (blue) of two connected units (red). b) The solid blue link prohibits some connections from node $A$ (dotted red), while others are still permitted (dotted blue). Counting all newly excluded links, we find that a link of length $s$ prohibits $2(l-1)$ links of length $l$ up to a maximum of $s$ and $2(s-1)$ links of length $s$ or more.}
-    \label{fig:schematic}
+\subsection{Protein contact maps from structural protein data}
+
+The underlying formation mechanisms of individual protein folds are incredibly complex and depend on the surrounding solvent, as well as the specific amino acid sequence and their quantum-mechanical interactions. Here we want to assess if the geometrically constrained protein model's contact map distributions capture real protein behavior as suggested in~\cite{bartoli2008effecta}. To understand this better, we want to study the ensemble of PCMs from real protein structures. To this end we will look at `averaged' contact maps over many different proteins that have different amino acid sequences, but their overall sequence or chain length is the same. 
+We will use the RCSB protein data bank (PDB), a database of structurally resolved protein amino acid sequences through X-ray crystallography, NMR or cryo-EM experiments and the synthetically generated structural data base from the machine learned structures of AlphaFold2~\cite{jumper2021highly}. The PDB contains just under 200,000 protein structures to date~\cite{PDB}. The distribution of amino acid chain lengths in the PDB is illustrated in Fig.~\ref{fig:pdb_stats} b. Protein chain lengths in the PDB vary from small fragments of less than 10 amino acids to large agglomerates of over 2000 amino acids. The most frequently occurring chain lengths, however, are between 100 and 300 amino acids as shown in Fig.~\ref{fig:pdb_stats} b. The pink subset of the barplot shown in Fig.~\ref{fig:pdb_stats} b, are the set of structures used that fulfill the criterion on amino acid chain lengths between 85 and 115 amino acids, 185 and 215 amino acids and 285 and 315 amino acids and represent all structures for the analysis. The second database consists of synthetically generated structures using AlphaFold2 with sequences taken from SwissProt~\cite{alpha fold 2 database}. SwissProt is a manually curated database of protein sequences containing over 500,000 protein sequences~\cite{SwissProt}, whose amino acid chain length distribution is shown in Fig.~\ref{fig:pdb_stats} a in blue-green. The pink bars again indicate the subset of AlphaFold2 structures used for the contact map analysis. 
+
+ \begin{figure}[t]
+        \centering
+	\includegraphics[width=0.8\columnwidth]{paper/figures/Fig2/Fig2.pdf}
+	    \caption{Histogram of protein sequence lengths for protein structures from two structure databases. a) AlphaFold2 predicted protein structures ($\alpha$F) taken from all protein sequences in the reviewed Uniprot Knowledge Base (Swiss-Prot) database based on their Uniprot ids. Pink bars shows fraction of structures used for the average contact map analysis.  b) RSCB PDB chain length frequencies based on sequence length. Pink bars in plot show proteins structures whose sequence lengths matches the resolution of structure accounting for the whole sequence. Only pink PDB samples were used for the average contact map analysis. c) Example of a protein contact map taken from PDB ID: 1AKI, with a cut-off of 8~Å. Pink squares indicate a contact present between amino acids.}
+        \label{fig:pdb_stats}
 \end{figure}
+All structure based contact maps are generated in the same way for AlphaFold2 structures and PDB structures. Structures used were downloaded in pdb format, read in with MDAnalysis version 2.0.0~\cite{gowers2016mdanalysis} and only C$_{\alpha}$ were selected and used for the analysis. Proteins were categorised by length and placed into three groups. Amino acid chain lengths between 85 and 115 amino acids, 185-215 amino acids and 285-315. For each of the used sequences, all pairwise C$_{\alpha}$ distances were assessed and two C$_{\alpha}$ atoms were in contact if their distance was less than 8~Å. All pairwise distances were evaluated and in this way, building up the binary contact map or adjacency $A_{ij}^{\mathrm{struc}}$.  
+All code for the construction of the contact maps both for the geometrically constrained system and structural protein data and their analysis can be found on github at: \url{https://github.com/meyresearch/sequence_distance_distribution}.
 
-Let us start by introducing the auxiliary variable $F_k(s)$, defined to be the number of possible links with a residue distance of $s$ if $k$ links have been added before. Before any links are added all residue distances are equally likely, as there are $F_0(s)=N$ possibilities of making a link of each separation $s$ with $2\leq s < N/2$.
 
-As we add more links, not only are links taken out of this pool, because they have already been realized, each existing link can also geometrically prohibit other connections. Adding a link of length $s_1$ prohibits $2(s-1)$ links of length $s<s_1$ and $2(s_1-1)$ links of length $s>s_1$ (see Fig.~\ref{fig:schematic}~b). To find the expected number of links still available in subsequent stops, we average over all possible residue distances $s_1$ of the first link added.
 
-The expected distribution of possible links after one step is given thus by the average over available link pools taken over all possible lengths of the initial link
+%%%%%%%%%%%%
+% Section. %
+%%%%%%%%%%%%
+\section{Analytic approximation for the geometrically constrained model}
+
+To assess how we can best describe the distribution of the probability of amino acid distances as obtained by a PCM for the geometrically constrained model, we propose the following analytical approximation. To be able to do this we will look at the amino acid distance distribution for the simplified 2D model. Fig~\ref{fig:schematic} summarizes the idea behind this two-dimensional model.
+
+Let us start by introducing the auxiliary variable $F_k(s)$, defined to be the number of possible links with an amino acid distance of $s$ if $k$ links have been added before. Before any links are added, all amino acid distances are equally likely, as there are $F_0(s)=N$ possibilities of making a link of each distance $s$ with $2\leq s < N/2$.
+
+As we add more links, not only are links taken out of this pool, because they have already been realized, \red{but} each existing link can also geometrically prohibit other connections. Adding a link of length $s_1$ prohibits $2(s-1)$ links of length $s<s_1$ and $2(s_1-1)$ links of length $s>s_1$ (see Fig.~\ref{fig:schematic}~b). To find the expected number of links still available in subsequent steps, we average over all possible amino acid distances $s_1$ of the first link added.
+
+The expected distribution of possible links after one step is \red{thus given} by the average over available link pools taken over all possible values of $s_1$
 \begin{align}
     F_1(s)&=\frac{1}{N/2-1} \sum_{s_1=2}^{N/2}{ \begin{cases}
     F_0(s)-2(s-1) \text{ , for } s<s_1\\
@@ -106,13 +153,13 @@ The expected distribution of possible links after one step is given thus by the 
     \end{cases}}
 \end{align}
 
-In subsequent steps we take the weighted average over new links being added at step $k-1$, where the probability that a link of length $s$ can still be made is
+In subsequent steps, we take the weighted average over new links being added at step $k-1$, where the probability that a link amino acid distance $s$ can still be made is
 \begin{equation}
-    P_{in}^k(s)=F_k(s)/C_k,
+    \Pin^k(s)=F_k(s)/C_k,
 \end{equation}
-where $C_k=\sum_{s=2}^{N/2}F_k(s)$ and get the same reduction (compare Fig.~\ref{fig:schematic}) but starting from the pool $F_{k-1}(s)$ of the step before rather than the full $N$ links for each length. To account for possible overlaps between newly removed links and links that were removed previously, we multiply by
+where $C_k=\sum_{s=2}^{N/2}F_k(s)$ and get the same reduction (compare Fig.~\ref{fig:schematic}) but starting from the pool $F_{k-1}(s)$ of the step before rather than the full $N$ links for each amino acid distance. To account for possible overlaps between newly removed links and links that were removed previously, we multiply the number of blocked links by
 \begin{equation}
-    \frac{F_k(s)}{F_0(s)} \approx F_k(s)\frac{1}{N}.
+    \frac{F_k(s)}{F_0(s)} = F_k(s)\frac{1}{N}.
     \label{eq.Pk}
 \end{equation}
 % \begin{equation}
@@ -120,89 +167,93 @@ where $C_k=\sum_{s=2}^{N/2}F_k(s)$ and get the same reduction (compare Fig.~\ref
 %     \label{eq.Pk}
 % \end{equation}
 %with $C_k=\sum_{s=2}^{N/2}F_k(s)$, 
-This ignores any bias in which links are removed, however, in small, manageable examples this assumption seemed to hold well. 
+This ignores any bias in which links are removed, however, examples suggest this assumption seemed to hold well. 
 This leads to the recursion
 \begin{align}
-    F_k(s)&= \sum_{s_k=2}^{N/2} P_{in}^k(s_k)\nonumber \\
-    & (F_{k-1}(s)-  F_k(s)\frac{1}{N}
+    F_k(s)&= \sum_{s_k=2}^{N/2} \Pin^k(s_k)\nonumber \\
+    & \left(F_{k-1}(s)-  F_{k-1}(s)\frac{1}{N}
     {\begin{cases}
      2(s-1) \text{ , for } s<s_k\\
      2(s_k -1))\text{ , for } s\geq s_k
-    \end{cases}} )
+    \end{cases}} \right)
 \end{align}
 which simplifies to
 \begin{align}
-   F_k(s)&=F_{k-1}(s)(1-\frac{1}{N} \sum_{s_k=2}^{s} (2 (s_k-1) P_{in}^k(s_k))\nonumber \\
-   &-\frac{1}{N} \sum_{s_k=s+1}^{N/2} (2 (s-1) P_{in}^k(s_k)))\nonumber \\
+   F_k(s)&=F_{k-1}(s)(1-\frac{1}{N} \sum_{s_k=2}^{s} (2 (s_k-1) \Pin^k(s_k))\nonumber \\
+   &-\frac{1}{N} \sum_{s_k=s+1}^{N/2} (2 (s-1) \Pin^k(s_k)))\nonumber \\
    &=F_{k-1}(s)(1-\frac{1}{N}
-   \sum_{s_k=2}^{s} (2 (s_k-1) P_{in}^k(s_k))\nonumber \\
-   &-\frac{2 (s-1)}{N} (\sum_{s_k=2}^{N/2} P_{in}^k(s_k) - \sum_{s_k=2}^{s} P_{in}^k(s_k)))\nonumber \\
+   \sum_{s_k=2}^{s} (2 (s_k-1) \Pin^k(s_k))\nonumber \\
+   &-\frac{2 (s-1)}{N} (\sum_{s_k=2}^{N/2} \Pin^k(s_k) - \sum_{s_k=2}^{s} \Pin^k(s_k)))\nonumber \\
    &=F_{k-1}(s)(1-\frac{2}{N} (s-1) 
    +\frac{2}{N} s
-   \sum_{s_k=2}^{s}P_{in}^k(s_k)\nonumber \\
+   \sum_{s_k=2}^{s}\Pin^k(s_k)\nonumber \\
    &-\frac{2}{N}
-   \sum_{s_k=2}^{s} s_k P_{in}^k(s_k))
+   \sum_{s_k=2}^{s} s_k \Pin^k(s_k))
    \label{eq.Fk_rec}
 \end{align}
 
-To approximately evaluate this we make a guess for $P_{in}^k(s)$ at low $k$ and at high $k$, namely
+To approximately evaluate this we make a guess for $\Pin^k(s)$ at low $k$ and at high $k$, namely
 \begin{equation}
-    P_{in}^{k\ll N/2}(s)\approx P_{in}^{k=0}(s)=2/N.
+    \Pin^{k\ll N/2}(s)\approx \Pin^{k=0}(s)=\frac{2}{N}.
     \label{eq.P_small}
 \end{equation}
-For later steps $k$, the probability of a link to still be in the pool decreases with $s$, we thus make the ansatz, that it drops off as $1/s$, leading to
+For later steps $k$, the probability of a link to still be in the pool decreases with $s$, 
+we thus approximate $\Pin(s)$ with an ansatz for the $k-$average, namely, that it drops off as $\frac{1}{s}$, leading to
 \begin{equation}
-    P_{in}^{k\gg 1}(s)\approx \frac{s^{-1}}{ (H_{\frac{N}{2}}-1)},
+    \Pin^{k\gg 1}(s)\approx \sum_{k=a}^{N-4}\Pin^{k}(s)
+    \approx \frac{s^{-1}}{ (H_{\frac{N}{2}}-1)},
     \label{eq.P_large}
 \end{equation}
 where $H_{\frac{N}{2}}$ is the harmonic number. 
-We suspect that the approximation for low $k$ only holds for a couple of steps while Eq.~\ref{eq.P_large} holds, at least on average for larger $k$. We have no approximation for the intermediate steps but assume that the errors roughly cancel each other out. Inserting Eq.\ref{eq.P_small} and Eq.\ref{eq.P_large} into Eq.\ref{eq.Fk_rec} results in the following two recursions for the early and late evolution of the sequence distance distribution respectively.
+As we will see later this approximation holds most precisely for intermediate values of $k$, with the $k-$average of $\Pin^{k\gg 1}(s)\approx P(s)$, making it self-consistent. Errors for smaller and larger values of $k$ are thought to approximately cancel out.
+Substituting Eq.~\ref{eq.P_small} and Eq.~\ref{eq.P_large} into Eq.~\ref{eq.Fk_rec} results in the following two recursions for the early and late evolution of the amino acid distance distribution respectively.
 \begin{align}
    F_{k\ll N/2}(s)&\approx 
    F_{k-1}(s)(1-\frac{2}{N} (s-1) 
    +\frac{4}{N^2} s (s-1)\nonumber \\
    &-\frac{2}{N^2}(s^2+s-2)\nonumber \\
-   &=F_{k-1}(s)(1-f_{low}(s)),
+   &=F_{k-1}(s)(1-\flow(s)),
    \label{eq.Fk_rec_low}
 \end{align}
 where 
-\[f_{low}(s)=-\frac{2}{N^2}s^2+(\frac{2}{N}+\frac{6}{N^2})s-(\frac{2}{N}+\frac{4}{N^2}),\]
+\[\flow(s)=-\frac{2}{N^2}s^2+\left(\frac{2}{N}+\frac{6}{N^2}\right)s-\left(\frac{2}{N}+\frac{4}{N^2}\right),\]
 and
+
+
 \begin{align}
    F_{k\gg1}(s)&\approx 
    F_{k-1}(s)(1-\frac{2}{N} (s-1) 
-   +\frac{2}{N} s \sum_{s_k=2}^{s}\frac{1}{s_k(H_{\frac{N}{2}}-1)}\nonumber \\
+   +\frac{2}{N} s \sum_{s_k=2}^{s}\frac{1}{s_k(H_{\frac{N}{2}}-1)}\nonumber\\
    &-\frac{2}{N}
    \sum_{s_k=2}^{s} s_k \frac{1}{s_k(H_{\frac{N}{2}}-1)})\nonumber \\
    &=
    F_{k-1}(s)(1 -(\frac{2}{N}-\frac{2}{N}\frac{H_{s}-1}{H_{\frac{N}{2}}-1}+\frac{2}{N(H_{\frac{N}{2}}-1)})s \nonumber \\ 
    &+ \frac{2}{N(H_{\frac{N}{2}}-1)} + \frac{2}{N})\nonumber \\
-   &=F_{k-1}(s)(1-f_{high}(s)).
+   &=F_{k-1}(s)(1-\fhigh(s)).
    \label{eq.Fk_rec_high}
 \end{align}
 where 
-\[f_{high}(s)=\frac{2}{N}(\frac{H_{\frac{N}{2}}-H_{s}+1}{H_{\frac{N}{2}}-1}s-\frac{H_{\frac{N}{2}}}{H_{\frac{N}{2}}-1}).\]
+\[\fhigh(s)=\frac{2}{N}(\frac{H_{\frac{N}{2}}-H_{s}+1}{H_{\frac{N}{2}}-1}s-\frac{H_{\frac{N}{2}}}{H_{\frac{N}{2}}-1}).\]
 
 We can now use the recursive expressions to write down a closed expression for $F_k(s)$
 
 \begin{align}
-    F_k(s)&=N\prod_{i_1}^a\left(1-f_{low}(s)\right)\prod_{i=a+1}^k\left(1-f_{high}(s)\right) \nonumber \\
-    &= N\left(\frac{1-f_{low}(s)}{1-f_{high}(s)}\right)^a\left(1-f_{high}(s)\right)^{k}
+    F_k(s)&=N\prod_{i_1}^a\left(1-\flow(s)\right)\prod_{i=a+1}^k\left(1-\fhigh(s)\right) \nonumber \\
+    &= N\left(\frac{1-\flow(s)}{1-\fhigh(s)}\right)^a\left(1-\fhigh(s)\right)^{k}
 \end{align}
 
 In 2D this is repeated for $N-3$ steps until no more links can be added \cite{molkenthin2016scaling}.
-The probability distribution of the realized residue distances of all added links is then given by the average over the available pools at each link addition step, leading to
+The probability distribution of the realized amino acid distances of all added links is then given by the average over the available pools at each link addition step, leading to
 \begin{align}
     P(s)&=\frac{1}{N-3}\sum_{k=0}^{N-4} \frac{F_k(s)}{C_k} \nonumber \\
-    &= \frac{N}{N-3}\left(\frac{1-f_{low}(s)}{1-f_{high}(s)}\right)^a
-\sum_{k=0}^{N-4} \frac{1}{C_k} \left(1-f_{high}(s)\right)^{k} \nonumber \\
-    &\approx \left(\frac{1-f_{low}(s)}{1-f_{high}(s)}\right)^a\frac{A}{f_{high}(s)},
+    &\approx \frac{N}{N-3}\left(\frac{1-\flow(s)}{1-\fhigh(s)}\right)^a
+\sum_{k=0}^{N-4} \frac{1}{\evdel{C_k}_k} \left(1-\fhigh(s)\right)^{k} \nonumber \\
+    &\approx \left(\frac{1-\flow(s)}{1-\fhigh(s)}\right)^a\frac{A}{\fhigh(s)},
     \label{eq.Ps}
 \end{align}
-
-\red{The assumption that the sum is basically a harmonic series seems like a bit of a stretch I shall check it again but the results look good}
-
-for $1<s<\frac{N}{2}$. The approximation sets all $C_k=C$ to allow the use of the geometric series for solving the equation. We can do this because $C_k$ monotonically decreases with $k$ and $N>C_k>C_{N-2}$ meaning we can obtain an upper and lower bound by replacing all $C_k$ in the expression with either $N$ (underestimates all probabilities) or $C_{N-2}$ (overestimates all probabilities), however, as neither of those depend on $s$, these bounds are merely in the constant factor $A$ and do not affect the scaling as such.
+where $\evdel{C_k}_k$ is the average of $C_k$ over $k$.
+This approximation allows the use of the geometric series for solving the equation. 
+The resulting expression in Eq.~\ref{eq.Ps} is close to a power-law in $s$ with an exponent of \red{something close to -1.2 depending on a}, thus justifying the earlier approximation of $\Pin^k(s)$.
 %which makes use of Eq.~\ref{eq.Pk}. 
 %The only unknown in this expression is $C_k$, \red{which we can not compute exactly...?}. However, since $C_k$ monotonically decreases with $k$, $N>C_k>C_{N-2}$ always holds and we can obtain an upper and lower bound by replacing all $C_k$ in the expression with either $N$ (underestimates all probabilities) or $C_{N-2}$ (overestimates all probabilities). Each time we get an expression of the form 
 % \begin{align}
@@ -212,49 +263,56 @@ for $1<s<\frac{N}{2}$. The approximation sets all $C_k=C$ to allow the use of th
 % \end{align}
 % for $1<s<\frac{N}{2}$,
 % where $A$ is an unknown constant, containing an approximation of the various normalization constants $C_i$, as well as the direct effects of the chain length. 
-Since for long chains and $s \ll N/2$, $f(s)$ is dominated by the linear term, the distribution is well approximated by a power law with an exponent of $-1$.
 
 %In the last step of this approximation, we took the $C_k$ to all be approximately equal in order to apply the geometric series. However, in reality we know $1/C_k$ to increase with $k$, giving large $k$ summands relatively more weight than in a geometric series. This can be expressed as a small correction $\alpha$ in the exponent.
 
-%\begin{equation}
- %   P_{corrected}(s)\approx A f(s)^{-1+\alpha},
-%\end{equation}
-%where $0<\alpha \ll 1$. \blue{The parameters $A$ and $\alpha$ in this approximation are treated as free parameters and used for fitting the theoretical result to data and simulations. While they could be estimated by evaluating the middle line of Eq.~\ref{eq.Ps}, this estimate is for the 2D model, in which the exclusion of connections is faster, leading to a steeper decrease of $C_k$, as well as a different factor $A$.}
 
-\red{We could add a figure with simulated 2D results (which i should have... somewhere) and the exact evaluation with the sums and all that. I'm not super motivated to do that but i guess it might be a nice addition and the only place for the exact formula really.}
 
-\section*{Data and simulations}
-For large values of the chain length $N$ we thus find an approximate power law probability distribution for the residue distance with an exponent of $-1+\alpha$. Here we use simulations, as introduced in~\cite{molkenthin2020self}, and networks extracted from measured protein data from the PDB \cite{PDB} to compare this behaviour with the more realistic 3D settings and show that the basic principle persists, indicating that much of the residue distance distribution can be explained by generic geometric constraints.
- \begin{figure}[h]
+\section{Results}
+\subsection{Analytic approximation and 2D simulations}
+Fig.~\ref{fig:2d_sim} compares Eq.~\ref{eq.Ps} with respect to the two-dimensional simulation data introduced in~\cite{molkenthin2020self}. The simulation data is generated from 10 repeats with chain lengths of up to 498 amino acids long. The simulation data is plotted showing the mean frequencies of each amino acid distance up to $N/2\sim250$. The shaded area represent the 95\% confidence interval calcualted from the 10 repeats. The theoretical approximation from Eq.~\ref{eq.Ps} was fitted to the simulation data. The two fitting parameters were chosen to be $a=6$ and $A=0.39$, to best capture the trend of the simulation data. The fitted approximation captures the behavior of the simulation data well, both describe two dimensional systems. 
+ \begin{figure}[tb]
         \centering
-    \includegraphics[width=0.45\textwidth]{paper/figures/Fig2/pdb_statistics.pdf}
-        \caption{Statistics on all PDB entries based on the number of amino acid residues, with most entries found in the interval of 100-400 residues as of May 26th 2020.}
-        \label{fig:pdb_stats}
+	\includegraphics[width=0.45\textwidth]{paper/figures/Fig3/Fig3.pdf}
+	    \caption{Amino acid distance distribution for two-dimensional simulated data plotted against the analytic approximation. Green area shows the 95\% confidence interval.}
+        \label{fig:2d_sim}
 \end{figure}
 
-Protein chain lengths in the PDB vary from small fragments of less than 10 amino acids to large agglomerates of over 2000 residues. The most frequently occurring chain lengths, however, are between 100 and 400 residues as shown in Fig.~\ref{fig:pdb_stats}. \red{For our analysis, we have thus chosen ............ structures of around 200, ........ structures of around 300 and .......... structures of around 400 residues from the PDB.} Those have been converted into PCN's based on the measured locations of their residues to analyze the distribution of residue distances between connected amino acids. The resulting distribution is compared to those generated in simulations in~\cite{molkenthin2020self} as well as the above derived theoretical expression scaled with a factor to account for the different dimensionality, as well as approximations made in the derivation.
+\subsection{3D simulations and PCMs from structural data }
+Next, we investigate if and how the analytical approximation can also capture trends in 3-D simulation data, as well as experimentally determined protein structures. This seeks to answer the question if indeed a power law can be used to describe the probability distribution of amino acid distances. Fig.~\ref{fig:sdd} summarises the results for protein chain lengths of $\approx$100 (a), $\approx$200, and $\approx$ 300 amino acids, protein chain lengths, most commonly found in living organism (see. Fig.~\ref{fig:pdb_stats} a). We are comparing data from repeats of 30 simulation runs of the three-dimensional simulations, as introduced in~\cite{molkenthin2020self}, and protein contact maps from RCSB~\cite{}, and AlphaFold2~\cite{}. 
 
-The results are shown logarithmically scaled in Fig.\ref{fig:sdd}. \red{For all three lengths, the distributions show an approximate power law decay with slopes of $...\pm ...$, which is consistent with both, the simulated results ans the theoretical approximation.}
+We have chosen a subset of structures from the PDB and curated alphaFold2 database for the analysis. 7,376 structures with chain lengths that fall between 85-100, 6,822 structures that fall between 185-215, and 4,160 structures that fall between 285-315 amino acids were selected from the RCSB database~\cite{PDB}. Additionally, 33,229 structures with chain lengths in the range of 85-115, 37,430 in the range of 185-215 and 32,137 in the range of 285-315 amino acids were chosen from the AlphaFold2 database~\cite{}. All structures were converted into PCMs as described in section~\ref{sec:methods}. 
+The resulting distributions for each chain length interval are plotted logarithmically scaled in Fig.\ref{fig:sdd} for intervals 85-100 in a, 185-215 in b, and 285-315 in c. 
+For all three lengths, the distributions show an approximate power law decay, for both the 3-D simulations according to~\cite{molkenthin2020self}, as well as the structural data. This allows a fit  which is consistent with both the simulated results and the theoretical approximation.
 
-\begin{figure}[t]
+is compared to those generated in simulations in~\cite{molkenthin2020self} as well as the above derived theoretical expression scaled with a factor to account for the different dimensionality, i.e. constant $A$, as well as approximations made in the derivation.
+
+
+
+\begin{figure}
         \centering
-    \includegraphics[width=\columnwidth]{paper/figures/Fig3/Fig3.pdf}
-        \caption{residue distance distributions for real and simulated folds for a) Chain lengths around 200 b) chain lengths around 300 c) chain lengths around 400. \red{Depending on what this looks like when we have all the data, perhaps adding error bars could be nice. Also, since i'm mentioning the overrepresentation of separations 2 to 4, maybe those should be shown. If it fits better we can take them out for the fits and stuff.}
+	\includegraphics[scale=0.65]{paper/figures/Fig4/Fig4.pdf}
+        \caption{Amino acid distance distributions for contact maps derived from the RCSB~\cite{PDB} and AlphaFold2~\cite{} databases as well as 3D simulated folds for protein chains in the range of a) 85-115,  b) 185-215 and c) 285-315 amino acids long.  
         }
         \label{fig:sdd}
 \end{figure}
+For large values of the chain length $N$, we thus find an approximate power law probability distribution for the amino acid distance with an exponent of $-1+\alpha$. 
 
-We observe that, while the general shape seems to match, in real proteins residue distances of 2 to 4 amino acids are slightly over-represented (see Fig.\ref{fig:sdd}).
-The over-representation of very short residue distances is an artefact of the different network construction for simulated (and theoretically approximated) networks and PCNs. While in the simulation all links are equally long and links are made until no longer possible, the parameter, determining the connectivity in PCNs is the cutoff distance $d_c$\blue{(mention used value?)}, which is chosen such that the number of links in the PCN is comparable to those in a simulated network of the same $N$. This leads to a larger range of bond angles randomly resulting in connections for small $s$ and thus an over-representation of those links.
 
-\section*{Conclusion}
+
+We observe that, while the general shape seems to match, in real proteins amino acid distances of two to four amino acids are slightly over-represented (see Fig.\ref{fig:sdd}).
+The over-representation of very short amino acid distances is an artefact of the different network construction for simulated (and theoretically approximated) networks and PCMs. While in the simulation all links are equally long and links are made until no longer possible, the parameter, determining the connectivity in PCMs is the cutoff distance $d_c$\blue{(mention used value?)}, which is chosen such that the number of links in the PCM is comparable to those in a simulated network of the same $N$. This leads to a larger range of bond angles randomly resulting in connections for small $s$ and thus an over-representation of those links.
+
+
+Here we use 30 runs of three-dimensional simulations, as introduced in~\cite{molkenthin2020self}, and networks extracted from measured protein data from both the RCSB~\cite{PDB} and AlphaFold2~\cite{} databases to compare this behavior with the more realistic 3D settings and show that the basic principle persists, indicating that much of the amino acid distance distribution can be attributed to generic geometric constraints.
+\section{Conclusion}
 The tertiary structures of folded proteins have long been one of the most important mysteries of Biophysics. While for individual structures, detailed molecular dynamics or statistical models are essential in approaching these questions, general statements for the ensemble of folded proteins can be made with simple models.
 
-Here we have introduced and analyzed the residue distance $s$ and its probability distribution $P(s)$ in measured and simulated protein structures. For the equivalent model in two dimensions we have used a mean-field approach to derive an analytic approximation for the residue distance distribution, which appears to agree with the simulated and measured distributions.
-We have thus demonstrated in analytical calculations as well as direct simulations how a random linking model with geometric constraints, such as the ones introduced in \cite{molkenthin2016scaling, molkenthin2020self}, generates a residue distance distribution that resembles a power-law, similar to the one found in folded proteins. This feature of protein network structures has previously been used in a heuristic manner to model and generate protein-like structures in \cite{bartoli2008effect}.
+Here we have introduced and analyzed the amino acid distance $s$ and its probability distribution $P(s)$ in measured and simulated protein structures. For the equivalent model in two dimensions we have used a mean-field approach to derive an analytic approximation for the amino acid distance distribution, which appears to agree with the simulated and measured distributions.
+We have thus demonstrated in analytical calculations as well as direct simulations how a random linking model with geometric constraints, such as the ones introduced in \cite{molkenthin2016scaling, molkenthin2020self}, generates a amino acid distance distribution that resembles a power-law, similar to the one found in folded proteins. This feature of protein network structures has previously been used in a heuristic manner to model and generate protein-like structures in \cite{bartoli2008effecta}.
 
 Gaining a better understanding of the ensemble of folded protein structures can help guide the way to a better understanding of the constraints within which structures may occur. Together with an understanding of secondary structure principles, such as those in
-\cite{Danielsson2010, Molkenthin2011}, this can help to narrow down the complex energy landscapes and find paths through them more effectively in the future.
+~\cite{Danielsson2010, Molkenthin2011}, this can help to narrow down the complex energy landscapes and find paths through them more effectively in the future.
 
 \section*{Declarations}
 \subsection{Availability of data and materials}
