@@ -4,7 +4,7 @@ This repository contains the manuscript and data for project looking at geometri
 
 ## Table of contents / Workflow
 1. [RCSB Data](https://github.com/meyresearch/sequence_distance_distribution/tree/readmes/data/rcsb)
-2. 
+2. [AlphaFold Data](https://github.com/meyresearch/sequence_distance_distribution/tree/readmes/data/alphafold)
 
 ### Authors:
 Nora Molkethin   
