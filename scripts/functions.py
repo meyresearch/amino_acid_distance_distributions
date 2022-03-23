@@ -8,6 +8,7 @@ import traceback
 import networkx as nx
 import numpy as np
 import pandas as pd
+np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
 
 
 def concatenate_rcsb_id_files() -> np.array:
