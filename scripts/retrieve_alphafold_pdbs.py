@@ -1,6 +1,5 @@
 """
 Get UniProt ids and loop through them to save AlphaFold PDBs in ../data/alphafold/pdb_files/
-/pdb_files/
 """
 import urllib.request
 from sequence_distance_distribution.scripts import functions
