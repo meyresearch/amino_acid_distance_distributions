@@ -9,7 +9,7 @@ infile = "../data/rcsb/combined_ids_tr.csv"
 chunk = 1000
 filename_counter = 0
 
-for chunk in pd.read_csv(infile, chunksize=chunk, sep="\n", header=None):
+for chunk in pd.read_csv(infile, chunksize=chunk, lineterminator="\n", header=None):
     chunk_array = chunk.to_numpy()
     np.savetxt(f"../data/rcsb/ids/id_file_{filename_counter}.txt", chunk_array, fmt="%s")
     filename_counter += 1

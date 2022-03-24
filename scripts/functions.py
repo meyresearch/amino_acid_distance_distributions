@@ -33,7 +33,7 @@ def get_uniprot_ids(sequence_length: str) -> np.ndarray:
     @param sequence_length
     @return: np.ndarray of Uniprot IDs
     """
-    id_dataframe = pd.read_csv(f"../data/alphafold/uniprot_ids/uniprot_{sequence_length}s.xlsx")
+    id_dataframe = pd.read_excel(f"../data/alphafold/uniprot_ids/uniprot_{sequence_length}s.xlsx")
     return id_dataframe["Entry"].to_numpy()
 
 
