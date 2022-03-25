@@ -93,6 +93,19 @@ def check_arguments(arguments: argparse.Namespace, argument_parser: argparse.Arg
         argument_parser.error("3d-sim requires --path=None")
     elif arguments.algorithm == "3d-sim" and arguments.inputfile is not None:
         argument_parser.error("3d-sim requires --file=None")
+        
+        
+def pdb_to_adjacency(pdb_file: str) -> np.ndarray:
+    """
+    Convert given PDB file to an adjacency matrix
+    @param pdb_file: PDB file from RCSB or AlphaFold
+    @return: adjacency matrix as a numpy array
+    """
+    pcm = protein_contact_map.ProteinContactMap(pdb_file)
+    alpha_carbons = pcm.get_alpha_carbons
+    chain_length = protein_contact_map.get_chain_length(alpha_carbons)
+    
+    
 
 
 def pdb_to_pcm(log_file: str, given_algorithm: str, length_range: str, path_to_pdbs: str) -> None:
@@ -103,7 +116,7 @@ def pdb_to_pcm(log_file: str, given_algorithm: str, length_range: str, path_to_p
     @param length_range: chain length range
     @param given_algorithm: PDB or aF
     @param log_file: log.txt to save errors
-    @return:
+    @return: None
     """
     ids_100, ids_200, ids_300 = [], [], []
     distances_100, distances_200, distances_300 = [], [], []

@@ -2,7 +2,6 @@
 Base class for PCMs.
 
 """
-import MDAnalysis
 import networkx as nx
 import MDAnalysis as mdA
 import numpy as np
@@ -21,7 +20,7 @@ def create_connected_component_subgraphs(graph: nx.Graph) -> None:
         yield graph.subgraph(components)
 
 
-def get_chain_length(alpha_carbons: MDAnalysis.AtomGroup) -> int:
+def get_chain_length(alpha_carbons: mdA.AtomGroup) -> int:
     """
     Calculate the chain length of protein from alpha carbons.
     @param alpha_carbons
@@ -83,7 +82,7 @@ class ProteinContactMap:
     def get_alpha_carbons(self) -> None:
         """
         Take a universe, get segment A and return the C-alphas for the PDB.
-        @return:
+        @return: None
         """
         segments = self.universe.residues.segments
         n_segments = len(segments)
@@ -120,7 +119,74 @@ class ProteinContactMap:
                 continue
         return alpha_carbons
 
-    def get_link_lengths(self, alpha_carbons: MDAnalysis.AtomGroup) -> np.ndarray:
+    def get_distance_array(self, alpha_carbons: mdA.AtomGroup) -> np.ndarray:
+        """
+        Use the C-alphas to get the distance array
+        @return: distance array
+        """
+        return mdA.analysis.distances.self_distance_array(ca_s.positions)
+    
+    def get_contacts_array(self, distance_array: np.ndarray) -> np.ndarray:
+        """
+        Use the distance array to get contacts array
+        @return: contacts array
+        """
+        return mdA.analysis.contacts.self_distance_array(distance_array)
+    
+    def get_distance_matrix(self, alpha_carbons: mdA.AtomGroup, distance_array: np.ndarray) -> np.ndarray:
+        """
+        Get distance matrix for PDBs from distance array and C-alphas
+        @param: alpha_carbons C-alphas from PDB
+        @param: distance_array distance array from C-alphas
+        @return: distance_matrix as a numpy array
+        """
+        n_alpha_carbons = get_chain_length(alpha_carbons)
+        distance_matrix = np.zeros((n_alpha_carbons, n_alpha_carbons))
+        n_rows = distance_matrix.shape[0]
+        diagonal = 1
+        upper_triangle = np.triu_indices(n_rows, k=diagonal)
+        distance_matrix[upper_triangle] = distance_array
+        np.fill_diagonal(distance_matrix, 0)
+        for i in range(len(distance_matrix)):
+            for j in range(i):
+                distance_matrix[i,j] = distance_matrix[j,i]
+        return distance_matrix
+    
+    def get_adjacency_matrix(self, distance_array: np.ndarray) -> np.ndarray:
+        """
+        Get adjacency matrix from PDB
+        @param distance_array: distance array from C-alphas
+        @return: adjacency matrix as numpy array
+        """
+        contacts_array = get_contacts_array(distance_array, radius=self.threshold)
+        adjacency_array = np.zeros(len(contacts_array))
+        adjacency_array[contacts_array == True] = 1
+        n_alpha_carbons = get_chain_length(alpha_carbons)
+        pcm_matrix = np.zeros((n_alpha_carbons, n_alpha_carbons))
+        n_rows = pcm_matrix.shape[0]
+        diagonal = 1
+        upper_triangle = np.triu_indices(n_rows, k = diagonal)
+        pcm_matrix[upper_triangle] = adjacency_array
+        np.fill_diagonal(pcm_matrix, 1)
+        return np.where(pcm_matrix,pcm_matrix,pcm_matrix.T) 
+    
+    def get_discreet_distances(self, adjacency_matrix: np.ndarray) -> np.ndarray:
+        """
+        Get the amino acid distanaces from the adjacency matrix
+        @param: adjacency_matrix from PDB
+        @return list of discrete distances from adjacency matrix
+        """
+        distances = []
+        rows = len(adjacency_matrix)
+        columns = len(adjacency_matrix)
+        for row in rows:
+            for col in columns:
+                if adjacency_matrix[row][col] == 1:
+                    distance = np.abs(j - i)
+                    distances.append(distance)
+        return np.asarray(distances)
+ 
+    def get_link_lengths(self, alpha_carbons: mdA.AtomGroup) -> np.ndarray:
         """
         Use the C-alphas to calculate the amino acid distances.
 
@@ -150,7 +216,7 @@ class ProteinContactMap:
                         link_lengths.append(link_length)
         return np.array(link_lengths)
 
-    def get_protein_graph(self, alpha_carbons: MDAnalysis.AtomGroup) -> nx.Graph:
+    def get_protein_graph(self, alpha_carbons: mdA.AtomGroup) -> nx.Graph:
         """
         Create protein graph from alpha carbons.
         @param alpha_carbons
