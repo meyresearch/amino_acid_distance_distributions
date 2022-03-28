@@ -6,7 +6,7 @@ import numpy as np
 def get_confidences(pdb_files: list) -> list:
     """
     Read AlphaFold PDB file contents to find confidence info
-    @param: pdb_files glob list of AlphaFold PDB files
+    @param: pdbs glob list of AlphaFold PDB files
     @return: confidence_info list containing the dictionary of confidence info
     """
     counter = 1
@@ -38,13 +38,12 @@ def filter_confidences(pdb_files: list) -> pd.DataFrame:
     @return good_confidence_df: dataframe containing PDBs with 90% confidence or above
     """
     confidence_list = get_confidences(pdb_files)
-    confidence_df = pd.DataFrame.from_dict(confidence_list)
-    confidence_filter = confidence_df["mean"] > 90.0
-    good_confidence_df = confidence_df.where(confidence_filter).dropna()
+    confidence_dataframe = pd.DataFrame.from_dict(confidence_list)
+    confidence_filter = confidence_dataframe["mean"] > 90.0
+    good_confidence_df = confidence_dataframe.where(confidence_filter).dropna()
     return good_confidence_df
 
 
 pdbs = glob.glob("../data/alphafold/pdb_files/*.pdb")
-
 confidence_df = dssp_functions.filter_confidences(pdbs)
 confidence_df.to_csv("../data/alphafold/confidences.csv")

@@ -1,5 +1,5 @@
 """
-Get UniProt ids and loop through them to save AlphaFold PDBs in ../data/alphafold/pdb_files/
+Get UniProt ids and loop through them to save AlphaFold PDBs in ../data/alphafold/pdbs/
 """
 import urllib.request
 import functions

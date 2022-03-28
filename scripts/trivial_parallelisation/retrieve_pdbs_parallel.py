@@ -1,6 +1,6 @@
 """
 Exclusively to be ran alongside the embarrasing_parallel.sh script! 
-Opens each chunked ID file and retrieves PDB files from RCSB to ../../pdb_files/.
+Opens each chunked ID file and retrieves PDB files from RCSB to ../../pdbs/.
 """
 import numpy as np
 from Bio.PDB.PDBList import PDBList
@@ -31,6 +31,6 @@ for pdb in pdb_ids:
     print(f"At entry {counter}")
     pdblist.retrieve_pdb_file(pdb_code=pdb,
                               file_format="pdb",
-                              pdir="../../pdb_files/")
+                              pdir="../../pdbs/")
     counter += 1
 
