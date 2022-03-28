@@ -77,7 +77,9 @@ def get_adjacency_matrix(alpha_carbons: mdA.AtomGroup, distance_array: np.ndarra
     """
     contacts_array = get_contacts_array(distance_array)
     adjacency_array = np.zeros(len(contacts_array))
-    adjacency_array[contacts_array == True] = 1
+    for i in range(len(contacts_array)):
+        if contacts_array[i]:
+            adjacency_array[i] = 1
     n_alpha_carbons = get_chain_length(alpha_carbons)
     pcm_matrix = np.zeros((n_alpha_carbons, n_alpha_carbons))
     n_rows = pcm_matrix.shape[0]
