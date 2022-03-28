@@ -104,8 +104,6 @@ def pdb_to_adjacency(pdb_file: str) -> np.ndarray:
     pcm = protein_contact_map.ProteinContactMap(pdb_file)
     alpha_carbons = pcm.get_alpha_carbons
     chain_length = protein_contact_map.get_chain_length(alpha_carbons)
-    
-    
 
 
 def pdb_to_pcm(log_file: str, given_algorithm: str, length_range: str, path_to_pdbs: str) -> None:
