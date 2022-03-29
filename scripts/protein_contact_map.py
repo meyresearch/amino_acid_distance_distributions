@@ -6,7 +6,7 @@ import networkx as nx
 import MDAnalysis as mdA
 import numpy as np
 import warnings
-
+from MDAnalysis.analysis import distances, contacts
 warnings.filterwarnings("ignore")
 
 
@@ -52,42 +52,12 @@ def get_distance_matrix(alpha_carbons: mdA.AtomGroup, distance_array: np.ndarray
     return distance_matrix
 
 
-def get_contacts_array(distance_array: np.ndarray) -> np.ndarray:
-    """
-    Use the distance array to get contacts array
-    @return: contacts array
-    """
-    return mdA.contacts.self_distance_array(distance_array)
-
-
 def get_distance_array(alpha_carbons: mdA.AtomGroup) -> np.ndarray:
     """
     Use the C-alphas to get the distance array
     @return: distance array
     """
-    return mdA.analysis.distances.self_distance_array(alpha_carbons.positions)
-
-
-def get_adjacency_matrix(alpha_carbons: mdA.AtomGroup, distance_array: np.ndarray) -> np.ndarray:
-    """
-    Get adjacency matrix from PDB
-    @param distance_array: distance array from C-alphas
-    @param alpha_carbons: C-alphas from PDB
-    @return: adjacency matrix as numpy array
-    """
-    contacts_array = get_contacts_array(distance_array)
-    adjacency_array = np.zeros(len(contacts_array))
-    for i in range(len(contacts_array)):
-        if contacts_array[i]:
-            adjacency_array[i] = 1
-    n_alpha_carbons = get_chain_length(alpha_carbons)
-    pcm_matrix = np.zeros((n_alpha_carbons, n_alpha_carbons))
-    n_rows = pcm_matrix.shape[0]
-    diagonal = 1
-    upper_triangle = np.triu_indices(n_rows, k=diagonal)
-    pcm_matrix[upper_triangle] = adjacency_array
-    np.fill_diagonal(pcm_matrix, 1)
-    return np.where(pcm_matrix, pcm_matrix, pcm_matrix.T)
+    return distances.self_distance_array(alpha_carbons.positions)
 
 
 def get_discreet_distances(adjacency_matrix: np.ndarray) -> np.ndarray:
@@ -96,15 +66,15 @@ def get_discreet_distances(adjacency_matrix: np.ndarray) -> np.ndarray:
     @param: adjacency_matrix from PDB
     @return list of discrete distances from adjacency matrix
     """
-    distances = []
+    distance_list = []
     rows = len(adjacency_matrix)
     columns = len(adjacency_matrix)
     for row in rows:
         for col in columns:
             if adjacency_matrix[row][col] == 1:
                 distance = np.abs(col - row)
-                distances.append(distance)
-    return np.asarray(distances)
+                distance_list.append(distance)
+    return np.asarray(distance_list)
 
 
 class ProteinContactMap:
@@ -193,6 +163,34 @@ class ProteinContactMap:
                 print("Error in first segment id. Trying the next one.")
                 continue
         return alpha_carbons
+
+    def get_contacts_array(self, distance_array: np.ndarray) -> np.ndarray:
+        """
+        Use the distance array to get contacts array
+        @return: contacts array
+        """
+        return contacts.contact_matrix(distance_array, radius=self.threshold)
+
+    def get_adjacency_matrix(self, alpha_carbons: mdA.AtomGroup, distance_array: np.ndarray) -> np.ndarray:
+        """
+        Get adjacency matrix from PDB
+        @param distance_array: distance array from C-alphas
+        @param alpha_carbons: C-alphas from PDB
+        @return: adjacency matrix as numpy array
+        """
+        contacts_array = self.get_contacts_array(distance_array)
+        adjacency_array = np.zeros(len(contacts_array))
+        for i in range(len(contacts_array)):
+            if contacts_array[i]:
+                adjacency_array[i] = 1
+        n_alpha_carbons = get_chain_length(alpha_carbons)
+        pcm_matrix = np.zeros((n_alpha_carbons, n_alpha_carbons))
+        n_rows = pcm_matrix.shape[0]
+        diagonal = 1
+        upper_triangle = np.triu_indices(n_rows, k=diagonal)
+        pcm_matrix[upper_triangle] = adjacency_array
+        np.fill_diagonal(pcm_matrix, 1)
+        return np.where(pcm_matrix, pcm_matrix, pcm_matrix.T)
 
     def get_link_lengths(self, alpha_carbons: mdA.AtomGroup) -> np.ndarray:
         """

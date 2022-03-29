@@ -16,15 +16,23 @@ def handle_commandline_options(cl_arguments: argparse.Namespace) -> None:
     given_linklength = cl_arguments.length_range
     given_path = cl_arguments.path_to_pdbs
     if given_algorithm == "rcsb":
-        functions.pdb_to_pcm(log_file="log.txt",
-                             given_algorithm=given_algorithm,
-                             length_range=given_linklength,
-                             path_to_pdbs=given_path)
+        # functions.pdb_to_pcm(log_file="log.txt",
+        #                      given_algorithm=given_algorithm,
+        #                      length_range=given_linklength,
+        #                      path_to_pdbs=given_path)
+        functions.return_distance_histogram(log_file="log.txt",
+                                            given_algorithm=given_algorithm,
+                                            length_range=given_linklength,
+                                            path_to_csvs=given_path)
     elif given_algorithm == "alpha":
-        functions.pdb_to_pcm(log_file="log.txt",
-                             given_algorithm=given_algorithm,
-                             length_range=given_linklength,
-                             path_to_pdbs=given_path)
+        # functions.pdb_to_pcm(log_file="log.txt",
+        #                      given_algorithm=given_algorithm,
+        #                      length_range=given_linklength,
+        #                      path_to_pdbs=given_path)
+        functions.return_distance_histogram(log_file="log.txt",
+                                            given_algorithm=given_algorithm,
+                                            length_range=given_linklength,
+                                            path_to_csvs=given_path)
     elif given_algorithm == "3d-sim":
         functions.compute_3d_simulation_distribution(length_range=given_linklength)
     elif given_algorithm == "boots":

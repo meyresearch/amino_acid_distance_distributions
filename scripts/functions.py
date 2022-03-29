@@ -8,6 +8,7 @@ import traceback
 import networkx as nx
 import numpy as np
 import pandas as pd
+import protein_contact_map
 np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
 
 
@@ -75,8 +76,8 @@ def check_arguments(arguments: argparse.Namespace, argument_parser: argparse.Arg
         argument_parser.error("chunk requires --path=None")
     elif arguments.algorithm == "chunk" and arguments.length_range is None:
         argument_parser.error("chunk requires --range")
-    elif arguments.algorithm == "rcsb" and arguments.length_range is not None:
-        argument_parser.error("rcsb requires --range=None")
+    # elif arguments.algorithm == "rcsb" and arguments.length_range is not None:
+    #     argument_parser.error("rcsb requires --range=None")
     elif arguments.algorithm == "rcsb" and arguments.path_to_pdbs is None:
         argument_parser.error("rcsb requires --path")
     elif arguments.algorithm == "rcsb" and arguments.inputfile is not None:
@@ -85,8 +86,8 @@ def check_arguments(arguments: argparse.Namespace, argument_parser: argparse.Arg
         argument_parser.error("alpha requires --range")
     elif arguments.algorithm == "alpha" and arguments.path_to_pdbs is None:
         argument_parser.error("alpha requires --path")
-    elif arguments.algorithm == "alpha" and arguments.length_range is not None:
-        argument_parser.error("rcsb requires --file=None")
+    elif arguments.algorithm == "alpha" and arguments.inputfile is not None:
+        argument_parser.error("alpha requires --file=None")
     elif arguments.algorithm == "3d-sim" and arguments.length_range is None:
         argument_parser.error("3d-sim requires --range")
     elif arguments.algorithm == "3d-sim" and arguments.path_to_pdbs is not None:
@@ -95,22 +96,79 @@ def check_arguments(arguments: argparse.Namespace, argument_parser: argparse.Arg
         argument_parser.error("3d-sim requires --file=None")
         
         
-def pdb_to_adjacency(pdb_file: str) -> np.ndarray:
+def pdb_to_adjacency(pdb_file: str) -> tuple:
     """
     Convert given PDB file to an adjacency matrix
-    @param pdb_file: PDB file from RCSB or AlphaFold
-    @return: adjacency matrix as a numpy array
+    @param pdb_file: PDB file from RCSB or AlphaFold in each length range
+    @return: tuple of the adjacency and distance matrices as numpy arrays
     """
     pcm = protein_contact_map.ProteinContactMap(pdb_file)
     alpha_carbons = pcm.get_alpha_carbons
-    chain_length = protein_contact_map.get_chain_length(alpha_carbons)
+    distance_array = protein_contact_map.get_distance_array(alpha_carbons)
+    distance_matrix = protein_contact_map.get_distance_matrix(alpha_carbons, distance_array)
+    adjacency_matrix = pcm.get_adjacency_matrix(alpha_carbons, distance_array)
+    return distance_matrix, adjacency_matrix
+
+
+def get_distances(adjacency_matrix: np.ndarray) -> np.ndarray:
+    """
+    Use adjacency array to get the amino acid distances
+    @param adjacency_matrix: adjacency matrix from PDB file
+    @return: array of distances in each range
+    """
+    distances_list = []
+    for row_value in range(len(adjacency_matrix)):
+        for col_value in range(len(adjacency_matrix)):
+            if adjacency_matrix[row_value][col_value] == 1:
+                distance = np.abs(col_value - row_value)
+                distances_list.append(distance)
+    return np.asarray(distances_list)
+
+
+def return_distance_histogram(log_file: str, given_algorithm: str, length_range: str, path_to_csvs: str) -> np.ndarray:
+    """
+    Compute the amino acid distance distribution for PDB files in given range from adjacency matrix
+    and save in a numpy file.
+    @param log_file: file to save exceptions in
+    @param given_algorithm: alpha or rcsb
+    @param length_range: 100, 200 or 300
+    @param path_to_csvs: full path to csv files
+    @return: None
+    """
+    dataframe = pd.read_csv(path_to_csvs)
+    pdb_files = dataframe["filename"].to_numpy()
+    histogram_list = []
+    counter = 1
+    with open(log_file, "w") as log_file:
+        for pdb_file in pdb_files:
+            print(f"Progress: {counter}/{len(pdb_files)}")
+            if given_algorithm == "alpha":
+                clean_pdb_filename = pdb_file.replace("/home/jguven/Projects/sequence_distance_distribution", "..")
+            else:
+                clean_pdb_filename = pdb_file.replace("../data/rcsb/", "/Volumes/external_drive/PhD/First_year/Papers/")
+            try:
+                adjacency_matrix = pdb_to_adjacency(clean_pdb_filename)[1]
+                distances = get_distances(adjacency_matrix)
+                bins = np.linspace(start=distances[0], stop=distances[-1], num=len(distances))
+                histogram = np.histogram(distances, bins=bins, density=True)[0]
+                histogram_list.append(histogram)
+                counter += 1
+            except FileNotFoundError:
+                traceback.print_exc(file=log_file)
+    histogram_array = np.asarray(histogram_list)
+    if not histogram_list:
+        print("Warning: Histogram list is empty. Check log file.")
+    if given_algorithm == "alpha":
+        np.save(f"../data/alphafold/histogram_{length_range}.npy", histogram_array)
+    elif given_algorithm == "rcsb":
+        np.save(f"../data/rcsb/histogram_{length_range}.npy", histogram_array)
 
 
 def pdb_to_pcm(log_file: str, given_algorithm: str, length_range: str, path_to_pdbs: str) -> None:
     """
     Convert given PDB files to ProteinContactNetworks.
     @rtype: object
-    @param path_to_pdbs: path to directory contiaining PDB files
+    @param path_to_pdbs: path to directory containing PDB files
     @param length_range: chain length range
     @param given_algorithm: PDB or aF
     @param log_file: log.txt to save errors
@@ -147,22 +205,22 @@ def pdb_to_pcm(log_file: str, given_algorithm: str, length_range: str, path_to_p
                 continue
 
             if os.path.isfile(pdb_file):
-                protein_contact_map = pcm.ProteinContactMap(pdb_file)
-                alpha_carbons = protein_contact_map.get_alpha_carbons
-                chain_length = pcm.get_chain_length(alpha_carbons)
+                pcm = protein_contact_map.ProteinContactMap(pdb_file)
+                alpha_carbons = pcm.get_alpha_carbons
+                chain_length = protein_contact_map.get_chain_length(alpha_carbons)
 
                 if chain_length in range(85, 116):
                     print("This PDB is in the length range 85-115. \nGetting amino acid distances.")
                     ids_100.append(pdb_id)
-                    distances_100.append(protein_contact_map.get_link_lengths(alpha_carbons))
+                    distances_100.append(pcm.get_link_lengths(alpha_carbons))
                 elif chain_length in range(185, 216):
                     print("This PDB is in the length range 185-215. \nGetting link lengths.")
                     ids_200.append(pdb_id)
-                    distances_200.append(protein_contact_map.get_link_lengths(alpha_carbons))
+                    distances_200.append(pcm.get_link_lengths(alpha_carbons))
                 elif chain_length in range(285, 316):
                     print("This PDB is in the length range 285-315. \nGetting link lengths.")
                     ids_300.append(pdb_id)
-                    distances_300.append(protein_contact_map.get_link_lengths(alpha_carbons))
+                    distances_300.append(pcm.get_link_lengths(alpha_carbons))
                 else:
                     print("PDB is outside chosen length ranges.")
             else:
