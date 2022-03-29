@@ -210,7 +210,6 @@ class ProteinContactMap:
             subgraphs = list(create_connected_component_subgraphs(parent_graph))
             n_subgraphs = len(subgraphs)
             protein_graph = subgraphs[0]  # changed [0]
-            n_protein_graph_nodes = len(protein_graph.nodes())
             if n_subgraphs > 1:  # more than one subgraph
                 print("More than one subgraph. This PDB will be excluded.")
             else:  # just one subgraph

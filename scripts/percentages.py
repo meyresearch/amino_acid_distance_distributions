@@ -29,7 +29,7 @@ def plot_percentages(dataframe: pd.DataFrame, use_color_map: bool) -> None:
 
 length_ranges = ["100", "200", "300"]
 for length in length_ranges:
-    alphafold = pd.read_csv(f"../data/alphafold/secondary_structures_{length}.csv")
+    alphafold = pd.read_csv(f"../data/alphafold/unique_secondary_structures_{length}.csv")
     plot_percentages(alphafold, use_color_map=True)
     plt.savefig(f"../plots/alphafold/percentages_{length}.pdf")
     plt.show()
