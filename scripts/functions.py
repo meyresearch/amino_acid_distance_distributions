@@ -145,7 +145,7 @@ def return_distance_histogram(log_file: str, given_algorithm: str, length_range:
             if given_algorithm == "alpha":
                 clean_pdb_filename = pdb_file.replace("/home/jguven/Projects/sequence_distance_distribution", "..")
             else:
-                clean_pdb_filename = pdb_file.replace("../data/rcsb/", "/Volumes/external_drive/PhD/First_year/Papers/")
+                clean_pdb_filename = pdb_file
             try:
                 adjacency_matrix = pdb_to_adjacency(clean_pdb_filename)[1]
                 distances = get_distances(adjacency_matrix)

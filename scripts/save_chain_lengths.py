@@ -97,6 +97,6 @@ if algorithm == "alpha":
     confidence_df = pd.read_csv("../data/alphafold/confidences.csv")
     save_alpha_chain_lengths(confidence_df)
 elif algorithm == "rcsb":
-    pdbs = glob.glob("../data/rcsb/pdbs/*.ent")
+    pdbs = glob.glob("../data/rcsb/pdb_files/*.ent")
     save_rcsb_chain_lengths(pdbs)
     
