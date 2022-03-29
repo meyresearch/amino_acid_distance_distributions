@@ -9,5 +9,5 @@ old_src/
 code/scripts/__pycache__/
 data/
 ../data/*
-../scripts/__pycache__/
+../scripts/__pycache__/*
 
