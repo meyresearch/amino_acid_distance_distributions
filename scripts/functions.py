@@ -150,7 +150,7 @@ def return_distance_histogram(log_file: str, given_algorithm: str, length_range:
                 adjacency_matrix = pdb_to_adjacency(clean_pdb_filename)[1]
                 distances = get_distances(adjacency_matrix)
                 # bins = np.linspace(start=1, stop=200, num=100)
-                bins = np.linspace(start=1, stop=200, num=100)
+                bins = np.linspace(start=1, stop=int(length_range), num=100)
                 histogram = np.histogram(distances, bins=bins, density=True)[0]
                 histogram_list.append(histogram)
                 counter += 1
