@@ -108,9 +108,9 @@ def save_rcsb_secondary_info():
             secondary_structures.append(counter)
             pdb_counter += 1
         secondary_df = pd.DataFrame.from_dict(secondary_structures)
+        secondary_df["filename"] = chain_data["filename"]
         secondary_df.to_csv(f"../data/rcsb/structures_{length}_raw.csv")
         chain_counter += 1
-        secondary_df["filename"] = chain_data["filename"]
         secondary_df["beta"] = secondary_df["B"] + secondary_df["E"]
-        secondary_df = secondary_df[["filename", "H", "beta"]]
+        secondary_df = secondary_df[["filename", "H", "beta", "B", "E"]]
         secondary_df.to_csv(f"../data/rcsb/secondary_structures_{length}.csv")
