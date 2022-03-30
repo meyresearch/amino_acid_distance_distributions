@@ -81,8 +81,9 @@ def save_alpha_secondary_info():
         secondary_df["mean"] = confidence_data["mean_conf"]
         secondary_df["std"] = confidence_data["std_conf"]
         secondary_df["beta"] = secondary_df["B"] + secondary_df["E"]
-        secondary_df = secondary_df[["filename", "mean", "std", "H", "beta"]]
-        secondary_df.to_csv(f"../data/alphafold/secondary_structures_{length}.csv")
+        clean_df = secondary_df[["filename", "mean", "std", "H", "beta"]]
+        renamed_cols_df = clean_df.rename(columns={"H": "alpha"})
+        renamed_cols_df.to_csv(f"../data/alphafold/secondary_structures_{length}.csv")
 
 
 def save_rcsb_secondary_info():
@@ -112,5 +113,6 @@ def save_rcsb_secondary_info():
         secondary_df.to_csv(f"../data/rcsb/structures_{length}_raw.csv")
         chain_counter += 1
         secondary_df["beta"] = secondary_df["B"] + secondary_df["E"]
-        secondary_df = secondary_df[["filename", "H", "beta", "B", "E"]]
-        secondary_df.to_csv(f"../data/rcsb/secondary_structures_{length}.csv")
+        clean_df = secondary_df[["filename", "H", "beta", "B", "E"]]
+        renamed_cols_df = clean_df.rename(columns={"H": "alpha"})
+        renamed_cols_df.to_csv(f"../data/rcsb/secondary_structures_{length}.csv")
