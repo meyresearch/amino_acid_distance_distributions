@@ -11,7 +11,7 @@ def parse_arguments() -> argparse.Namespace:
     """
     Parse command line arguments
     """
-    parser = argparse.ArgumentParser(description="Sort PDBs to chain length ranges.")
+    parser = argparse.ArgumentParser(description="Get secondary structure information from AlphaFold 2 or RCSB PDBs.")
     parser.add_argument("algorithm", type=str, choices=["alpha", "rcsb"])
     return parser.parse_args()
 
