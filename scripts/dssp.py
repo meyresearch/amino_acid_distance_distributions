@@ -19,10 +19,10 @@ def parse_arguments() -> argparse.Namespace:
 algorithm = parse_arguments().algorithm
 
 if algorithm == "alpha":
-    dssp_functions.save_good_secondary_info()
+    dssp_functions.save_alpha_secondary_info()
 
 elif algorithm == "rcsb":
-    dssp_functions.save_secondary_info()
+    dssp_functions.save_rcsb_secondary_info()
 
 
                 
