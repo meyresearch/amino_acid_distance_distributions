@@ -59,7 +59,9 @@ def save_rcsb_chain_lengths(pdb_files: list) -> None:
     proteins_100 = {"filename": []}
     proteins_200 = {"filename": []}
     proteins_300 = {"filename": []}
+    counter = 1
     for pdb_file in pdb_files:
+        print(f"Process: {counter}/{len(pdb_files)}")
         pcm = protein_contact_map.ProteinContactMap(pdb_file)
         alpha_carbons = pcm.get_alpha_carbons
         chain_length = protein_contact_map.get_chain_length(alpha_carbons)
@@ -73,7 +75,7 @@ def save_rcsb_chain_lengths(pdb_files: list) -> None:
         elif chain_length in range(285, 316):
             print("In 300s")
             proteins_300["filename"].append(pdb_file)
-    
+        counter += 1
     df_100 = pd.DataFrame.from_dict(proteins_100)
     df_200 = pd.DataFrame.from_dict(proteins_200)
     df_300 = pd.DataFrame.from_dict(proteins_300)
@@ -94,9 +96,13 @@ def parse_arguments() -> argparse.Namespace:
 
 algorithm = parse_arguments().algorithm
 if algorithm == "alpha":
+    print("Getting AlphaFold length ranges.")
     confidence_df = pd.read_csv("../data/alphafold/confidences.csv")
     save_alpha_chain_lengths(confidence_df)
 elif algorithm == "rcsb":
+    print("Getting RCSB length ranges.")
     pdbs = glob.glob("../data/rcsb/pdb_files/*.ent")
     save_rcsb_chain_lengths(pdbs)
+else:
+    print("An error occurred. Check arguments.")
     
