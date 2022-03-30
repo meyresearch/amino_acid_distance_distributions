@@ -58,9 +58,9 @@ def save_alpha_secondary_info():
     @return:
     """
     length_ranges = ["100", "200", "300"]
-    secondary_structures = []
     chain_counter = 1
     for length in length_ranges:
+        secondary_structures = []
         print(f"Chains {chain_counter}/{len(length_ranges)}")
         pdb_counter = 1
         confidence_data = pd.read_csv(f"../data/alphafold/confidences_{length}.csv")
@@ -76,7 +76,6 @@ def save_alpha_secondary_info():
             pdb_counter += 1
         secondary_df = pd.DataFrame.from_dict(secondary_structures).fillna(0)
         secondary_df.to_csv(f"../data/alphafold/structures_{length}_raw.csv")
-        chain_counter += 1
         secondary_df["filename"] = confidence_data["filename"]
         secondary_df["mean"] = confidence_data["mean_conf"]
         secondary_df["std"] = confidence_data["std_conf"]
@@ -84,7 +83,7 @@ def save_alpha_secondary_info():
         clean_df = secondary_df[["filename", "mean", "std", "H", "beta"]]
         renamed_cols_df = clean_df.rename(columns={"H": "alpha"})
         renamed_cols_df.to_csv(f"../data/alphafold/secondary_structures_{length}.csv")
-
+        chain_counter += 1
 
 def save_rcsb_secondary_info():
     """
