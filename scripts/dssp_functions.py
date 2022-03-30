@@ -74,7 +74,7 @@ def save_alpha_secondary_info():
                 counter[key] = counter[key] / chain_length
             secondary_structures.append(counter)
             pdb_counter += 1
-        secondary_df = pd.DataFrame.from_dict(secondary_structures)
+        secondary_df = pd.DataFrame.from_dict(secondary_structures).fillna(0)
         secondary_df.to_csv(f"../data/alphafold/structures_{length}_raw.csv")
         chain_counter += 1
         secondary_df["filename"] = confidence_data["filename"]
@@ -107,7 +107,7 @@ def save_rcsb_secondary_info():
                 counter[key] = counter[key] / chain_length
             secondary_structures.append(counter)
             pdb_counter += 1
-        secondary_df = pd.DataFrame.from_dict(secondary_structures)
+        secondary_df = pd.DataFrame.from_dict(secondary_structures).fillna(0)
         secondary_df["filename"] = chain_data["filename"]
         secondary_df.to_csv(f"../data/rcsb/structures_{length}_raw.csv")
         chain_counter += 1
