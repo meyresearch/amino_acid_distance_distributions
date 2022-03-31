@@ -289,7 +289,7 @@ def bootstrap(inputfile: str, sample_replacement: bool, length_range: str) -> No
                 bootstrap_dataframe_stats.to_csv(f"../data/alphafold/chunk_{length_range}_stats.csv", index=False)
 
 
-def get_3d_sim_files(length_range: str) -> list:
+def get_3d_simulation_files(length_range: str) -> list:
     """
     Get all the 3D simulation adjacency matrix files belonging to the length range
     @param length_range: chain length range
@@ -298,60 +298,47 @@ def get_3d_sim_files(length_range: str) -> list:
     return glob.glob(f"../data/simulations/3d/matrices/matrix_{length_range}_*")
 
 
-def sim_to_pcm(length_range: str) -> None:
+def get_simulation_adjacency_matrix(simulation_file: str) -> np.ndarray:
+    """
+    Opens a 3d simulation file and returns a binary adjacency matrix
+    @param simulation_file: 3d simulation file of an adjacency matrix
+    @return: numpy array of a binary adjacency matrix
+    """
+    adjacency_matrix = np.loadtxt(simulation_file)
+    adjacency_matrix[adjacency_matrix > 1] = 0
+    return adjacency_matrix
+
+
+def get_simulation_distances(adjacency_matrix: np.ndarray) -> np.ndarray:
     """
     Open 3D simulation adjacency matrix files and compute amino acid distances with statistics
-    @param length_range: chain length range
-    @return: None
+    @param adjacency_matrix: adjacency matrix from 3d simulation files
+    @return: numpy array of distances
     """
-    files = get_3d_sim_files(length_range)
-    all_distances = []
-    for file in files:
-        distances_list = []
-        adjacency_matrix = np.loadtxt(file)
-        adjacency_matrix[adjacency_matrix > 1] = 0
-        protein_graph = nx.from_numpy_matrix(adjacency_matrix)
-        distances = list(protein_graph.edges())
-        for distance in distances:
-            distances_list.append(abs(distance[0] - distance[1]))
-        all_distances.append(np.asarray(distances_list))
-        np.save(f"../data/simulations/3d/lls_{length_range}.npy", all_distances)
+    distances_list = []
+    for row_value in range(len(adjacency_matrix)):
+        for col_value in range(len(adjacency_matrix)):
+            distance = np.abs(col_value - row_value)
+            distances_list.append(distance)
+    return np.asarray(distances_list)
 
 
-def get_simulation_stats(length_range: str):
+def return_simulation_distance_histogram(length_range: str) -> None:
     """
     Open 3D simulation files and return frequencies of amino acid distances
     @param length_range: chain length range
-    @return: pd.DataFrame
+    @return: None
     """
-    simulation_samples = np.load(f"../data/simulations/3d/lls_{length_range}.npy", allow_pickle=True)
-    distances_dict = {}
-    for sample in simulation_samples:
-        values, counts = np.unique(sample, return_counts=True)
-        for value, count in zip(values, counts):
-            try:
-                distances_dict[value].append(count)
-            except KeyError:
-                distances_dict[value] = []
-                distances_dict[value].append(count)
-    dataframe_from_dict = pd.DataFrame.from_dict(distances_dict, orient="index").reset_index()
-    dataframe_no_nans = dataframe_from_dict.fillna(0)
-    dataframe_no_nans.to_csv(f"../data/simulations/3d/simulation_{length_range}_raw.csv")
-    melted_dataframe = dataframe_no_nans.melt(id_vars="index")
-    stats_dataframe = melted_dataframe.groupby("index", as_index=False).agg(mean=("value", np.mean),
-                                                                            lower_bound=("value", lambda val:
-                                                                            np.quantile(val, q=0.05)),
-                                                                            upper_bound=("value", lambda val:
-                                                                            np.quantile(val, q=0.95)))
-    stats_dataframe.to_csv(f"../data/simulations/3d/simulation_{length_range}_stats.csv")
-
-
-def compute_3d_simulation_distribution(length_range: str) -> None:
-    """
-
-    @param length_range:
-    @return:
-    """
-    sim_to_pcm(length_range=length_range)
-    get_simulation_stats(length_range=length_range)
-
+    simulation_files = get_3d_simulation_files(length_range)
+    histogram_list = []
+    counter = 1
+    for simulation_file in simulation_files:
+        print(f"Progress: {counter}/{len(simulation_files)}")
+        adjacency_matrix = get_simulation_adjacency_matrix(simulation_file)
+        distances = get_simulation_distances(adjacency_matrix)
+        bins = np.linspace(start=1, stop=int(length_range), num=100)
+        histogram = np.histogram(distances, bins=bins, density=True)[0]
+        histogram_list.append(histogram)
+        counter += 1
+    histogram_array = np.asarray(histogram_list)
+    np.save(f"../data/simulations/3d/histogram_{length_range}.npy", histogram_array)

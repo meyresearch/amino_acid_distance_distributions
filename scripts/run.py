@@ -34,7 +34,7 @@ def handle_commandline_options(cl_arguments: argparse.Namespace) -> None:
                                             length_range=given_linklength,
                                             path_to_csvs=given_path)
     elif given_algorithm == "3d-sim":
-        functions.compute_3d_simulation_distribution(length_range=given_linklength)
+        functions.return_simulation_distance_histogram(length_range=given_linklength)
     elif given_algorithm == "boots":
         functions.bootstrap(inputfile=given_inputfile,
                             sample_replacement=True,
