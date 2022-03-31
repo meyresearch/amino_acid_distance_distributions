@@ -41,6 +41,11 @@ def parse_command_line_arguments() -> argparse.Namespace:
                            help="step size for constant a range, default=1")
     pdb_group.add_argument("-stepd", "--step-dimensionality", dest="step_dimensionality", type=float, nargs="?",
                            const=0.0001, default=0.0001, help="step size for constant A range, default=0.0001")
+    pdb_group.add_argument("-m", "--measure", dest="measure", type=str, choices=["median", "mean"], nargs="?",
+                           const="median", default="median", help="measure of central tendency to use")
+    pdb_group.add_argument("-q", "--quantile", dest="quantile", type=int, choices=[1, 2, 3], nargs="?", const=1,
+                           default=1, help="confidence interval to use in multiples of standard deviations (std), "
+                                           "i.e. 1 std, 2 std or 3 std")
     compare_group.add_argument("-rcsbd", "--rcsb-dimensionality", dest="d_rcsb", type=float,
                                help="constant A for rcsb algorithm in comparison plot")
     compare_group.add_argument("-alphad", "--alpha-dimensionality", dest="d_alpha", type=float,

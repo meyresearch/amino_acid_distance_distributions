@@ -8,35 +8,67 @@ import pandas as pd
 import argparse
 
 
-def get_dataframe(arguments: argparse.Namespace) -> pd.DataFrame:
+def get_histogram(arguments: argparse.Namespace) -> np.ndarray:
     """
-    Get distribution of amino acid distances from csv.
+    Get distribution of amino acid distances from histogram.
     @param arguments: command line arguments
-    @return: dataframe of bootstrapped/chunked data
+    @return: histogram of RCSB/AlphaFold 2 data
     """
-    dataframe = None
+    histogram = None
     if arguments.algorithm == "rcsb":
-        dataframe = pd.read_csv(f"../data/rcsb/bootstrap_{arguments.length_range}_stats.csv")
+        histogram = np.load(f"../data/rcsb/histogram_{arguments.length_range}.npy", allow_pickle=True)
     elif arguments.algorithm == "alpha":
-        dataframe = pd.read_csv(f"../data/alphafold/chunk_{arguments.length_range}_stats.csv")
-    return dataframe
+        histogram = np.load(f"../data/alphafold/histogram_{arguments.length_range}.npy", allow_pickle=True)
+    return histogram
 
 
-def get_data_for_plotting(dataframe: pd.DataFrame) -> tuple:
+def get_confidence_interval(histogram: np.ndarray, quantile: int) -> tuple:
+    """
+    Get the confidence interval chosen by the user
+    @param histogram: numpy array that contains amino acid distances
+    @param quantile: 1, 2 or 3 standard deviations, given by user
+    @return: tuple containing lower and upper bounds of the confidence interval
+    """
+    lower_bound, upper_bound = [], []
+    if quantile == 1:
+        lower_bound, upper_bound = np.quantile(histogram, q=[1 / 3, 2 / 3], axis=0)
+    elif quantile == 2:
+        lower_bound, upper_bound = np.quantile(histogram, q=[0.05, 0.95], axis=0)
+    elif quantile == 3:
+        lower_bound, upper_bound = np.quantile(histogram, q=[0.003, 0.997], axis=0)
+    return lower_bound, upper_bound
+
+
+def get_measure_of_central_tendency(histogram: np.ndarray, user_measure: str) -> np.ndarray:
+    """
+    Return the desired measure of central tendency, median or mean
+    @param histogram: numpy array that contains amino acid distances
+    @param user_measure: user specified measure of central tendency
+    @return: desired measure
+    """
+    measure = []
+    if user_measure == "median":
+        measure = np.quantile(histogram, q=0.5, axis=0)
+    elif arguments.measure == "mean":
+        measure = np.mean(histogram, axis=0)
+    return measure
+
+
+def get_data_for_plotting(histogram: np.ndarray, arguments: argparse.Namespace) -> tuple:
     """
     Get protein data for plotting from dataframe
-    @param dataframe: contains amino acid distances and confidence levels
+    @param arguments: command line arguments
+    @param histogram: numpy array that contains amino acid distances
     @return: tuple of number of datapoints, normalised means and confidence level bounds
     """
-    try:
-        distances = dataframe["variable"].to_numpy()
-    except KeyError:
-        distances = dataframe["index"].to_numpy()
-    means = dataframe["mean"].to_numpy()
-    lower_bound = dataframe["lower_bound"].to_numpy()
-    upper_bound = dataframe["upper_bound"].to_numpy()
-    n_datapoints = int(distances[-1] + 1)
-    return n_datapoints, means / np.sum(means), lower_bound / np.sum(means), upper_bound / np.sum(means)
+    distances = np.linspace(start=1, stop=int(arguments.length_range), num=100)
+    lower_bound, upper_bound = get_confidence_interval(histogram, arguments.quantile)
+    measure = get_measure_of_central_tendency(histogram, arguments.measure)
+    normalised_measure = measure / np.sum(measure)
+    normalised_lower_bound = lower_bound / np.sum(measure)
+    normalised_upper_bound = upper_bound / np.sum(measure)
+    n_datapoints = len(distances)
+    return n_datapoints, distances, normalised_measure, normalised_lower_bound, normalised_upper_bound
 
 
 def create_plot_label(length_range: str, algorithm: str):
@@ -123,28 +155,28 @@ def plot_residuals(normalised_means: np.ndarray, n_points: int, half_n_harmonic:
 
 
 def create_plots(arguments: argparse.Namespace, exponent: int, dimensionality: float,
-                 pdb_dataframe: pd.DataFrame, sim_dataframe: pd.DataFrame) -> None:
+                 pdb_histogram: pd.DataFrame, sim_dataframe: pd.DataFrame) -> None:
     """
     Plot amino acid distances and residuals in single plots
     @param arguments: command line arguments
     @param exponent: exponent constant a
     @param dimensionality: dimensionality constant A
-    @param pdb_dataframe: dataframe containing amino acid distances and stats from RCSB or AlphaFold
+    @param pdb_histogram: histogram containing amino acid distances from RCSB or AlphaFold
     @param sim_dataframe: dataframe containing amino acid distances and stats from 3D simulations
     @return: None
     """
-    pdb_plotting_tuple = get_data_for_plotting(pdb_dataframe)
-    pdb_distances = pdb_dataframe["variable"].to_numpy()
+    pdb_plotting_tuple = get_data_for_plotting(pdb_histogram, arguments.length_range)
+    pdb_distances = pdb_plotting_tuple[1]
     half_n_harmonic = theory_functions.harmonic_number(n_numbers=(pdb_plotting_tuple[0] // 2))
     pdb_plotting_sum_range = np.array(range(int(pdb_distances[0]), pdb_plotting_tuple[0]))
     sim_distances = sim_dataframe["index"].to_numpy()
-    sim_plotting_tuple = get_data_for_plotting(sim_dataframe)
+    sim_plotting_tuple = get_data_for_plotting(sim_dataframe, arguments.length_range)
     plot_distances(pdb_distances=pdb_distances,
-                   normalised_means=pdb_plotting_tuple[1],
+                   normalised_means=pdb_plotting_tuple[2],
                    sim_distances=sim_distances,
                    normalised_sim_means=sim_plotting_tuple[1],
-                   lower_cl=pdb_plotting_tuple[2],
-                   upper_cl=pdb_plotting_tuple[3],
+                   lower_cl=pdb_plotting_tuple[3],
+                   upper_cl=pdb_plotting_tuple[4],
                    plot_sum_range=pdb_plotting_sum_range,
                    n_points=pdb_plotting_tuple[0],
                    half_n_harmonic=half_n_harmonic,
@@ -152,7 +184,7 @@ def create_plots(arguments: argparse.Namespace, exponent: int, dimensionality: f
                    dimensionality=dimensionality,
                    length_range=arguments.length_range,
                    algorithm=arguments.algorithm)
-    plot_residuals(normalised_means=pdb_plotting_tuple[1],
+    plot_residuals(normalised_means=pdb_plotting_tuple[2],
                    n_points=pdb_plotting_tuple[0],
                    half_n_harmonic=half_n_harmonic,
                    plot_sum_range=pdb_plotting_sum_range,
@@ -161,9 +193,8 @@ def create_plots(arguments: argparse.Namespace, exponent: int, dimensionality: f
     plt.show()
 
 
-
 def grid_plot_distances(dimensionality_range: np.ndarray, exponent_range: np.ndarray, n_points: int,
-                        half_n_harmonic: float, plotting_sumrange: np.ndarray, normalised_means: np.ndarray,
+                        half_n_harmonic: float, plotting_sumrange: np.ndarray, normalised_measure: np.ndarray,
                         distances: np.ndarray, normalised_sim_means: np.ndarray, sim_distances: np.ndarray,
                         lower_cl: np.ndarray, upper_cl: np.ndarray, length_range: str, algorithm: str) -> None:
     """
@@ -174,7 +205,7 @@ def grid_plot_distances(dimensionality_range: np.ndarray, exponent_range: np.nda
     @param upper_cl: upper confidence level
     @param lower_cl: lower confidence level
     @param normalised_sim_means: normalised simulated means of amino acid distance frequencies
-    @param normalised_means: normalised means of PDB amino acid distance frequencies
+    @param normalised_measure: normalised means or medians of PDB amino acid distance frequencies
     @param distances: amino acid distances for PDB data (x-axis)
     @param plotting_sumrange: Range to be used in sum for the theory plot
     @param half_n_harmonic: Harmonic number for N/2
@@ -192,7 +223,7 @@ def grid_plot_distances(dimensionality_range: np.ndarray, exponent_range: np.nda
             theory = [
                 theory_functions.amino_acid_distance_distribution(s, n_points, half_n_harmonic, exponent_range[row],
                                                                   dimensionality_range[col]) for s in plotting_sumrange]
-            ax[row][col].scatter(distances, normalised_means, s=10, c=_COLOUR_PALETTE["PDB_SCATTER"], label=plot_label)
+            ax[row][col].scatter(distances, normalised_measure, s=10, c=_COLOUR_PALETTE["PDB_SCATTER"], label=plot_label)
             ax[row][col].fill_between(distances, upper_cl, lower_cl, color=_COLOUR_PALETTE["PDB_SCATTER"], alpha=0.4,
                                       label="95% CL", zorder=-100)
             ax[row][col].scatter(sim_distances, normalised_sim_means, s=10, marker="^",
@@ -214,17 +245,17 @@ def grid_plot_distances(dimensionality_range: np.ndarray, exponent_range: np.nda
 
 def grid_plot_residuals(algorithm: str, length_range: str, dimensionality_range, exponent_range: np.ndarray,
                         n_points: int, half_n_harmonic_number: float, plotting_sumrange: np.ndarray,
-                        normalised_means: np.ndarray) -> None:
+                        normalised_measure: np.ndarray) -> None:
     """
     Plot residuals grid and print out statistics.
-    @param algorithm:
-    @param length_range:
-    @param dimensionality_range:
-    @param exponent_range:
-    @param n_points:
-    @param half_n_harmonic_number:
-    @param plotting_sumrange:
-    @param normalised_means:
+    @param algorithm: rcsb or alpha
+    @param length_range: chain length
+    @param dimensionality_range: range of values for dimensionality constant A
+    @param exponent_range: range of values for exponent constant a
+    @param n_points: number of datapoints
+    @param half_n_harmonic_number: the "N/2-th" harmonic number
+    @param plotting_sumrange: range to sum over
+    @param normalised_measure: normalised median or mean
     @return:
     """
     fig = plt.figure(figsize=(16, 8))
@@ -234,7 +265,7 @@ def grid_plot_residuals(algorithm: str, length_range: str, dimensionality_range,
         for col in range(len(dimensionality_range)):
             residuals = theory_functions.plotting_statistics(dimensionality_range[col], exponent_range[row],
                                                              n_points, half_n_harmonic_number, plotting_sumrange,
-                                                             normalised_means)[0]
+                                                             normalised_measure)[0]
 
             ax[row][col].scatter(plotting_sumrange, residuals, marker=".", c=_COLOUR_PALETTE["RESIDUALS"],
                                  label="Residuals", zorder=10)
@@ -252,21 +283,21 @@ def grid_plot_residuals(algorithm: str, length_range: str, dimensionality_range,
     plt.savefig(f"../plots/supplementary_information/{algorithm}_{length_range}_r.pdf")
 
 
-def create_grid_plots(arguments: argparse.Namespace, pdb_dataframe: pd.DataFrame, sim_dataframe: pd.DataFrame) -> None:
+def create_grid_plots(arguments: argparse.Namespace, pdb_histogram: np.ndarray, sim_dataframe: pd.DataFrame) -> None:
     """
     Function to bring together everything needed to plot the grid plots of amino acid distance distributions
     and residuals
     @param arguments: command line arguments
-    @param pdb_dataframe: dataframe containing data for PDBs
+    @param pdb_histogram: histogram containing data for PDBs
     @param sim_dataframe: 3D simulation data for plotting
     @return:
     """
-    pdb_plotting_tuple = get_data_for_plotting(pdb_dataframe)
-    pdb_distances = pdb_dataframe["variable"].to_numpy()
+    pdb_plotting_tuple = get_data_for_plotting(pdb_histogram, arguments.length_range)
+    pdb_distances = pdb_histogram["variable"].to_numpy()
     half_n_harmonic = theory_functions.harmonic_number(n_numbers=(pdb_plotting_tuple[0] // 2))
     pdb_plotting_sum_range = np.array(range(int(pdb_distances[0]), pdb_plotting_tuple[0]))
     sim_distances = sim_dataframe["index"].to_numpy()
-    sim_plotting_tuple = get_data_for_plotting(sim_dataframe)
+    sim_plotting_tuple = get_data_for_plotting(sim_dataframe, arguments.length_range)
 
     dimensionality_range = np.arange(arguments.start_dimensionality,
                                      arguments.end_dimensionality,
@@ -274,25 +305,14 @@ def create_grid_plots(arguments: argparse.Namespace, pdb_dataframe: pd.DataFrame
     exponent_range = np.arange(arguments.start_exponent,
                                arguments.end_exponent,
                                arguments.step_exponent)
-    grid_plot_distances(dimensionality_range=dimensionality_range,
-                        exponent_range=exponent_range,
-                        n_points=pdb_plotting_tuple[0],
-                        half_n_harmonic=half_n_harmonic,
-                        plotting_sumrange=pdb_plotting_sum_range,
-                        normalised_means=pdb_plotting_tuple[1],
-                        distances=pdb_distances,
-                        normalised_sim_means=sim_plotting_tuple[1],
-                        sim_distances=sim_distances,
-                        lower_cl=pdb_plotting_tuple[2],
-                        upper_cl=pdb_plotting_tuple[3],
-                        length_range=arguments.length_range,
-                        algorithm=arguments.algorithm)
-    grid_plot_residuals(algorithm=arguments.algorithm,
-                        length_range=arguments.length_range,
-                        dimensionality_range=dimensionality_range,
-                        exponent_range=exponent_range,
-                        n_points=pdb_plotting_tuple[0],
-                        half_n_harmonic_number=half_n_harmonic,
-                        plotting_sumrange=pdb_plotting_sum_range,
-                        normalised_means=pdb_plotting_tuple[1])
+    grid_plot_distances(dimensionality_range=dimensionality_range, exponent_range=exponent_range,
+                        n_points=pdb_plotting_tuple[0], half_n_harmonic=half_n_harmonic,
+                        plotting_sumrange=pdb_plotting_sum_range, normalised_measure=pdb_plotting_tuple[2],
+                        distances=pdb_distances, normalised_sim_means=sim_plotting_tuple[1],
+                        sim_distances=sim_distances, lower_cl=pdb_plotting_tuple[3], upper_cl=pdb_plotting_tuple[4],
+                        length_range=arguments.length_range, algorithm=arguments.algorithm)
+    grid_plot_residuals(algorithm=arguments.algorithm, length_range=arguments.length_range,
+                        dimensionality_range=dimensionality_range, exponent_range=exponent_range,
+                        n_points=pdb_plotting_tuple[0], half_n_harmonic_number=half_n_harmonic,
+                        plotting_sumrange=pdb_plotting_sum_range, normalised_measure=pdb_plotting_tuple[2])
     plt.show()

@@ -1,9 +1,8 @@
 #!/bin/bash
 
-python plot.py -r=100 BS --d-begin 0.0016 --d-end 0.0022 --e-begin 0 --e-end 4
-python plot.py -r=200 BS --d-begin 0.0011 --d-end 0.0016 --e-begin 0 --e-end 4
-python plot.py -r=300 BS --d-begin 0.0006 --d-end 0.0012 --e-begin 2 --e-end 7
-python plot.py -r=100 C --d-begin 0.0018 --d-end 0.0023 --e-begin 1 --e-end 5
-python plot.py -r=200 C --d-begin 0.0009 --d-end 0.0014 --e-begin 1 --e-end 5
-python plot.py -r=300 C --d-begin 0.0009 --d-end 0.0014 --e-begin 4 --e-end 8
- 
+python plot.py -r=100 rcsb -startd 0.0016 -endd 0.0022 -starte 0 -ende 4 -m mean 
+python plot.py -r=200 rcsb -startd 0.0011 -endd 0.0016 -starte 0 -ende 4 -m mean 
+python plot.py -r=300 rcsb -startd 0.0006 -endd 0.0012 -starte 2 -ende 7 -m mean 
+python plot.py -r=100 alpha -startd 0.0018 -endd 0.0023 -starte 1 -ende 5 -m mean 
+python plot.py -r=200 alpha -startd 0.0009 -endd 0.0014 -starte 1 -ende 5 -m mean 
+python plot.py -r=300 alpha -startd 0.0009 -endd 0.0014 -starte 4 -ende 8 -m mean 

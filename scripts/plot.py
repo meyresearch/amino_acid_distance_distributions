@@ -28,12 +28,12 @@ def plot() -> None:
         dimensionality_end = arguments.end_dimensionality
         exponent_start = arguments.start_exponent
         exponent_end = arguments.end_exponent
-        pdb_dataframe = distances.get_dataframe(arguments)
+        pdb_histogram = distances.get_histogram(arguments)
         sim_dataframe = pd.read_csv(f"../data/simulations/3d/simulation_{length_range}_stats.csv")
         if dimensionality_start == dimensionality_end and exponent_start == exponent_end:
-            distances.create_plots(arguments, exponent_start, dimensionality_start, pdb_dataframe, sim_dataframe)
+            distances.create_plots(arguments, exponent_start, dimensionality_start, pdb_histogram, sim_dataframe)
         elif dimensionality_start != dimensionality_end and exponent_start != exponent_end:
-            distances.create_grid_plots(arguments, pdb_dataframe, sim_dataframe)
+            distances.create_grid_plots(arguments, pdb_histogram, sim_dataframe)
     elif algorithm == "adj":
         adjacency.plot_adjacency_matrix(arguments.file, arguments.data_type)
     elif algorithm == "2d-sim":

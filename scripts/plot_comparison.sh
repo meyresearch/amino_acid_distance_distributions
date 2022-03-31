@@ -1,5 +1,5 @@
 #!/bin/bash
 
-python plot.py -r=100 BOTH --d-BS 0.0019 --e-BS 2 --d-C 0.0021 --e-C 3
-python plot.py -r=200 BOTH --d-BS 0.0012 --e-BS 3 --d-C 0.0011 --e-C 3
-python plot.py -r=300 BOTH --d-BS 0.0009 --e-BS 4 --d-C 0.0010 --e-C 5
+python plot.py -r=100 comp -rcsbd 0.0019 -rcsbe 2 -alphad 0.0021 -alphae 3 -m=mean -q=1
+python plot.py -r=200 comp -rcsbd 0.0012 -rcsbe 3 -alphad 0.0011 -alphae 3 -m=mean -q=1
+python plot.py -r=300 comp -rcsbd 0.0009 -rcsbe 4 -alphad 0.0010 -alphae 5 -m=mean -q=1
