@@ -318,8 +318,9 @@ def get_simulation_distances(adjacency_matrix: np.ndarray) -> np.ndarray:
     distances_list = []
     for row_value in range(len(adjacency_matrix)):
         for col_value in range(len(adjacency_matrix)):
-            distance = np.abs(col_value - row_value)
-            distances_list.append(distance)
+            if adjacency_matrix[row_value][col_value] == 1:
+                distance = np.abs(col_value - row_value)
+                distances_list.append(distance)
     return np.asarray(distances_list)
 
 

@@ -59,11 +59,15 @@ def amino_acid_distance_distribution(amino_acid_distance: int, chain_length: int
     """
     f_low_k = f_low(amino_acid_distance, chain_length)
     f_high_k = f_high(amino_acid_distance, chain_length, half_n_harmonic_number)
-    return (((1 - f_low_k) / (1 - f_high_k)) ** exponent) * (dimensionality / f_high_k)
+    if f_high_k == 0.0:
+        distribution = 0
+    else:
+        distribution = (((1 - f_low_k) / (1 - f_high_k)) ** exponent) * (dimensionality / f_high_k)
+    return distribution
 
 
 def plotting_statistics(dimensionality: float, exponent: int, n_points: int, half_n_harmonic_number: float,
-                        plotting_sumrange: np.ndarray, normalised_means: np.ndarray) -> tuple:
+                        plotting_sumrange: np.ndarray, normalised_measure: np.ndarray) -> tuple:
     """
     Calculate plotting statistics: residuals, mean of residuals, R^2 statistic and residual sum of squares
     @param dimensionality: dimensionality scaling constant (constant A)
@@ -71,7 +75,7 @@ def plotting_statistics(dimensionality: float, exponent: int, n_points: int, hal
     @param n_points: number of datapoints
     @param half_n_harmonic_number: "N/2"-th harmonic number
     @param plotting_sumrange: range to sum over for plotting
-    @param normalised_means: normalised means of amino acid distance frequencies
+    @param normalised_measure: normalised means of amino acid distance frequencies
     @return: tuple of different statistics
     """
     theory_function = [amino_acid_distance_distribution(s,
@@ -79,14 +83,15 @@ def plotting_statistics(dimensionality: float, exponent: int, n_points: int, hal
                                                         half_n_harmonic_number,
                                                         exponent,
                                                         dimensionality) for s in plotting_sumrange]
-    residuals = normalised_means - theory_function
+    residuals = normalised_measure - theory_function
     residuals_mean = np.mean(residuals)
     residuals_sum = np.sum(residuals)
     residual_sum_of_squares = residuals_sum ** 2
-    r_square_value = r2_score(normalised_means, theory_function)
+    r_square_value = r2_score(normalised_measure, theory_function)
     print("------------------------------------------")
     print(f"a: {exponent}, A: {dimensionality}")
     print(f"mean of residuals: {residuals_mean}")
+    print(f"sum of residuals: {residuals_sum}")
     print(f"r-squared statistic: {r_square_value}")
     print(f"residual sum of squares: {residual_sum_of_squares}")
     return residuals, residuals_mean, r_square_value, residual_sum_of_squares
