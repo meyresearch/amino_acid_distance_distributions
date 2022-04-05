@@ -37,7 +37,7 @@ pre]{revtex4-1}
 \author{J. J.  Güven}
 \affiliation{EaStCHEM School of Chemistry, University of Edinburgh, Edinburgh, United Kingdom}
 \author{Steffen Mühle}
-\affiliation{Uni Göttingen, 37077 Göttingen, Germany}
+\affiliation{Max-Planck Institute for Dynamics and Self-Organization, 37077 Göttingen, Germany}
 \author{Antonia S J S Mey}
 \email[Electronic Address: ]{antonia.mey@ed.ac.uk}
 \affiliation{EaStCHEM School of Chemistry, University of Edinburgh, Edinburgh, United Kingdom}
@@ -141,7 +141,8 @@ Let us start by introducing the auxiliary variable $F_k(s)$, defined to be the n
 As we add more links, not only are links taken out of this pool, because they have already been realized, \red{but} each existing link can also geometrically prohibit other connections. Adding a link of length $s_1$ prohibits $2(s-1)$ links of length $s<s_1$ and $2(s_1-1)$ links of length $s>s_1$ (see Fig.~\ref{fig:schematic}~b). To find the expected number of links still available in subsequent steps, we average over all possible amino acid distances $s_1$ of the first link added.
 
 The expected distribution of possible links after one step is \red{thus given} by the average over available link pools taken over all possible values of $s_1$
-\begin{align}
+\begin{equation}
+\begin{aligned}
     F_1(s)&=\frac{1}{N/2-1} \sum_{s_1=2}^{N/2}{ \begin{cases}
     F_0(s)-2(s-1) \text{ , for } s<s_1\\
     F_0(s)-2(s_1 -1)\text{ , for } s\geq s_1
@@ -151,15 +152,17 @@ The expected distribution of possible links after one step is \red{thus given} b
     N-2(s-1) \text{ , for } s<s_1\\
     N-2(s_1 -1)\text{ , for } s\geq s_1
     \end{cases}}
-\end{align}
+\end{aligned}
+    \label{eq:reduction_first_step}
+\end{equation}
 
-In subsequent steps, we take the weighted average over new links being added at step $k-1$, where the probability that a link amino acid distance $s$ can still be made is
+After $k-1$ links were made, the probability that the $k$-th link, being randomly chosen from the pool of available links, has length $s$ obeys
 \begin{equation}
     \Pin^k(s)=F_k(s)/C_k,
 \end{equation}
-where $C_k=\sum_{s=2}^{N/2}F_k(s)$ and get the same reduction (compare Fig.~\ref{fig:schematic}) but starting from the pool $F_{k-1}(s)$ of the step before rather than the full $N$ links for each amino acid distance. To account for possible overlaps between newly removed links and links that were removed previously, we multiply the number of blocked links by
+where $C_k=\sum_{s=2}^{N/2}F_k(s)$. In subsequent steps, we use this probability to perform a weighted average over new links being added, and get the same reduction (compare Fig.~\ref{fig:schematic}) but starting from the pool $F_{k-1}(s)$ of the step before rather than the initially available $N$ links. However, we must subtract fewer links to account for some of them having left the pool in earlier steps. To this end, we multiply the number of blocked links by
 \begin{equation}
-    \frac{F_k(s)}{F_0(s)} = F_k(s)\frac{1}{N}.
+    \frac{F_{k-1}(s)}{F_0(s)} = F_{k-1}(s)\frac{1}{N}.
     \label{eq.Pk}
 \end{equation}
 % \begin{equation}
@@ -167,7 +170,7 @@ where $C_k=\sum_{s=2}^{N/2}F_k(s)$ and get the same reduction (compare Fig.~\ref
 %     \label{eq.Pk}
 % \end{equation}
 %with $C_k=\sum_{s=2}^{N/2}F_k(s)$, 
-This ignores any bias in which links are removed, however, examples suggest this assumption seemed to hold well. 
+This ignores any length-dependent bias in which links have been removed, however, examples suggest this assumption seemed to hold well. 
 This leads to the recursion
 \begin{align}
     F_k(s)&= \sum_{s_k=2}^{N/2} \Pin^k(s_k)\nonumber \\
@@ -177,7 +180,7 @@ This leads to the recursion
      2(s_k -1))\text{ , for } s\geq s_k
     \end{cases}} \right)
 \end{align}
-which simplifies to
+which generalizes equation~\ref{eq:reduction_first_step} and simplifies to
 \begin{align}
    F_k(s)&=F_{k-1}(s)(1-\frac{1}{N} \sum_{s_k=2}^{s} (2 (s_k-1) \Pin^k(s_k))\nonumber \\
    &-\frac{1}{N} \sum_{s_k=s+1}^{N/2} (2 (s-1) \Pin^k(s_k)))\nonumber \\
@@ -192,19 +195,18 @@ which simplifies to
    \label{eq.Fk_rec}
 \end{align}
 
-To approximately evaluate this we make a guess for $\Pin^k(s)$ at low $k$ and at high $k$, namely
+Together with the initial condition $F_0(s)=N$, this expression constitutes an iteration rule from which $F_k(s)$ can be found for all $k$ and $s$. Aiming to decouple those dynamics for different $s$, we make a heuristic guess for $\Pin^k(s_k)$. It consists of two separate approximation which are used in steps $k<a$ and steps $k\geq a$ respectively, where the threshold $1\leq a\leq N/2$ is a free parameter. In the early stage we use a uniform probability
 \begin{equation}
     \Pin^{k\ll N/2}(s)\approx \Pin^{k=0}(s)=\frac{2}{N}.
     \label{eq.P_small}
 \end{equation}
-For later steps $k$, the probability of a link to still be in the pool decreases with $s$, 
-we thus approximate $\Pin(s)$ with an ansatz for the $k-$average, namely, that it drops off as $\frac{1}{s}$, leading to
+For later steps, the probability of a link to still be in the pool decreases with $s$. We thus approximate $\Pin(s)$ with an ansatz for the $k-$average, namely, that it drops off as $\frac{1}{s}$, leading to
 \begin{equation}
     \Pin^{k\gg 1}(s)\approx \sum_{k=a}^{N-4}\Pin^{k}(s)
     \approx \frac{s^{-1}}{ (H_{\frac{N}{2}}-1)},
     \label{eq.P_large}
 \end{equation}
-where $H_{\frac{N}{2}}$ is the harmonic number. 
+where $H_{\frac{N}{2}}$ is the harmonic number serving as a normalization factor. 
 As we will see later this approximation holds most precisely for intermediate values of $k$, with the $k-$average of $\Pin^{k\gg 1}(s)\approx P(s)$, making it self-consistent. Errors for smaller and larger values of $k$ are thought to approximately cancel out.
 Substituting Eq.~\ref{eq.P_small} and Eq.~\ref{eq.P_large} into Eq.~\ref{eq.Fk_rec} results in the following two recursions for the early and late evolution of the amino acid distance distribution respectively.
 \begin{align}
@@ -235,7 +237,7 @@ and
 where 
 \[\fhigh(s)=\frac{2}{N}(\frac{H_{\frac{N}{2}}-H_{s}+1}{H_{\frac{N}{2}}-1}s-\frac{H_{\frac{N}{2}}}{H_{\frac{N}{2}}-1}).\]
 
-We can now use the recursive expressions to write down a closed expression for $F_k(s)$
+We can now use the recursive expressions to write down a closed expression for $F_k(s)$, using $\flow$ for the first $a$ steps and $\fhigh$ for the rest:
 
 \begin{align}
     F_k(s)&=N\prod_{i_1}^a\left(1-\flow(s)\right)\prod_{i=a+1}^k\left(1-\fhigh(s)\right) \nonumber \\
