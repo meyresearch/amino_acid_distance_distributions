@@ -150,8 +150,8 @@ def return_distance_histogram(log_file: str, given_algorithm: str, length_range:
                 adjacency_matrix = pdb_to_adjacency(clean_pdb_filename)[1]
                 distances = get_distances(adjacency_matrix)
                 # bins = np.linspace(start=1, stop=200, num=100)
-                bins = np.linspace(start=1, stop=int(length_range), num=100)
-                histogram = np.histogram(distances, bins=bins, density=True)[0]
+                bins = np.linspace(start=1, stop=300, num=300)
+                histogram = np.histogram(distances, bins=bins, density=False)[0]
                 histogram_list.append(histogram)
                 counter += 1
             except FileNotFoundError:
@@ -160,9 +160,9 @@ def return_distance_histogram(log_file: str, given_algorithm: str, length_range:
     if not histogram_list:
         print("Warning: Histogram list is empty. Check log file.")
     if given_algorithm == "alpha":
-        np.save(f"../data/alphafold/histogram_{length_range}.npy", histogram_array)
+        np.save(f"../data/alphafold/histogram_{length_range}_not_normed.npy", histogram_array)
     elif given_algorithm == "rcsb":
-        np.save(f"../data/rcsb/histogram_{length_range}.npy", histogram_array)
+        np.save(f"../data/rcsb/histogram_{length_range}_not_normed.npy", histogram_array)
 
 
 def pdb_to_pcm(log_file: str, given_algorithm: str, length_range: str, path_to_pdbs: str) -> None:
