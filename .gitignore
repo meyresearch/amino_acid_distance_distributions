@@ -7,6 +7,5 @@ old_codes/
 old_plots/
 old_src/
 code/scripts/__pycache__/
-data/
 ../scripts/__pycache__/*
 
