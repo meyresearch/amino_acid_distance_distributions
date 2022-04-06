@@ -337,9 +337,9 @@ def return_simulation_distance_histogram(length_range: str) -> None:
         print(f"Progress: {counter}/{len(simulation_files)}")
         adjacency_matrix = get_simulation_adjacency_matrix(simulation_file)
         distances = get_simulation_distances(adjacency_matrix)
-        bins = np.linspace(start=1, stop=int(length_range), num=100)
+        bins = np.linspace(start=1, stop=300, num=300)
         histogram = np.histogram(distances, bins=bins, density=True)[0]
         histogram_list.append(histogram)
         counter += 1
     histogram_array = np.asarray(histogram_list)
-    np.save(f"../data/simulations/3d/histogram_{length_range}.npy", histogram_array)
+    np.save(f"../data/simulations/3d/histogram_{length_range}_not_normed.npy", histogram_array)

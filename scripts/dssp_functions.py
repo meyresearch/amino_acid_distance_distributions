@@ -90,10 +90,10 @@ def save_rcsb_secondary_info():
     Get secondary structure information for RCSB from DSSP and save into csv
     @return None:
     """
-    length_ranges = ["100", "200", "300"]
-    secondary_structures = []
+    length_ranges = ["200","300"]
     chain_counter = 1
     for length in length_ranges:
+        secondary_structures = []
         print(f"Chains {chain_counter}/{len(length_ranges)}")
         pdb_counter = 1
         chain_data = pd.read_csv(f"../data/rcsb/chains_{length}.csv")
