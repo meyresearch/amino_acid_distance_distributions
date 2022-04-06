@@ -1,13 +1,11 @@
 .DS_Store
-.idea/
+.idea
 .ipynb_checkpoints*
 old_repo_data/
 old_data/
 old_codes/
 old_plots/
 old_src/
-code/scripts/__pycache__/
-data/
-../data/*
-../scripts/__pycache__/*
-
+data/*
+scripts/__pycache__/
+scripts/nohup.out
