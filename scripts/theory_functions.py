@@ -46,24 +46,39 @@ def f_low(amino_acid_distance: int, chain_length: int) -> float:
     return s_square_term + s_term - constant_term
 
 
-def amino_acid_distance_distribution(amino_acid_distance: int, chain_length: int, half_n_harmonic_number: float,
-                                     exponent: int, dimensionality: float) -> float:
+def amino_acid_distance_distribution(amino_acid_distances: np.ndarray, chain_length: int, half_n_harmonic_number: float,
+                                     exponent: int, dimensionality: float) -> np.ndarray:
     """
 
-    @param amino_acid_distance: separation between each amino acid 2 <= s < N/2
+    @param amino_acid_distances: separation between each amino acid 2 <= s < N/2
     @param chain_length: number of C-alphas
     @param half_n_harmonic_number: the 'N/2'-th harmonic number
     @param exponent: constant a
     @param dimensionality: dimensionality scaling constant (constant A)
     @return: probability distribution of the realised amino acid distances
     """
-    f_low_k = f_low(amino_acid_distance, chain_length)
-    f_high_k = f_high(amino_acid_distance, chain_length, half_n_harmonic_number)
-    if f_high_k == 0.0:
-        distribution = 0
-    else:
-        distribution = (((1 - f_low_k) / (1 - f_high_k)) ** exponent) * (dimensionality / f_high_k)
-    return distribution
+    distributions = []
+    for s in amino_acid_distances:
+        f_low_k = f_low(s, chain_length)
+        f_high_k = f_high(s, chain_length, half_n_harmonic_number)
+        if f_high_k == 0.0:
+            distributions.append(0)
+        else:
+            distribution = (((1 - f_low_k) / (1 - f_high_k)) ** exponent) * (dimensionality / f_high_k)
+            distributions.append(distribution)
+    return np.asarray(distributions)
+
+
+def power_law(distances: np.ndarray, power: float, constant_multiplier: float):
+    """
+    Plot a power law 1/s^a
+    @param distances: amino acid distances
+    @param power: power to raise to
+    @param constant_multiplier: constant
+    @return: np.ndarray
+    """
+    powerlaw = constant_multiplier * 1 / pow(distances, power)
+    return np.asarray(powerlaw)
 
 
 def plotting_statistics(dimensionality: float, exponent: int, n_points: int, half_n_harmonic_number: float,
@@ -78,11 +93,8 @@ def plotting_statistics(dimensionality: float, exponent: int, n_points: int, hal
     @param normalised_measure: normalised means of amino acid distance frequencies
     @return: tuple of different statistics
     """
-    theory_function = [amino_acid_distance_distribution(s,
-                                                        n_points,
-                                                        half_n_harmonic_number,
-                                                        exponent,
-                                                        dimensionality) for s in plotting_sumrange]
+    theory_function = amino_acid_distance_distribution(plotting_sumrange, n_points, half_n_harmonic_number,
+                                                       exponent, dimensionality)
     residuals = normalised_measure - theory_function
     residuals_mean = np.mean(residuals)
     residuals_sum = np.sum(residuals)

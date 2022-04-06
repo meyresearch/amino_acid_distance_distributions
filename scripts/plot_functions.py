@@ -36,36 +36,51 @@ def parse_command_line_arguments() -> argparse.Namespace:
     pdb_group.add_argument("-starte", "--start-exponent", dest="start_exponent", type=int,
                            help="starting value for exponent (constant a)")
     pdb_group.add_argument("-ende", "--end-exponent", dest="end_exponent", type=int,
-                           help="starting value for exponent (constant a)")
-    pdb_group.add_argument("-stepe", "--step-exponent", dest="step_exponent", type=int, nargs="?", const=1, default=1,
-                           help="step size for constant a range, default=1")
-    pdb_group.add_argument("-stepd", "--step-dimensionality", dest="step_dimensionality", type=float, nargs="?",
-                           const=0.0001, default=0.0001, help="step size for constant A range, default=0.0001")
-    pdb_group.add_argument("-m", "--measure", dest="measure", type=str, choices=["median", "mean"], nargs="?",
-                           const="median", default="median", help="measure of central tendency to use")
-    pdb_group.add_argument("-q", "--quantile", dest="quantile", type=int, choices=[1, 2, 3], nargs="?", const=1,
-                           default=1, help="confidence interval to use in multiples of standard deviations (std), "
-                                           "i.e. 1 std, 2 std or 3 std")
-    compare_group.add_argument("-rcsbd", "--rcsb-dimensionality", dest="d_rcsb", type=float,
-                               help="constant A for rcsb algorithm in comparison plot")
-    compare_group.add_argument("-alphad", "--alpha-dimensionality", dest="d_alpha", type=float,
-                               help="constant A for alpha algorithm in comparison plot")
-    compare_group.add_argument("-rcsbe", "--rcsbe-exponent", dest="e_rcsb", type=float,
-                               help="constant a for rcsb algorithm in comparison plot")
-    compare_group.add_argument("-alphae", "--alpha-exponent", dest="e_alpha", type=float,
-                               help="constant a for alpha algorithm in comparison plot")
+                           help="last value for exponent (constant a)")
+    parser.add_argument("-stepe", "--step-exponent", dest="step_exponent", type=int, nargs="?", const=1, default=1,
+                        help="step size for constant a range, default=1")
+    parser.add_argument("-stepd", "--step-dimensionality", dest="step_dimensionality", type=float, nargs="?",
+                        const=0.0001, default=0.0001, help="step size for constant A range, default=0.0001")
+    parser.add_argument("-m", "--measure", dest="measure", type=str, choices=["median", "mean"], nargs="?",
+                        const="median", default="median", help="measure of central tendency to use")
+    parser.add_argument("-q", "--quantile", dest="quantile", type=int, choices=[1, 2, 3], nargs="?", const=1,
+                        default=1, help="confidence interval to use in multiples of standard deviations (std), "
+                                        "i.e. 1 std, 2 std or 3 std")
+    parser.add_argument("-startp", "--start-point", dest="start_point", type=int, nargs="?", const=1, default=1,
+                        help="point from which to start plotting")
+    parser.add_argument("-endp", "--end-point", dest="end_point", type=int, help="point at which to end plotting")
+    compare_group.add_argument("--rcsb-startd", dest="rcsb_startd", type=float,
+                               help="starting value for dimensionality constant (A) for rcsb")
+    compare_group.add_argument("--rcsb-endd", dest="rcsb_endd", type=float,
+                               help="last value for dimensionality constant (A) for rcsb")
+    compare_group.add_argument("--alpha-startd", dest="alpha_startd", type=float,
+                               help="starting value for dimensionality constant (A) for alpha")
+    compare_group.add_argument("--alpha-endd", dest="alpha_endd", type=float,
+                               help="last value for dimensionality constant (A) for alpha")
+    compare_group.add_argument("--rcsb-starte", dest="rcsb_starte", type=float,
+                               help="starting value for exponent constant (a) for rcsb")
+    compare_group.add_argument("--rcsb-ende", dest="rcsb_ende", type=float,
+                               help="last value for exponent constant (a) for rcsb")
+    compare_group.add_argument("--alpha-starte", dest="alpha_starte", type=float,
+                               help="starting value for exponent constant (a) for alpha")
+    compare_group.add_argument("--alpha-ende", dest="alpha_ende", type=float,
+                               help="last value for exponent constant (a) for alpha")
+
     arguments = parser.parse_args()
     check_required_arguments(parser, arguments.algorithm, arguments.length_range, arguments.start_dimensionality,
                              arguments.end_dimensionality, arguments.start_exponent, arguments.end_exponent,
-                             arguments.d_rcsb, arguments.e_rcsb, arguments.d_alpha, arguments.e_alpha,
-                             arguments.data_type, arguments.file)
+                             arguments.rcsb_startd, arguments.rcsb_endd, arguments.rcsb_starte, arguments.rcsb_ende,
+                             arguments.alpha_startd, arguments.alpha_endd, arguments.alpha_starte, arguments.alpha_ende,
+                             arguments.data_type, arguments.file, arguments.end_point)
     return arguments
 
 
 def check_required_arguments(argument_parser: argparse.ArgumentParser, given_algorithm: str, given_length: str,
-                             starting_d: str, ending_d: str, starting_e: str, ending_e: str, bootstrap_d: str,
-                             bootstrap_e: str, chunk_d: str, chunk_e: str,
-                             data_type: str, file: str) -> None:
+                             start_dimensionality: str, end_dimensionality: str,
+                             start_exponent: str, end_exponent: str,
+                             rcsb_startd: str, rcsb_endd: str, rcsb_starte: str, rcsb_ende: str,
+                             alpha_startd: str, alpha_endd: str, alpha_starte: str, alpha_ende: str,
+                             data_type: str, file: str, end_point: int) -> None:
     """
     Check given CL arguments so that all requirements are met
     @param file: PDB file or simulation matrix
@@ -73,64 +88,88 @@ def check_required_arguments(argument_parser: argparse.ArgumentParser, given_alg
     @param given_length: given chain length range
     @param argument_parser: parser for CL arguments
     @param given_algorithm: either rcsb, alpha or comp
-    @param starting_d: starting value for dimensionality (constant A)
-    @param ending_d: ending value for dimensionality (constant A)
-    @param starting_e: starting value for exponent (constant a)
-    @param ending_e: ending value for exponent (constant a)
-    @param bootstrap_d: dimensionality constant (A) for bootstrapping algorithm
-    @param bootstrap_e: exponent constant (a) for bootstrapping algorithm
-    @param chunk_d: dimensionality constant (A) for chunking algorithm
-    @param chunk_e: exponent constant (a) for chunking algorithm
+    @param start_dimensionality: starting value for dimensionality (constant A)
+    @param end_dimensionality: ending value for dimensionality (constant A)
+    @param start_exponent: starting value for exponent (constant a)
+    @param end_exponent: ending value for exponent (constant a)
+    @param rcsb_starte: starting value for exponent (constant a) for rcsb
+    @param rcsb_ende: last value for exponent constant (a) for rcsb
+    @param rcsb_startd: starting value for dimensionality constant (A) for rcsb
+    @param rcsb_endd: last value for exponent constant (a) for rcsb
+    @param alpha_starte: starting value for exponent (constant a) for alpha
+    @param alpha_ende: last value for exponent constant (a) for alpha
+    @param alpha_startd: starting value for dimensionality constant (A) for alpha
+    @param alpha_endd: last value for exponent constant (a) for alpha
+    @param end_point: point at which to end plotting
     @return: None
     """
-    if (given_algorithm == "rcsb" and starting_d is None) or \
-            (given_algorithm == "rcsb" and ending_d is None) or \
-            (given_algorithm == "rcsb" and starting_e is None) or \
-            (given_algorithm == "rcsb" and ending_e is None) or \
+    if (given_algorithm == "rcsb" and start_dimensionality is None) or \
+            (given_algorithm == "rcsb" and end_dimensionality is None) or \
+            (given_algorithm == "rcsb" and start_exponent is None) or \
+            (given_algorithm == "rcsb" and end_exponent is None) or \
             (given_algorithm == "rcsb" and given_length is None) or \
-            (given_algorithm == "rcsb" and bootstrap_d is not None) or \
-            (given_algorithm == "rcsb" and bootstrap_e is not None) or \
-            (given_algorithm == "rcsb" and chunk_e is not None) or \
-            (given_algorithm == "rcsb" and chunk_d is not None) or \
+            (given_algorithm == "rcsb" and rcsb_startd is not None) or \
+            (given_algorithm == "rcsb" and rcsb_endd is not None) or \
+            (given_algorithm == "rcsb" and rcsb_starte is not None) or \
+            (given_algorithm == "rcsb" and rcsb_ende is not None) or \
+            (given_algorithm == "rcsb" and alpha_startd is not None) or \
+            (given_algorithm == "rcsb" and alpha_endd is not None) or \
+            (given_algorithm == "rcsb" and alpha_starte is not None) or \
+            (given_algorithm == "rcsb" and alpha_ende is not None) or \
             (given_algorithm == "rcsb" and data_type is not None) or \
-            (given_algorithm == "rcsb" and file is not None):
-        argument_parser.error("rcsb requires -r, -startd, -endd, -starte, -ende")
+            (given_algorithm == "rcsb" and file is not None) or \
+            (given_algorithm == "rcsb" and end_point is None):
+        argument_parser.error("rcsb requires -r, -startd, -endd, -starte, -ende, -endp")
 
-    elif (given_algorithm == "alpha" and starting_d is None) or \
-            (given_algorithm == "alpha" and ending_d is None) or \
-            (given_algorithm == "alpha" and starting_e is None) or \
-            (given_algorithm == "alpha" and ending_e is None) or \
+    elif (given_algorithm == "alpha" and start_dimensionality is None) or \
+            (given_algorithm == "alpha" and end_dimensionality is None) or \
+            (given_algorithm == "alpha" and start_exponent is None) or \
+            (given_algorithm == "alpha" and end_exponent is None) or \
             (given_algorithm == "alpha" and given_length is None) or \
-            (given_algorithm == "alpha" and bootstrap_d is not None) or \
-            (given_algorithm == "alpha" and bootstrap_e is not None) or \
-            (given_algorithm == "alpha" and chunk_e is not None) or \
-            (given_algorithm == "alpha" and chunk_d is not None) or \
+            (given_algorithm == "alpha" and rcsb_startd is not None) or \
+            (given_algorithm == "alpha" and rcsb_endd is not None) or \
+            (given_algorithm == "alpha" and rcsb_starte is not None) or \
+            (given_algorithm == "alpha" and rcsb_ende is not None) or \
+            (given_algorithm == "alpha" and alpha_startd is not None) or \
+            (given_algorithm == "alpha" and alpha_endd is not None) or \
+            (given_algorithm == "alpha" and alpha_starte is not None) or \
+            (given_algorithm == "alpha" and alpha_ende is not None) or \
             (given_algorithm == "alpha" and data_type is not None) or \
-            (given_algorithm == "alpha" and file is not None):
-        argument_parser.error("rcsb requires -r, -startd, -endd, -starte, -ende")
+            (given_algorithm == "alpha" and file is not None) or \
+            (given_algorithm == "alpha" and end_point is None):
+        argument_parser.error("rcsb requires -r, -startd, -endd, -starte, -ende, -endp")
 
-    elif (given_algorithm == "comp" and bootstrap_d is None) or \
-            (given_algorithm == "comp" and chunk_d is None) or \
-            (given_algorithm == "comp" and bootstrap_e is None) or \
-            (given_algorithm == "comp" and chunk_e is None) or \
+    elif (given_algorithm == "comp" and rcsb_startd is None) or \
+            (given_algorithm == "comp" and rcsb_endd is None) or \
+            (given_algorithm == "comp" and rcsb_starte is None) or \
+            (given_algorithm == "comp" and rcsb_ende is None) or \
+            (given_algorithm == "comp" and alpha_startd is None) or \
+            (given_algorithm == "comp" and alpha_endd is None) or \
+            (given_algorithm == "comp" and alpha_starte is None) or \
+            (given_algorithm == "comp" and alpha_ende is None) or \
             (given_algorithm == "comp" and given_length is None) or \
-            (given_algorithm == "comp" and starting_d is not None) or \
-            (given_algorithm == "comp" and ending_d is not None) or \
-            (given_algorithm == "comp" and starting_e is not None) or \
-            (given_algorithm == "comp" and ending_e is not None) or \
+            (given_algorithm == "comp" and start_dimensionality is not None) or \
+            (given_algorithm == "comp" and end_dimensionality is not None) or \
+            (given_algorithm == "comp" and start_exponent is not None) or \
+            (given_algorithm == "comp" and end_exponent is not None) or \
             (given_algorithm == "comp" and data_type is not None) or \
-            (given_algorithm == "comp" and file is not None):
-        argument_parser.error("comp requires -r, -rcsbd, -alphad, -rcsbe, -alphae")
+            (given_algorithm == "comp" and file is not None) or \
+            (given_algorithm == "comp" and end_point is None):
+        argument_parser.error("comp requires -r, -rcsbd, -alphad, -rcsbe, -alphae, -endp")
 
     elif (given_algorithm == "bar" and given_length is not None) or \
-            (given_algorithm == "bar" and starting_d is not None) or \
-            (given_algorithm == "bar" and ending_d is not None) or \
-            (given_algorithm == "bar" and starting_e is not None) or \
-            (given_algorithm == "bar" and ending_e is not None) or \
-            (given_algorithm == "bar" and bootstrap_d is not None) or \
-            (given_algorithm == "bar" and bootstrap_e is not None) or \
-            (given_algorithm == "bar" and chunk_e is not None) or \
-            (given_algorithm == "bar" and chunk_d is not None) or \
+            (given_algorithm == "bar" and start_dimensionality is not None) or \
+            (given_algorithm == "bar" and end_dimensionality is not None) or \
+            (given_algorithm == "bar" and start_exponent is not None) or \
+            (given_algorithm == "bar" and end_exponent is not None) or \
+            (given_algorithm == "bar" and rcsb_startd is not None) or \
+            (given_algorithm == "bar" and rcsb_endd is not None) or \
+            (given_algorithm == "bar" and rcsb_starte is not None) or \
+            (given_algorithm == "bar" and rcsb_ende is not None) or \
+            (given_algorithm == "bar" and alpha_startd is not None) or \
+            (given_algorithm == "bar" and alpha_endd is not None) or \
+            (given_algorithm == "bar" and alpha_starte is not None) or \
+            (given_algorithm == "bar" and alpha_ende is not None) or \
             (given_algorithm == "bar" and data_type is not None) or \
             (given_algorithm == "bar" and file is not None):
         argument_parser.error("bar does not take any arguments")
@@ -138,12 +177,16 @@ def check_required_arguments(argument_parser: argparse.ArgumentParser, given_alg
     elif (given_algorithm == "adj" and data_type is None) or \
             (given_algorithm == "adj" and file is None) or \
             (given_algorithm == "adj" and given_length is not None) or \
-            (given_algorithm == "adj" and starting_d is not None) or \
-            (given_algorithm == "adj" and ending_d is not None) or \
-            (given_algorithm == "adj" and starting_e is not None) or \
-            (given_algorithm == "adj" and ending_e is not None) or \
-            (given_algorithm == "adj" and bootstrap_d is not None) or \
-            (given_algorithm == "adj" and bootstrap_e is not None) or \
-            (given_algorithm == "adj" and chunk_e is not None) or \
-            (given_algorithm == "adj" and chunk_d is not None):
+            (given_algorithm == "adj" and start_dimensionality is not None) or \
+            (given_algorithm == "adj" and end_dimensionality is not None) or \
+            (given_algorithm == "adj" and start_exponent is not None) or \
+            (given_algorithm == "adj" and end_exponent is not None) or \
+            (given_algorithm == "adj" and rcsb_startd is not None) or \
+            (given_algorithm == "adj" and rcsb_endd is not None) or \
+            (given_algorithm == "adj" and rcsb_starte is not None) or \
+            (given_algorithm == "adj" and rcsb_ende is not None) or \
+            (given_algorithm == "adj" and alpha_startd is not None) or \
+            (given_algorithm == "adj" and alpha_endd is not None) or \
+            (given_algorithm == "adj" and alpha_starte is not None) or \
+            (given_algorithm == "adj" and alpha_ende is not None):
         argument_parser.error("adj requires -t, -f")
