@@ -45,8 +45,8 @@ def commandline_arguments() -> argparse.Namespace:
     """
 
     parser = argparse.ArgumentParser(description="Get amino acid distance distributions.")
-    parser.add_argument("algorithm", type=str, choices=["rcsb", "alpha", "3d-sim", "boots", "chunk"],
-                        help="Get amino acid distances from rcsb, [alpha]fold or 3D simulations, [boots]trap or chunk")
+    parser.add_argument("algorithm", type=str, choices=["rcsb", "alpha", "2d-sim", "3d-sim"],
+                        help="Get amino acid distances from rcsb, [alpha]fold, 2D or 3D simulations")
     parser.add_argument("-r", "--range", dest="length_range", type=str, choices=[None, "100", "200", "300"],
                         help="Chain length range")
     parser.add_argument("-p", "--path", dest="path_to_pdbs", type=str,
@@ -64,21 +64,21 @@ def check_arguments(arguments: argparse.Namespace, argument_parser: argparse.Arg
     @param argument_parser: parser for command line arguments
     @return: None
     """
-    if arguments.algorithm == "boots" and arguments.inputfile is None:
-        argument_parser.error("boots requires --inputfile")
-    elif arguments.algorithm == "boots" and arguments.path_to_pdbs is not None:
-        argument_parser.error("boots requires --path=None")
-    elif arguments.algorithm == "boots" and arguments.length_range is None:
-        argument_parser.error("boots requires --range")
-    elif arguments.algorithm == "chunk" and arguments.inputfile is None:
-        argument_parser.error("chunk requires --file")
-    elif arguments.algorithm == "chunk" and arguments.path_to_pdbs is not None:
-        argument_parser.error("chunk requires --path=None")
-    elif arguments.algorithm == "chunk" and arguments.length_range is None:
-        argument_parser.error("chunk requires --range")
+    # if arguments.algorithm == "boots" and arguments.inputfile is None:
+    #     argument_parser.error("boots requires --inputfile")
+    # elif arguments.algorithm == "boots" and arguments.path_to_pdbs is not None:
+    #     argument_parser.error("boots requires --path=None")
+    # elif arguments.algorithm == "boots" and arguments.length_range is None:
+    #     argument_parser.error("boots requires --range")
+    # elif arguments.algorithm == "chunk" and arguments.inputfile is None:
+    #     argument_parser.error("chunk requires --file")
+    # elif arguments.algorithm == "chunk" and arguments.path_to_pdbs is not None:
+    #     argument_parser.error("chunk requires --path=None")
+    # elif arguments.algorithm == "chunk" and arguments.length_range is None:
+    #     argument_parser.error("chunk requires --range")
     # elif arguments.algorithm == "rcsb" and arguments.length_range is not None:
     #     argument_parser.error("rcsb requires --range=None")
-    elif arguments.algorithm == "rcsb" and arguments.path_to_pdbs is None:
+    if arguments.algorithm == "rcsb" and arguments.path_to_pdbs is None:
         argument_parser.error("rcsb requires --path")
     elif arguments.algorithm == "rcsb" and arguments.inputfile is not None:
         argument_parser.error("rcsb requires --file=None")
@@ -88,6 +88,12 @@ def check_arguments(arguments: argparse.Namespace, argument_parser: argparse.Arg
         argument_parser.error("alpha requires --path")
     elif arguments.algorithm == "alpha" and arguments.inputfile is not None:
         argument_parser.error("alpha requires --file=None")
+    elif arguments.algorithm == "2d-sim" and arguments.length_range is not None:
+        argument_parser.error("2d-sim requires --range")
+    elif arguments.algorithm == "2d-sim" and arguments.path_to_pdbs is not None:
+        argument_parser.error("2d-sim requires --path=None")
+    elif arguments.algorithm == "2d-sim" and arguments.inputfile is not None:
+        argument_parser.error("2d-sim requires --file=None")
     elif arguments.algorithm == "3d-sim" and arguments.length_range is None:
         argument_parser.error("3d-sim requires --range")
     elif arguments.algorithm == "3d-sim" and arguments.path_to_pdbs is not None:
@@ -298,7 +304,7 @@ def get_3d_simulation_files(length_range: str) -> list:
     return glob.glob(f"../data/simulations/3d/matrices/matrix_{length_range}_*")
 
 
-def get_simulation_adjacency_matrix(simulation_file: str) -> np.ndarray:
+def get_3d_simulation_adjacency_matrix(simulation_file: str) -> np.ndarray:
     """
     Opens a 3d simulation file and returns a binary adjacency matrix
     @param simulation_file: 3d simulation file of an adjacency matrix
@@ -309,7 +315,7 @@ def get_simulation_adjacency_matrix(simulation_file: str) -> np.ndarray:
     return adjacency_matrix
 
 
-def get_simulation_distances(adjacency_matrix: np.ndarray) -> np.ndarray:
+def get_3d_simulation_distances(adjacency_matrix: np.ndarray) -> np.ndarray:
     """
     Open 3D simulation adjacency matrix files and compute amino acid distances with statistics
     @param adjacency_matrix: adjacency matrix from 3d simulation files
@@ -324,7 +330,7 @@ def get_simulation_distances(adjacency_matrix: np.ndarray) -> np.ndarray:
     return np.asarray(distances_list)
 
 
-def return_simulation_distance_histogram(length_range: str) -> None:
+def return_3d_simulation_distance_histogram(length_range: str) -> None:
     """
     Open 3D simulation files and return frequencies of amino acid distances
     @param length_range: chain length range
@@ -335,10 +341,10 @@ def return_simulation_distance_histogram(length_range: str) -> None:
     counter = 1
     for simulation_file in simulation_files:
         print(f"Progress: {counter}/{len(simulation_files)}")
-        adjacency_matrix = get_simulation_adjacency_matrix(simulation_file)
-        distances = get_simulation_distances(adjacency_matrix)
+        adjacency_matrix = get_3d_simulation_adjacency_matrix(simulation_file)
+        distances = get_3d_simulation_distances(adjacency_matrix)
         bins = np.linspace(start=1, stop=300, num=300)
-        histogram = np.histogram(distances, bins=bins, density=True)[0]
+        histogram = np.histogram(distances, bins=bins, density=False)[0]
         histogram_list.append(histogram)
         counter += 1
     histogram_array = np.asarray(histogram_list)

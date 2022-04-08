@@ -10,16 +10,17 @@ def parse_command_line_arguments() -> argparse.Namespace:
     @return: Namespace containing CL arguments
     """
     parser = argparse.ArgumentParser(description="Plot amino acid distances and residuals.")
-    pdb_group = parser.add_argument_group("rcsb, alpha, 2d")
+    pdb_group = parser.add_argument_group("rcsb, alpha, 2d-sim, 3d-sim")
     compare_group = parser.add_argument_group("comp")
     adjacency_group = parser.add_argument_group("adj")
     parser.add_argument("-r", "--range", dest="length_range", type=str, choices=[None, "100", "200", "300"],
-                        help="chain length range to be plotted; required for rcsb, alpha, comp, 2d-sim")
+                        help="chain length range to be plotted; required for rcsb, alpha, comp, 2d-sim, 3d-sim")
 
     parser.add_argument("algorithm", type=str, choices=["rcsb",
                                                         "alpha",
                                                         "comp",
                                                         "2d-sim",
+                                                        "3d-sim",
                                                         "adj",
                                                         "bar"],
                         help="plot distances from rcsb, [alpha]Fold, do a [comp]arison, distances from 2D "
@@ -47,8 +48,8 @@ def parse_command_line_arguments() -> argparse.Namespace:
                         default=1, help="confidence interval to use in multiples of standard deviations (std), "
                                         "i.e. 1 std, 2 std or 3 std")
     parser.add_argument("-startp", "--start-point", dest="start_point", type=int, nargs="?", const=1, default=1,
-                        help="point from which to start plotting")
-    parser.add_argument("-endp", "--end-point", dest="end_point", type=int, help="point at which to end plotting")
+                        help="point from which to start fitting")
+    parser.add_argument("-endp", "--end-point", dest="end_point", type=int, help="point at which to end fitting")
     compare_group.add_argument("--rcsb-startd", dest="rcsb_startd", type=float,
                                help="starting value for dimensionality constant (A) for rcsb")
     compare_group.add_argument("--rcsb-endd", dest="rcsb_endd", type=float,
