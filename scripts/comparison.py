@@ -19,13 +19,13 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
     @param alpha_histogram: numpy array containing AlphaFold 2 PDB data
     @return: None
     """
-    rcsb_plotting_tuple = plot_functions.get_data_for_plotting(rcsb_histogram, arguments)
+    rcsb_plotting_tuple = plot_functions.get_data_for_plotting(rcsb_histogram, arguments, arguments.length_range)
     rcsb_chain_length = rcsb_plotting_tuple[0]
     rcsb_distances = rcsb_plotting_tuple[1]
     rcsb_measure = rcsb_plotting_tuple[2]
     rcsb_lower_bound, rcsb_upper_bound = rcsb_plotting_tuple[3], rcsb_plotting_tuple[4]
     half_n_harmonic = theory_functions.harmonic_number(n_numbers=(rcsb_chain_length // 2))
-    alpha_plotting_tuple = plot_functions.get_data_for_plotting(alpha_histogram, arguments)
+    alpha_plotting_tuple = plot_functions.get_data_for_plotting(alpha_histogram, arguments, arguments.length_range)
     alpha_distances = alpha_plotting_tuple[1]
     alpha_measure = alpha_plotting_tuple[2]
     dimensionality_range = np.arange(arguments.rcsb_startd,
