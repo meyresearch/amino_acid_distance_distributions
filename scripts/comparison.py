@@ -8,6 +8,7 @@ from colour_palette import _COLOUR_PALETTE
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
+import plot_functions
 
 
 def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.ndarray,
@@ -28,6 +29,7 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
     alpha_plotting_tuple = plot_functions.get_data_for_plotting(alpha_histogram, arguments, arguments.length_range)
     alpha_distances = alpha_plotting_tuple[1]
     alpha_measure = alpha_plotting_tuple[2]
+
     dimensionality_range = np.arange(arguments.rcsb_startd,
                                      arguments.rcsb_endd,
                                      arguments.step_dimensionality)
@@ -52,9 +54,16 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
     rcsb_sigma = np.sqrt(np.diag(rcsb_cov))
     rcsb_powerlaw = theory_functions.power_law(rcsb_distances[start:end], *rcsb_power)
     rcsb_power_sigma = np.sqrt(np.diag(rcsb_power_cov))
+
+    ks_index = int(rcsb_chain_length) + 15
+    ks_statistics = scipy.stats.ks_2samp(rcsb_measure[:ks_index], alpha_measure[:ks_index])
+    alpha_confidence = 0.01
+    c_alpha_multiplier = theory_functions.get_ks_multiplier(alpha_confidence)
+    ks_condition = theory_functions.ks_critical_condition(len(rcsb_measure), len(alpha_measure), c_alpha_multiplier)
+    is_accepted = theory_functions.accept_null_hypothesis(ks_statistics.statistic, ks_condition)
     fig = plt.figure()
     fig.set_size_inches((8, 8))
-    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8, font="Helvetica")
+    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=2.88, font="Helvetica")
 
     plt.scatter(rcsb_distances, rcsb_measure, label=f"RCSB {arguments.length_range}",
                 color=_COLOUR_PALETTE["PDB_SCATTER"], marker="o")
@@ -66,22 +75,29 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
     plt.plot(rcsb_distances[start:end], rcsb_theory, label="Theory RCSB", color="k", lw=1.5)
     plt.plot(rcsb_distances[start:end], rcsb_powerlaw, label="Power law RCSB", color="k", lw=1.5, ls="--")
 
+    print("\n")
     print("-----------------------RCSB THEORY-----------------------")
     print(f"N: {rcsb_parameters[0]:f} +/- {rcsb_sigma[0]:f} ")
     print(f"H-N/2: {rcsb_parameters[1]:f} +/- {rcsb_sigma[1]:f}")
     print(f"a: {rcsb_parameters[2]:f} +/- {rcsb_sigma[2]:f}")
     print(f"A: {rcsb_parameters[3]:f} +/- {rcsb_sigma[3]:f}")
+    print("\n")
     print("----------------------RCSB POWER LAW----------------------")
     print(f"gamma: {rcsb_power[0]} +/- {rcsb_power_sigma[0]}")
     print(f"constant: {rcsb_power[1]}+/- {rcsb_power_sigma[1]}")
-    #
+    print("\n")
+    print("-----------------------KS STATISTICS----------------------")
+    print(f"KS statistic: {ks_statistics.statistic}")
+    print(f"p value: {ks_statistics.pvalue}")
+    print(f"Null hypothesis accepted at alpha={alpha_confidence}: {is_accepted}")
+    print("\n")
     plt.yscale("log")
     plt.xscale("log")
     plt.xlim(4, arguments.end_point)
     plt.ylim(0.0001, 0.1)
-    plt.xlabel("s", fontsize=24)
-    plt.ylabel("P(s)", fontsize=24)
-    plt.legend()
+    plt.xlabel("s")
+    plt.ylabel("P(s)")
+    plt.legend(fontsize=18)
     sns.despine()
     plt.tight_layout()
     plt.show()

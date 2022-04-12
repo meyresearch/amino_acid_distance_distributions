@@ -29,7 +29,7 @@ def get_data_for_plotting(histogram: np.ndarray, arguments: argparse.Namespace, 
     @param length_range: chain length range
     @return: tuple of chain length, distances, normalised measure of central tendency and confidence level bounds
     """
-    distance_bins = np.linspace(start=1, stop=300, num=300)[:-1]
+    distance_bins = np.linspace(start=1, stop=350, num=350)[:-1]
     lower_bound, upper_bound = theory_functions.get_confidence_interval(histogram, arguments.quantile)
     measure = theory_functions.get_measure_of_central_tendency(histogram, arguments.measure)
     normalised_measure = measure / np.sum(measure)

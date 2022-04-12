@@ -8,9 +8,18 @@ python plot.py comp -r=100 --rcsb-startd 0.0015 --rcsb-endd 0.0016 --rcsb-starte
 #H-N/2: 4.499205 +/- 1.259433
 #a: 1.532645 +/- 0.785944
 #A: 0.001500 +/- 0.000288
+
+
 #----------------------RCSB POWER LAW----------------------
 #gamma: 0.8288237555616077 +/- 0.02177892605304199
 #constant: 0.0723936032968393+/- 0.004595302419742699
+
+
+#-----------------------KS STATISTICS----------------------
+#KS statistic: 0.06956521739130435
+#p value: 0.9451291140844246
+#Null hypothesis accepted at alpha=0.01: True
+
 
 # RCSB 200 comparison
 python plot.py comp -r=200 --rcsb-startd 0.0008 --rcsb-endd 0.0010 --rcsb-starte 2 --rcsb-ende 4 -q 2 -m mean -startp 4 -endp 100
@@ -20,21 +29,37 @@ python plot.py comp -r=200 --rcsb-startd 0.0008 --rcsb-endd 0.0010 --rcsb-starte
 #H-N/2: 5.187378 +/- 1.252461
 #a: 2.077775 +/- 0.647283
 #A: 0.000800 +/- 0.000130
+
+
 #----------------------RCSB POWER LAW----------------------
 #gamma: 0.8392897880610493 +/- 0.017390772327924024
 #constant: 0.06652861846208974+/- 0.003796831547281125
+
+
+#-----------------------KS STATISTICS----------------------
+#KS statistic: 0.10232558139534884
+#p value: 0.21059397475182118
+#Null hypothesis accepted at alpha=0.01: True
 
 # RCSB 300 comparison
 python plot.py comp -r=300 --rcsb-startd 0.0007 --rcsb-endd 0.0009 --rcsb-starte 4 --rcsb-ende 6 -q 2 -m mean -startp 20 -endp 150
 
 #-----------------------RCSB THEORY-----------------------
-#N: 300.000000 +/- 15.412474 
+#N: 300.000000 +/- 15.412475 
 #H-N/2: 5.591171 +/- 1.192838
 #a: 4.194035 +/- 0.474760
 #A: 0.000740 +/- 0.000075
+
+
 #----------------------RCSB POWER LAW----------------------
-#gamma: 1.4455442099013252 +/- 0.02052068532309389
-#constant: 0.667044825116215+/- 0.057087884295147495
+#gamma: 1.4455442074548648 +/- 0.02052068529792234
+#constant: 0.6669266379339418+/- 0.05707776947369802
+
+
+#-----------------------KS STATISTICS----------------------
+#KS statistic: 0.12380952380952381
+#p value: 0.015920917517547303
+#Null hypothesis accepted at alpha=0.01: True
 
 # 3D simulation 100
 python plot.py 3d-sim -r=100 -m mean -q 2 -startd 0.003 -endd 0.0032 -starte 2 -ende 4 -startp 4 -endp 50

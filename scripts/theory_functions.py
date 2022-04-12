@@ -102,6 +102,39 @@ def error_on_least_squares(covariance: np.ndarray) -> np.ndarray:
     return np.sqrt(np.diag(covariance))
 
 
+def get_ks_multiplier(alpha_confidence=0.01) -> float:
+    """
+    Calculate the constant c(alpha) for ks statistics
+    @param alpha_confidence: confidence level to use, default 0.01
+    @return: c(alpha)
+    """
+    return np.sqrt(- np.log(alpha_confidence / 2) * 0.5)
+
+
+def ks_critical_condition(distribution_n: int, distribution_m: int, multiplier: float) -> float:
+    """
+    Compute the critical condition of c(alpha) * sqrt((n+m)/nm) to determine if the null hypothesis can be accepted
+    @param distribution_n: size of the first distribution
+    @param distribution_m: size of the second distribution
+    @param multiplier: constant c(alpha); determined from the alpha confidence level
+    @return: condition to be met to accept the null hypothesis
+    """
+    return multiplier * np.sqrt((distribution_n + distribution_m) / distribution_n * distribution_m)
+
+
+def accept_null_hypothesis(ks_statistic: float, critical_condition: float) -> bool:
+    """
+    Determine if null hypothesis can be accepted; return True for accepted, False for rejected
+    @param ks_statistic:
+    @param critical_condition:
+    @return:
+    """
+    if ks_statistic > critical_condition:
+        return False
+    else:
+        return True
+
+
 def power_law(distances: np.ndarray, power: float, constant_multiplier: float):
     """
     Plot a power law 1/s^a

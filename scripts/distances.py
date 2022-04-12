@@ -45,7 +45,7 @@ def create_plots(arguments: argparse.Namespace) -> None:
         plt.xscale("log")
         plt.xlabel("s")
         plt.ylabel("P(s)")
-        plt.xlim(2, 300)
+        plt.xlim(2, 315)
         plt.legend()
         sns.despine()
         plt.tight_layout()
