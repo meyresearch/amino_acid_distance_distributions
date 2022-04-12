@@ -56,9 +56,10 @@ def parse_command_line_arguments() -> argparse.Namespace:
                                                         "2d-sim",
                                                         "3d-sim",
                                                         "adj",
-                                                        "bar"],
+                                                        "bar",
+                                                        "cont"],
                         help="plot distances from rcsb, [alpha]Fold, do a [comp]arison, distances from 2D (2d-sim) or"
-                             " 3D (3d-sim) simulations, plot [adj]acency matrix or plot bar plots")
+                             " 3D (3d-sim) simulations, plot [adj]acency matrix, bar plots or [cont]our plots")
     adjacency_group.add_argument("-t", "--type", dest="data_type", type=str, choices=["pdb", "sim"],
                                  help="data type for adjacency matrix")
     adjacency_group.add_argument("-f", "--file", dest="file", type=str,

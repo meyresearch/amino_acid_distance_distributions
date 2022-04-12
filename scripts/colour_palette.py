@@ -9,4 +9,6 @@ _COLOUR_PALETTE = {"PDB_SCATTER": "#682860",
                    "DATABANK": "#006374",
                    "USED": "#fbafe4",
                    "CONTACT": "#fbafe4",
-                   "NO_CONTACT": "#006374"}
+                   "NO_CONTACT": "#006374",
+                   "RCSB_CONTOUR": "#682860",
+                   "ALPHAFOLD_CONTOUR": "#286830"}

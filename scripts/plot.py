@@ -9,6 +9,7 @@ import comparison
 import adjacency
 import simulation
 import plot_comparison
+import contour
 
 
 def plot() -> None:
@@ -31,6 +32,8 @@ def plot() -> None:
         simulation.create_2d_plots(arguments)
     elif algorithm == "3d-sim":
         simulation.create_3d_simulation_plot(arguments)
+    elif algorithm == "cont":
+        contour.create_contour_plots()
 
 
 def main():
