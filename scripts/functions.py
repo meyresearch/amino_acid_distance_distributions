@@ -343,7 +343,7 @@ def return_3d_simulation_distance_histogram(length_range: str) -> None:
         print(f"Progress: {counter}/{len(simulation_files)}")
         adjacency_matrix = get_3d_simulation_adjacency_matrix(simulation_file)
         distances = get_3d_simulation_distances(adjacency_matrix)
-        bins = np.linspace(start=1, stop=300, num=300)
+        bins = np.linspace(start=1, stop=350, num=350)
         histogram = np.histogram(distances, bins=bins, density=False)[0]
         histogram_list.append(histogram)
         counter += 1
