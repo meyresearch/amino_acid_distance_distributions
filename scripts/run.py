@@ -34,15 +34,17 @@ def handle_commandline_options(cl_arguments: argparse.Namespace) -> None:
                                             length_range=given_linklength,
                                             path_to_csvs=given_path)
     elif given_algorithm == "3d-sim":
-        functions.return_simulation_distance_histogram(length_range=given_linklength)
-    elif given_algorithm == "boots":
-        functions.bootstrap(inputfile=given_inputfile,
-                            sample_replacement=True,
-                            length_range=given_linklength)
-    elif given_algorithm == "chunk ":
-        functions.bootstrap(inputfile=given_inputfile,
-                            sample_replacement=False,
-                            length_range=given_linklength)
+        functions.return_3d_simulation_distance_histogram(length_range=given_linklength)
+    elif given_algorithm == "2d-sim":
+        functions.return_2d_simulation_distance_histogram()
+    # elif given_algorithm == "boots":
+    #     functions.bootstrap(inputfile=given_inputfile,
+    #                         sample_replacement=True,
+    #                         length_range=given_linklength)
+    # elif given_algorithm == "chunk ":
+    #     functions.bootstrap(inputfile=given_inputfile,
+    #                         sample_replacement=False,
+    #                         length_range=given_linklength)
 
 
 def main():

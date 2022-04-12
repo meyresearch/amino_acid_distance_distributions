@@ -1,6 +1,8 @@
 """Functions for plotting comparison plot (Fig.4.)"""
 import argparse
 import numpy as np
+import scipy.optimize
+import distances
 import theory_functions
 from colour_palette import _COLOUR_PALETTE
 import matplotlib.pyplot as plt
@@ -8,77 +10,77 @@ import seaborn as sns
 import pandas as pd
 
 
-def get_comparison_data(path_to_file: str, is_simulation: bool) -> tuple:
-    """
-    Get csv data from path
-    @param is_simulation: boolean to determine if file contains simulation data
-    @param path_to_file: RCSB, AlphaFold or Simulation folder
-    @return: tuple containing data required for comparison plot
-    """
-    dataframe = pd.read_csv(path_to_file)
-    if is_simulation:
-        distances = dataframe["index"].to_numpy()
-    else:
-        distances = dataframe["variable"].to_numpy()
-    means = dataframe["mean"].to_numpy()
-    normalised_means = means / np.sum(means)
-    lower_bound = dataframe["lower_bound"].to_numpy()
-    normalised_lower_bound = lower_bound / np.sum(means)
-    upper_bound = dataframe["upper_bound"].to_numpy()
-    normalised_upper_bound = upper_bound / np.sum(means)
-    return distances, normalised_means, normalised_lower_bound, normalised_upper_bound
-
-
-def create_comparison_plot(arguments: argparse.Namespace) -> None:
+def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.ndarray,
+                           alpha_histogram: np.ndarray) -> None:
     """
     Create amino acid distance distribution plot (Fig.4)
     @param arguments: command line arguments from user
+    @param rcsb_histogram: numpy array containing RCSB PDB data
+    @param alpha_histogram: numpy array containing AlphaFold 2 PDB data
     @return: None
     """
-    rcsb_tuple = get_comparison_data(f"../data/rcsb/bootstrap_{arguments.length_range}_stats.csv",
-                                     is_simulation=False)
-    alphafold_tuple = get_comparison_data(f"../data/alphafold/chunk_{arguments.length_range}_stats.csv",
-                                          is_simulation=False)
-    sim_tuple = get_comparison_data(f"../data/simulations/3d/lls_{arguments.length_range}.csv",
-                                    is_simulation=True)
-    rcsb_means = rcsb_tuple[1]
-    alphafold_means = alphafold_tuple[1]
-    rcsb_n_points = len(rcsb_means)
-    alphafold_n_points = len(alphafold_means)
+    rcsb_plotting_tuple = plot_functions.get_data_for_plotting(rcsb_histogram, arguments, arguments.length_range)
+    rcsb_chain_length = rcsb_plotting_tuple[0]
+    rcsb_distances = rcsb_plotting_tuple[1]
+    rcsb_measure = rcsb_plotting_tuple[2]
+    rcsb_lower_bound, rcsb_upper_bound = rcsb_plotting_tuple[3], rcsb_plotting_tuple[4]
+    half_n_harmonic = theory_functions.harmonic_number(n_numbers=(rcsb_chain_length // 2))
+    alpha_plotting_tuple = plot_functions.get_data_for_plotting(alpha_histogram, arguments, arguments.length_range)
+    alpha_distances = alpha_plotting_tuple[1]
+    alpha_measure = alpha_plotting_tuple[2]
+    dimensionality_range = np.arange(arguments.rcsb_startd,
+                                     arguments.rcsb_endd,
+                                     arguments.step_dimensionality)
+    exponent_range = np.arange(arguments.rcsb_starte,
+                               arguments.rcsb_ende,
+                               arguments.step_exponent)
+    start = arguments.start_point
+    end = arguments.end_point
+    weights = rcsb_plotting_tuple[4] - rcsb_plotting_tuple[3]
+    rcsb_parameters, rcsb_cov = scipy.optimize.curve_fit(f=theory_functions.amino_acid_distance_distribution,
+                                                         xdata=rcsb_distances[start:end], ydata=rcsb_measure[start:end],
+                                                         sigma=weights[start:end],
+                                                         bounds=([rcsb_chain_length - 1, half_n_harmonic - 0.00001,
+                                                                  exponent_range[0], dimensionality_range[0]],
+                                                                 [rcsb_chain_length, half_n_harmonic,
+                                                                  exponent_range[-1], dimensionality_range[-1]]))
+    rcsb_power, rcsb_power_cov = scipy.optimize.curve_fit(f=theory_functions.power_law,
+                                                          sigma=weights[start:end],
+                                                          xdata=rcsb_distances[start:end],
+                                                          ydata=rcsb_measure[start:end])
+    rcsb_theory = theory_functions.amino_acid_distance_distribution(rcsb_distances[start:end], *rcsb_parameters)
+    rcsb_sigma = np.sqrt(np.diag(rcsb_cov))
+    rcsb_powerlaw = theory_functions.power_law(rcsb_distances[start:end], *rcsb_power)
+    rcsb_power_sigma = np.sqrt(np.diag(rcsb_power_cov))
+    fig = plt.figure()
+    fig.set_size_inches((8, 8))
+    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8, font="Helvetica")
 
-    rcsb_half_n_harmonic = theory_functions.harmonic_number(rcsb_n_points // 2)
-    alphafold_half_n_harmonic = theory_functions.harmonic_number(alphafold_n_points // 2)
-    rcsb_starting_distance = int(rcsb_means[0])
-    alphafold_starting_distance = int(alphafold_means[0])
-    rcsb_sum_range = np.array(range(rcsb_starting_distance, rcsb_n_points))
-    alphafold_sum_range = np.array(range(alphafold_starting_distance, alphafold_n_points))
-    rcsb_theory = [theory_functions.amino_acid_distance_distribution(s,
-                                                                     rcsb_n_points,
-                                                                     rcsb_half_n_harmonic,
-                                                                     arguments.e_rcsb,
-                                                                     arguments.d_rcsb) for s in rcsb_sum_range]
-    alphafold_theory = [theory_functions.amino_acid_distance_distribution(s,
-                                                                          alphafold_n_points,
-                                                                          alphafold_half_n_harmonic,
-                                                                          arguments.e_c,
-                                                                          arguments.d_c) for s in alphafold_sum_range]
-    plt.figure(figsize=(8, 8))
-    sns.set(context="notebook", palette="colorblind", style='ticks', font_scale=1.8, font='Helvetica')
-    plt.scatter(sim_tuple[0], sim_tuple[1], label="3D Simulation", color=_COLOUR_PALETTE["SIM_SCATTER"], marker="^")
-    plt.fill_between(sim_tuple[0], sim_tuple[3], sim_tuple[2], color=_COLOUR_PALETTE["SIM_SCATTER"], alpha=0.4,
-                     label="3D Simulation 95% C.L.", zorder=-100)
-    plt.scatter(rcsb_tuple[0], rcsb_means, label=f"RCSB {arguments.length_range}", color=_COLOUR_PALETTE["PDB_SCATTER"])
-    plt.scatter(alphafold_tuple[0], alphafold_means, label=f"AlphaFold {arguments.length_range}",
-                color=_COLOUR_PALETTE["ALPHA_SCATTER"])
-    plt.plot(rcsb_sum_range, rcsb_theory, label="Theory RCSB", color=_COLOUR_PALETTE["THEORY"], lw=1.5)
-    plt.plot(alphafold_sum_range, alphafold_theory, label="Theory AlphaFold", color=_COLOUR_PALETTE["ALPHA_SCATTER"],
-             lw=1.5)
+    plt.scatter(rcsb_distances, rcsb_measure, label=f"RCSB {arguments.length_range}",
+                color=_COLOUR_PALETTE["PDB_SCATTER"], marker="o")
+    plt.fill_between(rcsb_distances, rcsb_upper_bound, rcsb_lower_bound,
+                     color=_COLOUR_PALETTE["PDB_SCATTER"], alpha=0.25, label="RCSB 95% C.L.", zorder=-99)
+    plt.scatter(alpha_distances, alpha_measure, label=f"AlphaFold 2 {arguments.length_range}",
+                color=_COLOUR_PALETTE["ALPHA_SCATTER"], marker="s")
+
+    plt.plot(rcsb_distances[start:end], rcsb_theory, label="Theory RCSB", color="k", lw=1.5)
+    plt.plot(rcsb_distances[start:end], rcsb_powerlaw, label="Power law RCSB", color="k", lw=1.5, ls="--")
+
+    print("-----------------------RCSB THEORY-----------------------")
+    print(f"N: {rcsb_parameters[0]:f} +/- {rcsb_sigma[0]:f} ")
+    print(f"H-N/2: {rcsb_parameters[1]:f} +/- {rcsb_sigma[1]:f}")
+    print(f"a: {rcsb_parameters[2]:f} +/- {rcsb_sigma[2]:f}")
+    print(f"A: {rcsb_parameters[3]:f} +/- {rcsb_sigma[3]:f}")
+    print("----------------------RCSB POWER LAW----------------------")
+    print(f"gamma: {rcsb_power[0]} +/- {rcsb_power_sigma[0]}")
+    print(f"constant: {rcsb_power[1]}+/- {rcsb_power_sigma[1]}")
+    #
     plt.yscale("log")
     plt.xscale("log")
-    plt.xlim(2.5, int(alphafold_n_points / 2))
-    plt.ylim(0.001, 0.2)
-    plt.xlabel("s")
-    plt.ylabel("P(s)")
+    plt.xlim(4, arguments.end_point)
+    plt.ylim(0.0001, 0.1)
+    plt.xlabel("s", fontsize=24)
+    plt.ylabel("P(s)", fontsize=24)
     plt.legend()
     sns.despine()
     plt.tight_layout()
