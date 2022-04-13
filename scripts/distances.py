@@ -33,15 +33,11 @@ def create_plots(arguments: argparse.Namespace) -> None:
     """
     length_ranges = ["100", "200", "300"]
 
-    # colours = ["#286830", "#682860", "#fbafe4"]
-    # colours =
-
-    # colour = colours[2]
+    colours = ["#a3dbab", "#47b856", "#286830"]
     if arguments.algorithm == "rcsb":
         colours = ["#e2b6dc", "#b847a9", "#682860"]
-    # elif arguments.algortihm == "alpha":
-    #     colours =
-    alphas = [0.2, 0.4, 1]
+    elif arguments.algorithm == "alpha":
+        colours = ["#a3dbab", "#47b856", "#286830"]
     markers = ["o", "s", "^"]
     plt.figure(figsize=(8, 8))
     sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=2.88, font="Helvetica")

@@ -94,7 +94,7 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
     plt.yscale("log")
     plt.xscale("log")
     plt.xlim(4, arguments.end_point)
-    plt.ylim(0.0001, 0.1)
+    plt.ylim(0.001, 0.1)
     plt.xlabel("s")
     plt.ylabel("P(s)")
     plt.legend(fontsize=18)

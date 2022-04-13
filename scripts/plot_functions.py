@@ -136,16 +136,12 @@ def check_required_arguments(argument_parser: argparse.ArgumentParser, given_alg
             (given_algorithm == "2d-sim" and end_dimensionality is None) or \
             (given_algorithm == "2d-sim" and start_exponent is None) or \
             (given_algorithm == "2d-sim" and end_exponent is None) or \
-            (given_algorithm == "2d-sim" and given_length is None) or \
-            (given_algorithm == "2d-sim" and rcsb_startd is not None) or \
-            (given_algorithm == "2d-sim" and rcsb_endd is not None) or \
-            (given_algorithm == "2d-sim" and rcsb_starte is not None) or \
-            (given_algorithm == "2d-sim" and rcsb_ende is not None) or \
+            (given_algorithm == "2d-sim" and given_length is not None) or \
             (given_algorithm == "2d-sim" and data_type is not None) or \
             (given_algorithm == "2d-sim" and file is not None) or \
             (given_algorithm == "2d-sim" and start_point is None) or \
             (given_algorithm == "2d-sim" and end_point is None):
-        argument_parser.error("2d-sim requires -r, -startd, -endd, -starte, -ende, -startp, -endp")
+        argument_parser.error("2d-sim requires -r=None -startd, -endd, -starte, -ende, -startp, -endp")
 
     elif (given_algorithm == "3d-sim" and start_dimensionality is None) or \
             (given_algorithm == "3d-sim" and end_dimensionality is None) or \
