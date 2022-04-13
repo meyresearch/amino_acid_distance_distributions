@@ -100,23 +100,25 @@ def plot_2d_distances(distances: np.ndarray, simulation_means: np.ndarray, lower
     theory = theory_functions.amino_acid_distance_distribution(distances[start_point:end_point], *parameters)
     sigma = np.sqrt(np.diag(covariance))
     plt.figure(figsize=(8, 8))
-    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=2.4, font="Helvetica")
+    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=2.88, font="Helvetica")
     plt.scatter(distances, simulation_means, label="2D Simulation", color=_COLOUR_PALETTE["2D_SIM_SCATTER"])
     plt.plot(distances[start_point:end_point], theory, linestyle="--", label="Theory", color=_COLOUR_PALETTE["THEORY"],
              lw=1.5)
     plt.fill_between(distances, upper_cl, lower_cl, color=_COLOUR_PALETTE["CL"], zorder=-10, label="95% C.L.",
                      alpha=0.4)
+    print("\n")
     print("----------------Parameters----------------")
     print(f"Chain length: {parameters[0]} +/- {sigma[0]}")
     print(f"N/2 Harmonic: {parameters[1]} +/- {sigma[1]}")
     print(f"Exponent: {parameters[2]} +/- {sigma[2]}")
     print(f"Dimensionality: {parameters[3]} +/- {sigma[3]}")
+    print("\n")
     plt.yscale("log")
     plt.xscale("log")
     plt.xlabel("s")
     plt.ylabel("P(s)")
     plt.xlim(start_point, end_point)
-    plt.legend(loc="upper right")
+    plt.legend(loc="upper right", fontsize=24)
     sns.despine()
     plt.tight_layout()
 
@@ -168,7 +170,7 @@ def get_3d_data_for_plotting(histogram: np.ndarray, arguments: argparse.Namespac
     @param arguments: command line arguments
     @return: tuple of number of datapoints, measure of central tendency and confidence level bounds
     """
-    distances = np.linspace(start=1, stop=300, num=300)[:-1]
+    distances = np.linspace(start=1, stop=350, num=350)[:-1]
     lower_bound, upper_bound = theory_functions.get_confidence_interval(histogram, arguments.quantile)
     measure = theory_functions.get_measure_of_central_tendency(histogram, arguments.measure)
     normalised_measure = measure / np.sum(measure)
@@ -212,7 +214,7 @@ def plot_3d_distances(distances: np.ndarray, measure: np.ndarray,
     sigma = np.sqrt(np.diag(covariance))
     fig = plt.figure()
     fig.set_size_inches((8, 8))
-    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8, font="Helvetica")
+    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=2.88, font="Helvetica")
     plt.scatter(distances, measure, label=f"3D Simulation {arguments.length_range}",
                 color=_COLOUR_PALETTE["3D_SIM_SCATTER"], marker="o")
     plt.fill_between(distances, upper_confidence, lower_confidence,
@@ -220,18 +222,20 @@ def plot_3d_distances(distances: np.ndarray, measure: np.ndarray,
                      label=r"3D Simulation %i$\sigma$ C.L." % arguments.quantile, zorder=-99)
     plt.plot(distances[start_point:end_point], theory, label="Theory", color=_COLOUR_PALETTE["3D_SIM_SCATTER"],
              lw=1.5, ls="--")
+    print("\n")
     print("----------------Parameters----------------")
     print(f"Chain length: {parameters[0]} +/- {sigma[0]}")
     print(f"N/2 Harmonic: {parameters[1]} +/- {sigma[1]}")
     print(f"Exponent: {parameters[2]} +/- {sigma[2]}")
     print(f"Dimensionality: {parameters[3]} +/- {sigma[3]}")
+    print("\n")
     plt.yscale("log")
     plt.xscale("log")
     plt.xlabel("s")
     plt.ylabel("P(s)")
-    plt.ylim(0.00001, 10)
+    plt.ylim(0.001, 0.1)
     plt.xlim(start_point, end_point)
-    plt.legend(loc="upper right")
+    plt.legend(loc="upper right", fontsize=24)
     sns.despine()
     plt.tight_layout()
 

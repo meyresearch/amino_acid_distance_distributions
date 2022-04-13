@@ -32,21 +32,33 @@ def create_plots(arguments: argparse.Namespace) -> None:
     @return: None
     """
     length_ranges = ["100", "200", "300"]
-    colours = ["#286830", "#682860", "#fbafe4"]
+
+    # colours = ["#286830", "#682860", "#fbafe4"]
+    # colours =
+
+    # colour = colours[2]
+    if arguments.algorithm == "rcsb":
+        colours = ["#e2b6dc", "#b847a9", "#682860"]
+    # elif arguments.algortihm == "alpha":
+    #     colours =
+    alphas = [0.2, 0.4, 1]
+    markers = ["o", "s", "^"]
     plt.figure(figsize=(8, 8))
-    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=2.4, font="Helvetica")
+    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=2.88, font="Helvetica")
     for i in range(len(length_ranges)):
         histogram = plot_functions.get_histogram(length_ranges[i], arguments.algorithm)
         plotting_tuple = plot_functions.get_data_for_plotting(histogram, arguments, length_ranges[i])
         distance_bins = plotting_tuple[1]
         measure = plotting_tuple[2]
-        plt.scatter(distance_bins, measure, label=create_plot_label(arguments, length_ranges[i]), color=colours[i])
+        plt.scatter(distance_bins, measure, label=create_plot_label(arguments, length_ranges[i]),
+                    color=colours[i], marker=markers[i])
         plt.yscale("log")
         plt.xscale("log")
         plt.xlabel("s")
         plt.ylabel("P(s)")
         plt.xlim(2, 315)
-        plt.legend()
+        plt.ylim(0.0001, 0.1)
+        plt.legend(loc="upper right", fontsize=24, frameon=False)
         sns.despine()
         plt.tight_layout()
     plt.show()
