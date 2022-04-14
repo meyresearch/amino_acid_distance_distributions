@@ -62,8 +62,8 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
     ks_condition = theory_functions.ks_critical_condition(len(rcsb_measure), len(alpha_measure), c_alpha_multiplier)
     is_accepted = theory_functions.accept_null_hypothesis(ks_statistics.statistic, ks_condition)
     fig = plt.figure()
-    fig.set_size_inches((8, 8))
-    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=2.88, font="Helvetica")
+    fig.set_size_inches((6, 6))
+    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.88, font="Helvetica")
 
     plt.scatter(rcsb_distances, rcsb_measure, label=f"RCSB {arguments.length_range}",
                 color=_COLOUR_PALETTE["PDB_SCATTER"], marker="o")
@@ -94,10 +94,10 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
     plt.yscale("log")
     plt.xscale("log")
     plt.xlim(4, arguments.end_point)
-    plt.ylim(0.001, 0.1)
+    plt.ylim(0.0005, 0.1)
     plt.xlabel("s")
     plt.ylabel("P(s)")
-    plt.legend(fontsize=18)
+    plt.legend(loc="upper right", fontsize=16)
     sns.despine()
     plt.tight_layout()
     plt.show()

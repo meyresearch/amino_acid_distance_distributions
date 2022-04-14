@@ -53,8 +53,8 @@ def plot_adjacency_matrix(file: str, data_type: str) -> None:
         adjacency_matrix = functions.get_3d_simulation_adjacency_matrix(file)
     elif data_type == "pdb":
         adjacency_matrix = get_pdb_matrix(file)
-    plt.figure(figsize=(8, 8))
-    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=2.88, font="Helvetica")
+    plt.figure(figsize=(6, 6))
+    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8, font="Helvetica")
     colormap = [_COLOUR_PALETTE["NO_CONTACT"], _COLOUR_PALETTE["CONTACT"]]
     heatmap = sns.heatmap(adjacency_matrix, cmap=colormap, cbar=False)
     # heatmap.set_xticks()

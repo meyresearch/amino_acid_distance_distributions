@@ -37,10 +37,10 @@ def create_plots(arguments: argparse.Namespace) -> None:
     if arguments.algorithm == "rcsb":
         colours = ["#e2b6dc", "#b847a9", "#682860"]
     elif arguments.algorithm == "alpha":
-        colours = ["#a3dbab", "#47b856", "#286830"]
+        colours = ["#a3dbab", "#47b856", "#15371a"]
     markers = ["o", "s", "^"]
-    plt.figure(figsize=(8, 8))
-    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=2.88, font="Helvetica")
+    plt.figure(figsize=(6,6))
+    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8, font="Helvetica")
     for i in range(len(length_ranges)):
         histogram = plot_functions.get_histogram(length_ranges[i], arguments.algorithm)
         plotting_tuple = plot_functions.get_data_for_plotting(histogram, arguments, length_ranges[i])
@@ -54,7 +54,7 @@ def create_plots(arguments: argparse.Namespace) -> None:
         plt.ylabel("P(s)")
         plt.xlim(2, 315)
         plt.ylim(0.0001, 0.1)
-        plt.legend(loc="upper right", fontsize=24, frameon=False)
+        plt.legend(loc="upper right", fontsize=20, frameon=False)
         sns.despine()
         plt.tight_layout()
     plt.show()

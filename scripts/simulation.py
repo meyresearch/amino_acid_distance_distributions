@@ -217,11 +217,11 @@ def plot_3d_distances(distances: np.ndarray, measure: np.ndarray,
     sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=2.88, font="Helvetica")
     plt.scatter(distances, measure, label=f"3D Simulation {arguments.length_range}",
                 color=_COLOUR_PALETTE["3D_SIM_SCATTER"], marker="o")
-    plt.fill_between(distances, upper_confidence, lower_confidence,
-                     color=_COLOUR_PALETTE["CL"], alpha=0.4,
-                     label=r"3D Simulation %i$\sigma$ C.L." % arguments.quantile, zorder=-99)
     plt.plot(distances[start_point:end_point], theory, label="Theory", color=_COLOUR_PALETTE["3D_SIM_SCATTER"],
              lw=1.5, ls="--")
+    plt.fill_between(distances, upper_confidence, lower_confidence,
+                     color=_COLOUR_PALETTE["CL"], alpha=0.4,
+                     label="95% C.L.", zorder=-99)
     print("\n")
     print("----------------Parameters----------------")
     print(f"Chain length: {parameters[0]} +/- {sigma[0]}")
