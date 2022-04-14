@@ -36,6 +36,7 @@ def create_plots(arguments: argparse.Namespace) -> None:
     colours = ["#a3dbab", "#47b856", "#286830"]
     if arguments.algorithm == "rcsb":
         colours = ["#e2b6dc", "#b847a9", "#682860"]
+
     elif arguments.algorithm == "alpha":
         colours = ["#a3dbab", "#47b856", "#15371a"]
     markers = ["o", "s", "^"]
@@ -44,10 +45,12 @@ def create_plots(arguments: argparse.Namespace) -> None:
     for i in range(len(length_ranges)):
         histogram = plot_functions.get_histogram(length_ranges[i], arguments.algorithm)
         plotting_tuple = plot_functions.get_data_for_plotting(histogram, arguments, length_ranges[i])
+        chain_length = plotting_tuple[0]
         distance_bins = plotting_tuple[1]
         measure = plotting_tuple[2]
         plt.scatter(distance_bins, measure, label=create_plot_label(arguments, length_ranges[i]),
                     color=colours[i], marker=markers[i])
+
         plt.yscale("log")
         plt.xscale("log")
         plt.xlabel("s")
