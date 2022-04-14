@@ -6,7 +6,7 @@ reprint,%twocolumn,
 %preprint
 onecolumn,
 amsmath,amssymb,superscriptaddress,aps,
-pre]{revtex4-1}
+pre,floatfix]{revtex4-1}
 \usepackage[utf8]{inputenc}
 %\usepackage{authblk}
 %\usepackage{natbib}
@@ -37,106 +37,68 @@ pre]{revtex4-1}
 \author{Steffen Mühle}
 \affiliation{Uni Göttingen, 37077 Göttingen, Germany}
 \author{Antonia S J S Mey}
-\email[Electronic Address: ]{antonia.mey@ed.ac.uk}
+\email[Author to whom correspondence should be addressed: ]{antonia.mey@ed.ac.uk}
 \affiliation{EaStCHEM School of Chemistry, University of Edinburgh, Edinburgh, United Kingdom}
 \maketitle
 
-\section*{Optimizing theory parameters}
+\section*{Amino acid distance distributions of other chain lengths}
+\subsection{AlphaFold 2}
+Fig.~\ref{fig:alphafold} shows the amino acid distance distributions for protein contact maps calculated from AlphaFold 2~\cite{jumper2021highly} sequences in the chain length ranges of 85-115 (100), 185-215 (200) and 285-315 (300) amino acids. The plot shows the approximate power law behaviour of the distribution as well as the scaling with increasing chain lengths. 
 
- Fig.~\ref{fig:2d} shows a grid of the two-dimensional simulations for amino acid distance distributions for chains of around 498 amino acids long. The solid line shows the theoretical distribution given in Eq.~(12) of the main article. Each column corresponds to a different value of the scaling parameter $A$ and each row to a different value of the exponent parameter $a$ for this theoretical distribution. Plotted also is the 95\% confidence level for the 2D amino acid distance distribution. 
+\begin{figure*}[htb]
+    \centering{
+    \includegraphics[scale=0.5]{paper/figures/SM_figures/alpha_chain_comparison.pdf}
+    \caption{Amino acid distance distributions for contact maps derived from the AlphaFold 2~\cite{jumper2021highly} database for protein chains in the ranges of 85-115 (100), 185-215 (200) and 285-315 (300) amino acids.}
+    \label{fig:alphafold}}
+\end{figure*}
 
-In addition to plotting this amino acid distance distribution grid, we also plotted the residual plots for each combination of parameters. These are shown in Fig.~\ref{fig:2d_r}. The residual sum of squares $\Sigma \sigma$, $R^2$ statistic and mean of residuals, $\bar{\sigma}$, were calculated for each combination of parameters $a$ and $A$. 
+\subsection{Protein Data Bank and three-dimensional simulations}
 
-The choice of parameters was first narrowed down by looking at how well the theoretical distribution appeared to fit the amino acid distance distribution of the simulations in Fig.~\ref{fig:2d}, as well as the spread of residuals around the theoretical line in Fig.~\ref{fig:2d_r}. From Fig.~\ref{fig:2d}, we chose a smaller group of plots where the theoretical distribution fitted through a majority of simulation data points. Similarly, from Fig.~\ref{fig:2d_r}, we chose a group of plots where the majority of residuals were randomly scattered around zero. The non-linear parts of the residuals both at the low and high ends of the amino acid distances were expected from Fig.~\ref{fig:2d}. In the next step, we found the optimal parameters by finding the best combination of statistics, i.e. a minimized residual sum of squares, $\Sigma \sigma^2$, maximized constant of determination, $R^2$ and the mean of residuals, $\bar{\sigma} \approx 0$. This was done to avoid relying on a single statistic to determine the optimal parameters. For this 2D simulation data, we chose $A=0.39$ and $a=6$, which produced the following statistics: $\Sigma \sigma^2 = 17.4\times10^3$, $R^2 = 90.0$~\% and $\bar{\sigma} = -0.265$.
+Fig.~\ref{fig:rcsb_100} a shows the amino acid distance distributions for protein contact maps calculated from structures in the chain length range $\approx100$ for RCSB~\cite{PDB} (dark purple circles) and AlphaFold 2~\cite{jumper2021highly} (dark green squares). The shaded area shows the 95\% confidence level. Also shown are the analytic approximation and a general power law fitted to the RCSB data and their fit parameters, exponent $a$ and the dimensionality constant $A$ for the analytic approximation and exponent $\gamma$ for the power law,  are shown in~Table~\ref{table:stats} a. Similarly, Fig.~\ref{fig:rcsb_200} shows the amino acid distance distributions for protein contact maps calculated from structures in the chain length range $\approx200$ for RCSB~\cite{PDB}. We also computed the Kolmogorov-Smirnov (KS) statistic between the RCSB and AlphaFold 2 distributions for each length range. The KS statistics were 0.07 and 0.10 for the $\approx100$ and $\approx200$ ranges, respectively. For both of these, the null hypothesis was accepted at the $\alpha=0.01$ level.
 
-The above steps were repeated for both the AlphaFold 2 and RCSB PDBs, for each chain length range. Tables~\ref{table:af}~and~\ref{table:rcsb} show the optimized parameters and their statistics for PDBs obtained from AlphaFold 2 and RCSB, respectively. Figs.~\ref{fig:AF100},~\ref{fig:AF200}~and~\ref{fig:AF300} show the parameter grid plots of amino acid distance distributions for chains of 100, 200 and 300 amino acids long, respectively. Similarly, Figs.~\ref{fig:AF100_r},~\ref{fig:AF200_r}~and~\ref{fig:AF300_r} show the residual plots. While the 95\% confidence intervals are plotted for the PDBs, these were not plotted in the main article for clarity, as the confidence level appears smaller than the scatter markers. 
+Fig.~\ref{fig:sim_3d} shows the amino acid distance distributions for protein contact maps calculated from three-dimensional simulations obtained from~\cite{molkenthin2020self}. As before, the analytic approximation was fitted to the data in each range and the shaded area shows the 95\% confidence interval. The fit parameters $a$ and $A$ are given in Table~\ref{table:stats} c and d for ranges $\approx100$ and $\approx200$, respectively.
 
 \begin{table}[tb]
 \centering
-\begin{tabular}{|c c c c c c|}
+\begin{tabular}{|c c c c c |}
 \hline
-Chain length  & $A$ ($10^{-3}$) & $a$ & $\Sigma \sigma^{2}$ & $R^2$ (\%) & $\bar{\sigma}$ \\
+Index & Data  & $A$ ($10^{-3}$) & $a$ & $\gamma$ \\
 \hline
-100 & 2.1 & 3 & 0.0002 & 57 & 0.0001 \\
-200 & 1.1 & 3 & 0.0135 & 62 & -0.0005 \\
-300 &1.0 & 5 & 0.1478 & 76  & -0.0012 \\
-\hline
-\end{tabular}
- \caption{Detailed parameters and statistics for PDBs obtained from AlphaFold 2. Shown are the optimized parameters $A$ and $a$ used to fit the theoretical amino acid distance distribution given in Eq.(12) of the main article, for chains of 100, 200 and 300 amino acids long.  Shown also are the residual sum of squares ($\Sigma \sigma^{2}$), constant of determination ($R^2$) and the mean of residuals ($\bar{\sigma}$) for each fit.}
-\label{table:af}
-\end{table}
-
-\begin{table}[h]
-\centering
-\begin{tabular}{|c c c c c c|}
-\hline
-Chain length & $A$ ($10^{-3}$) & $a$ & $\Sigma \sigma^{2}$ & $R^2$ (\%) & $\bar{\sigma}$ \\
-\hline
-100 & 1.9 & 2 & 0.0002 & 59 & 0.0001 \\
-200 & 1.2 & 3 & 0.0474 & 70 & -0.0010\\
-300 & 0.9 & 4 & 0.1102 & 76 & -0.0011\\
+a & RCSB 100 & 1.5 $\pm$ 0.3  & 2 $\pm$ 1 &  0.83 $\pm$ 0.02\\
+b & RCSB 200 & 0.8 $\pm$ 0.2 & 2 $\pm$ 1 & 0.95 $\pm$ 0.02 \\
+c & 3D SIM 100 & 3.1 $\pm$ 0.6 & 2 $\pm$ 1 & --  \\
+d & 3D SIM 200 & 1.2 $\pm$ 0.4 & 0.9 $\pm$ 0.9  & --  \\
 \hline
 \end{tabular}
- \caption{Detailed parameters and statistics for PDBs obtained from RCSB. Shown are the optimized parameters $A$ and $a$ used to fit the theoretical amino acid distance distribution given in Eq.(12) of the main article, for chains of 100, 200 and 300 amino acids long. Shown also are the residual sum of squares ($\Sigma \sigma^{2}$), constant of determination ($R^2$) and the mean of residuals ($\bar{\sigma}$) for each fit.}
-\label{table:rcsb}
+ \caption{Parameters (exponent $a$ and dimensionality constant $A$) for the analytic approximation, exponent $\gamma$ for the power law fit, and their uncertainties from fitting to amino acid distributions obtained from RCSB proteins in the chain length range $\approx100$ a and $\approx200$ b amino acids. Shown also are the fit parameters $a$ and $A$ from fitting the analytic approximation to the 3D simulations~\cite{molkenthin2020self}. of chains in the $\approx100$ c and $\approx200$ d ranges.}
+\label{table:stats}
 \end{table}
 
+\begin{figure*}[htb]
+    \centering{
+    \includegraphics[scale=0.35]{paper/figures/SM_figures/distributions_combined.pdf}
+    \caption{a) Comparison between the distributions of RCSB~\cite{PDB} and AlphaFold 2~\cite{jumper2021highly} databases for protein chains in the $\approx100$ range. The analytic approximation (solid line) and power law (dashed line) are fitted to the the RCSB data. Pink shaded area shows the 95\% confidence level. b) Secondary structure content distribution in the RCSB~\cite{PDB} and AlphaFold 2~\cite{jumper2021highly} structures in the $\approx100$ chain length range.}
+    \label{fig:rcsb_100}}
+\end{figure*}
+
+% \begin{figure*}[htb]
+%     \centering{
+%     \includegraphics[scale=0.35]{paper/figures/SM_figures/distributions_200.pdf}
+%     \caption{Comparison between the distributions of RCSB~\cite{PDB} and AlphaFold 2~\cite{jumper2021highly} databases for protein chains in the $\approx200$ range. The analytic approximation (solid line) and power law (dashed line) are fitted to the tail of the RCSB data. Pink shaded area shows the 95\% confidence level.}
+%     \label{fig:rcsb_200}}
+% \end{figure*}
 
 \begin{figure*}[htb]
     \centering{
-    \includegraphics[scale=0.65]{paper/figures/SM_figures/Fig1/Fig1.pdf}
-    \caption{a) A grid of the amino acid distance distribution in protein chains of 498 residues long in two-dimensional simulations. The solid line shows the theoretical distribution for different values of parameters $a$ and $A$. b) The residual plots of the amino acid distance distribution around the theoretical distribution. The residual sum of squares, $\Sigma \sigma$, $R^2$ statistic and the mean of residuals, $\bar{\sigma}$, were calculated for each combination of parameters.}
-    \label{fig:2d}}
-\end{figure*}
-
-\begin{figure*}[htb]
-    \centering{
-    \includegraphics[width=0.8\textwidth]{paper/figures/SM_figures/Fig2/Fig2.pdf}
-    \caption{a) A grid of the amino acid distance distributions in chains of around 100 residues long in PDBs obtained from AlphaFold 2. The solid line shows the theoretical distribution for different values of parameters $a$ and $A$. b) The residual plots of the amino acid distance distribution around the theoretical distribution. The residual sum of squares, $\Sigma \sigma$, $R^2$ statistic and the mean of residuals, $\bar{\sigma}$, were calculated for each combination of parameters.}
-    \label{fig:AF100}}
-    
-\end{figure*}
-
-\begin{figure*}[htb]
-    \centering{
-    \includegraphics[width=0.8\textwidth]{paper/figures/SM_figures/Fig3/Fig3.pdf}
-    \caption{a) A grid of the amino acid distance distributions in chains of around 200 residues long in PDBs obtained from AlphaFold 2. The solid line shows the theoretical distribution for different values of parameters $a$ and $A$. b) The residual plots of the amino acid distance distributions around the theoretical distribution. The residual sum of squares, $\Sigma \sigma$, $R^2$ statistic and the mean of residuals, $\bar{\sigma}$, were calculated for each combination of parameters.}
-    \label{fig:AF200}}
-\end{figure*}
-
-\begin{figure*}[htb]
-    \centering{
-    \includegraphics[width=0.8\textwidth]{paper/figures/SM_figures/Fig4/Fig4.pdf}
-    \caption{a) A grid of the distribution of link lengths in chains of around 300 residues long in PDBs obtained from AlphaFold 2. The solid line shows the theoretical distribution for different values of parameters $a$ and $A$. b) The residual plots of the amino acid distance distributions around the theoretical distribution. The residual sum of squares, $\Sigma \sigma$, $R^2$ statistic and the mean of residuals, $\bar{\sigma}$, were calculated for each combination of parameters.}
-    \label{fig:AF300}}
-    
+    \includegraphics[scale=0.35]{paper/figures/SM_figures/simulations_3d.pdf}
+    \caption{Amino acid distance distributions obtained from three-dimensional simulations~\cite{molkenthin2020self} for chains in the ranges $\approx100$ (a) and $\approx200$ (b) amino acids. The dotted line shows the analytic approximation fitted to the data and the shaded area shows the 95\% confidence level.}
+    \label{fig:sim_3d}}
 \end{figure*}
 
 
-\begin{figure*}[htb]
-    \centering{
-    \includegraphics[width=0.8\textwidth]{paper/figures/SM_figures/Fig5/Fig5.pdf}
-    \caption{a) A grid of the distribution of link lengths in chains of around 100 residues long in PDBs obtained from RCSB. The solid line shows the theoretical distribution for different values of parameters $a$ and $A$. b) The residual plots of the amino acid distance distributions around the theoretical distribution. The residual sum of squares, $\Sigma \sigma$, $R^2$ statistic and the mean of residuals, $\bar{\sigma}$, were calculated for each combination of parameters.}
-    \label{fig:PDB100}}
-\end{figure*}
 
-\begin{figure*}[htb]
-    \centering{
-    \includegraphics[width=0.8\textwidth]{paper/figures/SM_figures/Fig6/Fig6.pdf}
-    \caption{A grid of the distribution of link lengths in chains of around 200 residues long in PDBs obtained from RCSB. The solid line shows the theoretical distribution for different values of parameters $a$ and $A$. b) The residual plots of the amino acid distance distributions around the theoretical distribution. The residual sum of squares, $\Sigma \sigma$, $R^2$ statistic and the mean of residuals, $\bar{\sigma}$, were calculated for each combination of parameters.}
-    \label{fig:PDB200}}
-    
-\end{figure*}
-
-\begin{figure*}[htb]
-    \centering{
-    \includegraphics[width=0.8\textwidth]{paper/figures/SM_figures/Fig7/Fig7.pdf}
-    \caption{A grid of the distribution of link lengths in chains of around 300 residues long in PDBs obtained from RCSB. The solid line shows the theoretical distribution for different values of parameters $a$ and $A$. b) The residual plots of the amino acid distance distributions around the theoretical distribution. The residual sum of squares, $\Sigma \sigma$, $R^2$ statistic and the mean of residuals, $\bar{\sigma}$, were calculated for each combination of parameters.}
-    \label{fig:PDB300}}
-\end{figure*}
-
-
+\newpage
 \bibliographystyle{unsrt}
-% \bibliography{proteins}
+\bibliography{proteins}
 
 \end{document}
