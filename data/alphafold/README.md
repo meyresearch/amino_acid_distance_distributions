@@ -3,14 +3,14 @@
 This directory contains the AlphaFold 2 sequence distance distribution data. All code is available at [`scripts`](https://github.com/meyresearch/sequence_distance_distribution/tree/36a848c5b15a62dc646de583f03c824f680873da/scripts).
 
 ## Table of contents
-### [1. Download Uniprot IDs](#1.-Download-Uniprot-IDs)
-### [2. Retrieve AlphaFold 2 predicted structures](#2.Retrieve-AlphaFold-2-predicted-structures)
-### [3. Get AlphaFold 2 per-residue confidence scores](#3.-Get-AlphaFold-2-per-residue-confidence-scores)
-### [4. Sort files into chain length ranges](#4.-Sort-files-into-chain-length-ranges)
-### [5. Get secondary structure information with DSSP](#5.-Get-secondary-structure-information-with-DSSP)
-### [6. Remove structures describing the same protein from different organisms](#6.-Remove-structures-describing-the-same-protein-from-different-organisms)
-### [7. Compute amino acid distances](#7.-Compute-amino-acid-distances)
-
+### [1. Download Uniprot IDs](#1-download-uniprot-ids-1)
+### [2. Retrieve AlphaFold 2 predicted structures](#2-retrieve-alphafold-2-predicted-structures-1)
+### [3. Get AlphaFold 2 per-residue confidence scores](#3-get-alphafold-2-per-residue-confidence-scores-1)
+### [4. Sort files into chain length ranges](#4-sort-files-into-chain-length-ranges-1)
+### [5. Get secondary structure information with DSSP](#5-get-secondary-structure-information-with-dssp-1)
+### [6. Remove structures describing the same protein from different organisms](#6-remove-structures-describing-the-same-protein-from-different-organisms-1)
+### [7. Compute amino acid distances](#7-compute-amino-acid-distances-1)
+### [8. Plot](#8-plot-1)
 
 ## How to get the data
 
@@ -65,7 +65,7 @@ Finally, run `python run.py alpha -r <chain-length-range> -p <../data/alphafold/
 
 ### 8. Plot
 
-For plotting see [../plots/](https://github.com/meyresearch/sequence_distance_distribution/tree/36a848c5b15a62dc646de583f03c824f680873da/plots). 
+For plotting see [`../plots/`](https://github.com/meyresearch/sequence_distance_distribution/tree/36a848c5b15a62dc646de583f03c824f680873da/plots). 
 
 
 
