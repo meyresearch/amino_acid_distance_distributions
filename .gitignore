@@ -8,3 +8,5 @@ old_plots/
 old_src/
 data/*
 scripts/__pycache__/*
+plots/old_supplementary_information/*
+
