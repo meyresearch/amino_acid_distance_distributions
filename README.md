@@ -3,8 +3,8 @@
 This repository contains the manuscript and data for project looking at geometric properties of proteins together with Nora Molkenthin. 
 
 ## Table of contents
-1. [RCSB Data](https://github.com/meyresearch/sequence_distance_distribution/blob/6070e51035fabe37abeb2895f82b59e444aa3241/data/rcsb/README.md)
-2. [AlphaFold Data](https://github.com/meyresearch/sequence_distance_distribution/blob/6070e51035fabe37abeb2895f82b59e444aa3241/data/alphafold/README.md)
+1. [RCSB Data](data/rcsb/README.md)
+2. [AlphaFold Data](data/alphafold/README.md)
 3. [Workflow](#workflow-1)
 4. [Authors](#authors-1)
 
