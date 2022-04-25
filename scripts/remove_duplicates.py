@@ -32,8 +32,7 @@ def filter_unique_secondary_structures() -> None:
     Open secondary structures csv and find unique protein structures and save as a csv.
     @return: None
     """
-    chain_lengths = ["100","200","300"]
-    pdb_files = glob.glob("../data/alphafold/pdb_files/*.pdb")
+    chain_lengths = ["100", "200", "300"]
     for length in chain_lengths:
         secondary_structures_df = pd.read_csv(f"../data/alphafold/secondary_structures_{length}.csv")
         filenames = secondary_structures_df["filename"]

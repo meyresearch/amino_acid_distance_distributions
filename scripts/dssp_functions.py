@@ -10,6 +10,7 @@ import traceback
 
 def get_secondary_structure(filename: str, dssp_path: str, log_file: str) -> np.ndarray:
     """
+    Get the following secondary structure information for each PDB file
     H = α-helix
     B = residue in isolated β-bridge
     E = extended strand, participates in β ladder
@@ -45,9 +46,9 @@ def get_secondary_structure(filename: str, dssp_path: str, log_file: str) -> np.
                     readit = True
             infile.close()
             os.remove("result.dssp")
-        except subprocess.CalledProcessError as e:
+        except subprocess.CalledProcessError:
             traceback.print_exc(file=log_file)
-        except Exception as e:
+        except Exception:
             traceback.print_exc(file=log_file)
     return np.array(secondary_structures)
 
@@ -85,12 +86,13 @@ def save_alpha_secondary_info():
         renamed_cols_df.to_csv(f"../data/alphafold/secondary_structures_{length}.csv")
         chain_counter += 1
 
+
 def save_rcsb_secondary_info():
     """
     Get secondary structure information for RCSB from DSSP and save into csv
     @return None:
     """
-    length_ranges = ["200","300"]
+    length_ranges = ["100", "200", "300"]
     chain_counter = 1
     for length in length_ranges:
         secondary_structures = []
