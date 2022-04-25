@@ -1,5 +1,5 @@
 """
-Functions used for plotting amino acid distance distributions.
+Common functions used by all plotting codes, such as for handling command line arguments
 """
 import argparse
 import numpy as np
@@ -121,13 +121,10 @@ def check_required_arguments(argument_parser: argparse.ArgumentParser, given_alg
     @param end_dimensionality: ending value for dimensionality (constant A)
     @param start_exponent: starting value for exponent (constant a)
     @param end_exponent: ending value for exponent (constant a)
-    @param step_exponent: step for exponent range (constant a)
     @param rcsb_starte: starting value for exponent (constant a) for rcsb
     @param rcsb_ende: last value for exponent constant (a) for rcsb
     @param rcsb_startd: starting value for dimensionality constant (A) for rcsb
     @param rcsb_endd: last value for exponent constant (a) for rcsb
-    @param measure: measure of central tendency; mean or median
-    @param quantile: number of standard deviations to use as quantiles for confidence levels; 1, 2 or 3
     @param start_point: point from which to start plotting
     @param end_point: point at which to end plotting
     @return: None
@@ -185,4 +182,3 @@ def check_required_arguments(argument_parser: argparse.ArgumentParser, given_alg
             (given_algorithm == "adj" and rcsb_starte is not None) or \
             (given_algorithm == "adj" and rcsb_ende is not None):
         argument_parser.error("adj requires -t, -f")
-

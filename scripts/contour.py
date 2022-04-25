@@ -1,10 +1,10 @@
+"""Functions for plotting contour plots of alpha and beta protein content"""
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib
 import pandas as pd
 import scipy
-from colour_palette import _COLOUR_PALETTE
 from matplotlib import lines
 
 
@@ -66,7 +66,6 @@ def create_contour_plots() -> None:
         ax.set_xlabel(r"$\alpha$-helix %")
         ax.set_ylabel(r"$\beta$-sheet %")
         ax.set_xticks(np.arange(0, 1.0, 0.2))
-        # ax.legend()
         sns.despine()
         plt.tight_layout()
         plt.show()

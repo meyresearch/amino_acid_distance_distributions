@@ -1,20 +1,19 @@
 """
 Handle all plotting functions and actually make the plots
 """
-import pandas as pd
-import distances
-import plot_functions
+import adjacency
 import bars
 import comparison
-import adjacency
-import simulation
-import plot_comparison
 import contour
+import distances
+import plot_functions
+import simulation
 
 
 def plot() -> None:
     """
-    @return:
+    Handle command line arguments and call required plotting function
+    @return: None
     """
     arguments = plot_functions.parse_command_line_arguments()
     algorithm = arguments.algorithm

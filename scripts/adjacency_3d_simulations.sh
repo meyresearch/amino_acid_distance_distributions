@@ -1,4 +1,5 @@
 #!/bin/bash
+# Bash script to plot different 3D adjacency matrix plots
 
 for i in `seq 0 1 27`
 do

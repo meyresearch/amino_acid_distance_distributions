@@ -1,5 +1,5 @@
 """
-Exclusively to be ran alongside the embarrasing_parallel.sh script! 
+Exclusively to be run alongside the embarrassing_parallel.sh script!
 Opens each chunked ID file and retrieves PDB files from RCSB to ../../pdbs/.
 """
 import numpy as np

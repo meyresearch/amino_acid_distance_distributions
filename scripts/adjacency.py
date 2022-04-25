@@ -4,9 +4,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 import seaborn as sns
 import protein_contact_map
-import theory_functions
-from colour_palette import _COLOUR_PALETTE
 import functions
+from colour_palette import _COLOUR_PALETTE
 
 
 def get_pdb_matrix(pdb_file: str) -> np.ndarray:
@@ -29,14 +28,12 @@ def set_adjacency_matrix_ticks(plot: matplotlib.axes.Axes) -> None:
             label.set_visible(True)
             label.set_rotation(360)
             label.set_font("Helvetica")
-            # label.set_fontsize(14)
         else:
             label.set_visible(False)
     for index, label in enumerate(plot.get_yticklabels()):
         if index % 4 == 0:
             label.set_visible(True)
             label.set_font("Helvetica")
-            # label.set_fontsize(14)
         else:
             label.set_visible(False)
 
@@ -57,7 +54,6 @@ def plot_adjacency_matrix(file: str, data_type: str) -> None:
     sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8, font="Helvetica")
     colormap = [_COLOUR_PALETTE["NO_CONTACT"], _COLOUR_PALETTE["CONTACT"]]
     heatmap = sns.heatmap(adjacency_matrix, cmap=colormap, cbar=False)
-    # heatmap.set_xticks()
     set_adjacency_matrix_ticks(heatmap)
     heatmap.set_xlabel("Amino acid")
     heatmap.set_ylabel("Amino acid")

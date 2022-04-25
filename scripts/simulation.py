@@ -1,13 +1,12 @@
-"""Functions for plotting 2D simulation amino acid distances."""
+"""Functions for plotting 2D and 3D simulation amino acid distances."""
 import argparse
 import glob
 import numpy as np
 import pandas as pd
 import scipy.optimize
-import random
-import theory_functions
 import matplotlib.pyplot as plt
 import seaborn as sns
+import theory_functions
 from colour_palette import _COLOUR_PALETTE
 
 

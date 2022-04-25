@@ -2,8 +2,8 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from colour_palette import _COLOUR_PALETTE
 import numpy as np
+from colour_palette import _COLOUR_PALETTE
 
 
 def get_data_for_bars(path_to_data: str) -> tuple:
@@ -20,7 +20,7 @@ def get_data_for_bars(path_to_data: str) -> tuple:
 
 def calculate_adjusted_frequency(frequency_to_adjust: np.ndarray, bottom_frequency: np.ndarray) -> np.ndarray:
     """
-
+    Calculate the adjusted frequency of the "top" bar to create a stack bar plot
     @param frequency_to_adjust: "top" bars i.e. either all SwissProt or all RCSB frequencies
     @param bottom_frequency: "bottom" bars i.e. the used PDBs' frequencies
     @return: difference between top and bottom bars
@@ -73,7 +73,6 @@ def create_bar_plots() -> None:
     ax[0].set_ylabel("Frequency", fontsize=24)
     ax[1].set_ylabel("Frequency\n", fontsize=24)
     ax[1].set_xlabel("Chain length", fontsize=24)
-    # plt.subplots_adjust(left=0.09, bottom=0.08, top=0.99, wspace=0.05, right=1)
     plt.tight_layout()
     sns.despine()
     plt.show()

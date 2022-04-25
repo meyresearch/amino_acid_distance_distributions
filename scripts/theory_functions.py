@@ -85,7 +85,7 @@ def vector_of_residuals(parameters: np.ndarray, x: np.ndarray, data_y: np.ndarra
 def covariance_matrix(jacobian_matrix: np.ndarray) -> np.ndarray:
     """
     Compute the covariance matrix as the inverse of the Hessian given by J.T J
-    @param jacobian_matrix: Jacobian matrix from scipy Least squares
+    @param jacobian_matrix: Jacobian matrix from scipy The Least squares
     @return: covariance matrix as a numpy array
     """
     hessian = np.matmul(jacobian_matrix.T, jacobian_matrix)

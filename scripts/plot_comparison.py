@@ -2,11 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.optimize
 import seaborn as sns
-import theory_functions
-from colour_palette import _COLOUR_PALETTE
-import pandas as pd
+from sequence_distance_distribution.scripts import theory_functions
+from sequence_distance_distribution.scripts.colour_palette import _COLOUR_PALETTE
 import argparse
-import random
 
 
 def get_histogram(arguments: argparse.Namespace, algorithm: str) -> np.ndarray:

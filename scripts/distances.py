@@ -1,18 +1,13 @@
-"""Functions for plotting RCSB and AlphaFold amino acid distance distributions"""
-import numpy as np
+"""Functions for plotting RCSB and AlphaFold amino acid distance distributions for each length in same plot"""
 import matplotlib.pyplot as plt
-import scipy.optimize
 import seaborn as sns
-import theory_functions
-import plot_functions
-from colour_palette import _COLOUR_PALETTE
-import pandas as pd
 import argparse
+import plot_functions
 
 
 def create_plot_label(arguments: argparse.Namespace, length_range: str) -> str:
     """
-
+    Create legend label for the plots
     @param arguments: command line arguments
     @param length_range: 100, 200 or 300
     @return:
@@ -27,7 +22,7 @@ def create_plot_label(arguments: argparse.Namespace, length_range: str) -> str:
 
 def create_plots(arguments: argparse.Namespace) -> None:
     """
-    Plot amino acid distances and residuals in single plots
+    Plot amino acid distances in each length range on the same plot
     @param arguments: command line arguments
     @return: None
     """
@@ -36,21 +31,18 @@ def create_plots(arguments: argparse.Namespace) -> None:
     colours = ["#a3dbab", "#47b856", "#286830"]
     if arguments.algorithm == "rcsb":
         colours = ["#e2b6dc", "#b847a9", "#682860"]
-
     elif arguments.algorithm == "alpha":
         colours = ["#a3dbab", "#47b856", "#15371a"]
     markers = ["o", "s", "^"]
-    plt.figure(figsize=(6,6))
+    plt.figure(figsize=(6, 6))
     sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8, font="Helvetica")
     for i in range(len(length_ranges)):
         histogram = plot_functions.get_histogram(length_ranges[i], arguments.algorithm)
         plotting_tuple = plot_functions.get_data_for_plotting(histogram, arguments, length_ranges[i])
-        chain_length = plotting_tuple[0]
         distance_bins = plotting_tuple[1]
         measure = plotting_tuple[2]
         plt.scatter(distance_bins, measure, label=create_plot_label(arguments, length_ranges[i]),
                     color=colours[i], marker=markers[i])
-
         plt.yscale("log")
         plt.xscale("log")
         plt.xlabel("s")

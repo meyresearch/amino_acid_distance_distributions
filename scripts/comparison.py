@@ -1,20 +1,19 @@
-"""Functions for plotting comparison plot (Fig.4.)"""
+"""Functions for plotting comparison plot (Fig.4.b.)"""
 import argparse
 import numpy as np
 import scipy.optimize
-import distances
-import theory_functions
-from colour_palette import _COLOUR_PALETTE
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 import plot_functions
+import theory_functions
+from colour_palette import _COLOUR_PALETTE
 
 
 def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.ndarray,
                            alpha_histogram: np.ndarray) -> None:
     """
-    Create amino acid distance distribution plot (Fig.4)
+    Create amino acid distance distribution plot (Fig.4.b) and compare to theory and power law
     @param arguments: command line arguments from user
     @param rcsb_histogram: numpy array containing RCSB PDB data
     @param alpha_histogram: numpy array containing AlphaFold 2 PDB data
