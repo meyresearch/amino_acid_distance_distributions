@@ -1,6 +1,6 @@
 # AlphaFold 2 Data
 
-This directory contains the AlphaFold 2 sequence distance distribution data. All code is available at [`scripts`](https://github.com/meyresearch/sequence_distance_distribution/tree/36a848c5b15a62dc646de583f03c824f680873da/scripts).
+This directory contains the AlphaFold 2 sequence distance distribution data. All code is available at [`../scripts`](https://github.com/meyresearch/sequence_distance_distribution/tree/36a848c5b15a62dc646de583f03c824f680873da/scripts).
 
 ## Table of contents
 ### [1. Download Uniprot IDs](#1-download-uniprot-ids-1)
@@ -33,7 +33,7 @@ columns by clicking the "Columns" option at the top of the search results and le
 
 ### 2. Retrieve AlphaFold 2 predicted structures
 
-From [`scripts`](https://github.com/meyresearch/sequence_distance_distribution/tree/36a848c5b15a62dc646de583f03c824f680873da/scripts), 
+From [`../scripts`](https://github.com/meyresearch/sequence_distance_distribution/tree/36a848c5b15a62dc646de583f03c824f680873da/scripts), 
 run `python retrieve_alphafold_pdbs.py <chain-length-range>`, where `<chain-length-range>` is `100`, `200` or `300`. Optionally,
 run `get_alphafold_pdbs.sh` which will call `nohup` and run the above Python code simultaneously for all three ranges.
 
