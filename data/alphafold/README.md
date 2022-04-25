@@ -9,7 +9,7 @@ This directory contains the AlphaFold 2 sequence distance distribution data. All
 ### [4. Sort files into chain length ranges](#4.-Sort-files-into-chain-length-ranges)
 ### [5. Get secondary structure information with DSSP](#5.-Get-secondary-structure-information-with-DSSP)
 ### [6. Remove structures describing the same protein from different organisms](#6.-Remove-structures-describing-the-same-protein-from-different-organisms)
-### [7. Compute amino acid distances](7.-Compute-amino-acid-distances)
+### [7. Compute amino acid distances](#7.-Compute-amino-acid-distances)
 
 
 ## How to get the data
