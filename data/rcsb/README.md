@@ -54,6 +54,6 @@ Finally, run `python run.py rcsb -r <chain-length-range> -p <../data/rcsb/second
 range to compute the amino acid distances. This returns a histogram of the amino distance distribution in each range. 
 These are saved in `histogram_<chain-length-range>_not_normed.npy`. 
 
-### 8. Plot
+### 6. Plot
 
 For plotting see [`../plots/`](https://github.com/meyresearch/sequence_distance_distribution/tree/bump/plots). 
