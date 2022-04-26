@@ -4,7 +4,7 @@ This repository contains the manuscript and data for project looking at geometri
 
 ## Table of contents
 1. [RCSB Data](#data/rcsb/)
-2. [AlphaFold Data]data/alphafold/)
+2. [AlphaFold Data](#data/alphafold/)
 3. [Workflow](#workflow-1)
 4. [Authors](#authors-1)
 
