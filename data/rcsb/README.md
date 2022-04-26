@@ -21,7 +21,8 @@ Run `get_current_entry_ids.sh`. This will save all the current RCSB PDB entry ID
 Next, run `python transpose_csv.py`. This reads in the `combined_ids.txt` and saves the IDs in a single column format
 in a csv file called `combined_ids_tr.csv`.
 
-Finally, 
+Finally, run `python chunk_id_files.py` which reads in the `combined_ids_tr.csv` and separates the IDs into file chunks
+of 1000 IDs each. The files are saved in `ids/id_file_<number>.txt`.
 
 ### 2. Retrieve AlphaFold 2 predicted structures
 
