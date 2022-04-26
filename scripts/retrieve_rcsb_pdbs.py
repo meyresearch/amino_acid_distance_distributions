@@ -12,6 +12,6 @@ for pdb in pdb_ids:
     print(f"At entry {counter}")
     pdblist.retrieve_pdb_file(pdb_code=pdb,
                               file_format="pdb",
-                              pdir="../data/rcsb/pdbs/")
+                              pdir="../data/rcsb/pdb_files/")
     counter += 1
 
