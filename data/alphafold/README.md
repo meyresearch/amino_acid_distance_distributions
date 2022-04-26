@@ -33,11 +33,11 @@ columns by clicking the "Columns" option at the top of the search results and le
 
 ### 2. Retrieve AlphaFold 2 predicted structures
 
-From [`../scripts`](https://github.com/meyresearch/sequence_distance_distribution/tree/36a848c5b15a62dc646de583f03c824f680873da/scripts), 
+From [`../scripts`](https://github.com/meyresearch/sequence_distance_distribution/tree/bump/scripts), 
 run `python retrieve_alphafold_pdbs.py <chain-length-range>`, where `<chain-length-range>` is `100`, `200` or `300`. Optionally,
 run `get_alphafold_pdbs.sh` which will call `nohup` and run the above Python code simultaneously for all three ranges.
 
-The code will save the AlphaFold 2 PDB files in [pdb_files/](https://github.com/meyresearch/sequence_distance_distribution/tree/36a848c5b15a62dc646de583f03c824f680873da/data/alphafold/pdb_files).
+The code will save the AlphaFold 2 PDB files in `pdb_files/`.
 
 ### 3. Get AlphaFold 2 per-residue confidence scores
 
@@ -65,7 +65,7 @@ Finally, run `python run.py alpha -r <chain-length-range> -p <../data/alphafold/
 
 ### 8. Plot
 
-For plotting see [`../plots/`](https://github.com/meyresearch/sequence_distance_distribution/tree/36a848c5b15a62dc646de583f03c824f680873da/plots). 
+For plotting see [`../plots/`](https://github.com/meyresearch/sequence_distance_distribution/tree/bump/plots). 
 
 
 
