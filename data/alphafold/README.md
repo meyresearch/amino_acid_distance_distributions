@@ -70,7 +70,7 @@ This also saves the mean and standard deviation of the confidence scores in `con
 
 > ### ❗️Note❗️
 > This step requires DSSP to be installed on your machine. 
-> For more info and instructions, please see [DSSP](https://swift.cmbi.umcn.nl/gv/dssp/).
+> For more info and instructions, please see [DSSP](https://anaconda.org/salilab/dssp).
 
 Run 
 ```
