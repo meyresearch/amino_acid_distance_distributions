@@ -9,6 +9,113 @@ The different command line options can be viewed by calling `python plot.py --he
 
 The bash script `../scripts/plot.sh` can also be run to plot all the plots described below.
 
+# Table of Contents
+## [Positional arguments and their explanations](#positional-arguments-and-their-explanations)
+### [`rcsb`](#rcsb)
+### [`alpha`](#alpha)
+### [`comp`](#comp)
+### [`2d-sim`](#2d-sim)
+### [`3d-sim`](#3d-sim)
+### [`adj`](#adj)
+### [`bar`](#bar)
+### [`cont`](#cont)
+## [Figure 1](#figure-1)
+## [Figure 2](#figure-2)
+### [Fig. 2a.](#fig-2a)
+### [Fig. 2b.](#fig-2b)
+## [Figure 3](#figure-3)
+### [Fig. 3a.](#fig-3a)
+### [Fig. 3b.](#fig-3b)
+### [Fig. 3c.](#fig-3c)
+## [Figure 4](#figure-4)
+### [Fig. 4a.](#fig-4a)
+### [Fig. 4b.](#fig-4b)
+### [Fig. 4c.](#fig-4c)
+
+## Positional arguments and their explanations
+
+### `rcsb`
+Plot comparison of amino acid distance distributions for all three chain 
+length ranges for RCSB PDB.
+
+### `alpha`
+Plot comparison of amino acid distance distributions for all three chain 
+length ranges for AlphaFold 2.
+
+### `comp`
+Plot theoretical and power law fit to RCSB PDB data and compare with AlphaFold 2 data.
+
+Options:
+```
+--range, -r: 100,200,300 chain length range
+--rcsb-startd: starting dimensionality
+--rcsb-endd: ending dimensionality
+--step-dimensionality, -stepe: step size for dimensionality, default 0.0001
+--rcsb-starte: starting exponent
+--rcsb-ende: ending exponent
+--step-exponent, -stepe: step size for exponent, default 1
+--quantile, -q: 1,2,3 sigma confidence
+--measure, -m: mean, median; measure of central tendency 
+--start-point, -startp: point at which to start fitting
+--end-point, -endp: point at which to stop fitting
+```
+
+### `2d-sim`
+Plot amino acid distance distribution from 2D simulation data. 
+
+Options:
+```
+--start-dimensionality, -startd: starting dimensionality
+--end-dimensionality, -endd: ending dimensionality
+--step-dimensionality, -stepe: step size for dimensionality, default 0.0001
+--start-exponent, -starte: starting exponent
+--end-exponent, -ende: ending exponent
+--step-exponent, -stepe: step size for exponent, default 1
+--quantile, -q: 1,2,3 sigma confidence
+--measure, -m: mean, median; measure of central tendency 
+--start-point, -startp: point at which to start fitting
+--end-point, -endp: point at which to stop fitting
+```
+
+### `3d-sim`
+
+Plot amino acid distance distribution from 3D simulation data. 
+
+Options:
+```
+--range, -r: 100,200,300 chain length range
+--start-dimensionality, -startd: starting dimensionality
+--end-dimensionality, -endd: ending dimensionality
+--step-dimensionality, -stepe: step size for dimensionality, default 0.0001
+--start-exponent, -starte: starting exponent
+--end-exponent, -ende: ending exponent
+--step-exponent, -stepe: step size for exponent, default 1
+--quantile, -q: 1,2,3 sigma confidence
+--measure, -m: mean, median; measure of central tendency 
+--start-point, -startp: point at which to start fitting
+--end-point, -endp: point at which to stop fitting
+```
+
+### `adj`
+
+Plot adjacency matrix plot.
+
+Options:
+```
+--type, -t: datatype, pdb or sim
+--file, -f: full path to file containing pdb file or 3D simulation file
+```
+
+### `bar`
+
+Plot PDB statistics bar plot.
+
+### `cont`
+
+Plot secondary structure content comparison of RCSB PDB and AlphaFold 2 data for each length range.
+
+
+
 ## Figure 1
 
 Fig. 1. is available both as a pdf and a svg file.
