@@ -45,13 +45,12 @@ def commandline_arguments() -> argparse.Namespace:
     """
 
     parser = argparse.ArgumentParser(description="Get amino acid distance distributions.")
-    parser.add_argument("algorithm", type=str, choices=["rcsb", "alpha", "2d-sim", "3d-sim"],
-                        help="Get amino acid distances from rcsb, [alpha]fold, 2D or 3D simulations")
+    parser.add_argument("algorithm", type=str, choices=["rcsb", "alpha", "3d-sim"],
+                        help="Get amino acid distances from rcsb, [alpha]fold or 3D simulations")
     parser.add_argument("-r", "--range", dest="length_range", type=str, choices=[None, "100", "200", "300"],
                         help="Chain length range")
     parser.add_argument("-p", "--path", dest="path_to_pdbs", type=str,
-                        help="Full path to directory containing PDB files")
-    parser.add_argument("-f", "--file", dest="inputfile", type=str, help="Full path and name of input file")
+                        help="Full path to file containing PDB ID csv file")
     cl_arguments = parser.parse_args()
     check_arguments(cl_arguments, parser)
     return cl_arguments
@@ -64,36 +63,16 @@ def check_arguments(arguments: argparse.Namespace, argument_parser: argparse.Arg
     @param argument_parser: parser for command line arguments
     @return: None
     """
-    # if arguments.algorithm == "boots" and arguments.inputfile is None:
-    #     argument_parser.error("boots requires --inputfile")
-    # elif arguments.algorithm == "boots" and arguments.path_to_pdbs is not None:
-    #     argument_parser.error("boots requires --path=None")
-    # elif arguments.algorithm == "boots" and arguments.length_range is None:
-    #     argument_parser.error("boots requires --range")
-    # elif arguments.algorithm == "chunk" and arguments.inputfile is None:
-    #     argument_parser.error("chunk requires --file")
-    # elif arguments.algorithm == "chunk" and arguments.path_to_pdbs is not None:
-    #     argument_parser.error("chunk requires --path=None")
-    # elif arguments.algorithm == "chunk" and arguments.length_range is None:
-    #     argument_parser.error("chunk requires --range")
-    # elif arguments.algorithm == "rcsb" and arguments.length_range is not None:
-    #     argument_parser.error("rcsb requires --range=None")
     if arguments.algorithm == "rcsb" and arguments.path_to_pdbs is None:
         argument_parser.error("rcsb requires --path")
-    elif arguments.algorithm == "rcsb" and arguments.inputfile is not None:
-        argument_parser.error("rcsb requires --file=None")
     elif arguments.algorithm == "alpha" and arguments.length_range is None:
         argument_parser.error("alpha requires --range")
     elif arguments.algorithm == "alpha" and arguments.path_to_pdbs is None:
         argument_parser.error("alpha requires --path")
-    elif arguments.algorithm == "alpha" and arguments.inputfile is not None:
-        argument_parser.error("alpha requires --file=None")
     elif arguments.algorithm == "2d-sim" and arguments.length_range is not None:
         argument_parser.error("2d-sim requires --range")
     elif arguments.algorithm == "2d-sim" and arguments.path_to_pdbs is not None:
         argument_parser.error("2d-sim requires --path=None")
-    elif arguments.algorithm == "2d-sim" and arguments.inputfile is not None:
-        argument_parser.error("2d-sim requires --file=None")
     elif arguments.algorithm == "3d-sim" and arguments.length_range is None:
         argument_parser.error("3d-sim requires --range")
     elif arguments.algorithm == "3d-sim" and arguments.path_to_pdbs is not None:
