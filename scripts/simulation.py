@@ -232,7 +232,7 @@ def plot_3d_distances(distances: np.ndarray, measure: np.ndarray,
     plt.xscale("log")
     plt.xlabel("s")
     plt.ylabel("P(s)")
-    plt.ylim(0.001, 0.1)
+    plt.ylim(0.001, 1)
     plt.xlim(start_point, end_point)
     plt.legend(loc="upper right", fontsize=24, frameon=False)
     sns.despine()
