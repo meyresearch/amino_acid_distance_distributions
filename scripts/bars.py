@@ -34,7 +34,7 @@ def create_bar_plots() -> None:
     @return: None
     """
     path = "../data/pdb_statistics/"
-    alphafold_file = "AlphaFold_used.csv"
+    alphafold_file = "alphafold_unique.csv"
     pdb_file = "RCSB_used.csv"
     swissprot_file = "UniProt_Swiss_Prot.csv"
     rcsb_file = "RCSB_by_length.csv"
@@ -76,3 +76,4 @@ def create_bar_plots() -> None:
     plt.tight_layout()
     sns.despine()
     plt.show()
+    plt.savefig("../plots/individual_plots_for_paper/bars_alpha_unique.pdf")
