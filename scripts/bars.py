@@ -52,18 +52,18 @@ def create_bar_plots() -> None:
 
     ax[0].bar(bins, adjusted_swiss,
               color=_COLOUR_PALETTE["DATABANK"],
-              label="Swiss-Prot Frequencies",
+              label="Swiss-Prot",
               bottom=alpha_frequencies)
     ax[0].bar(bins, alpha_frequencies,
               color=_COLOUR_PALETTE["USED"],
-              label="Used AlphaFold 2 Frequencies")
+              label="Used AlphaFold 2")
     ax[1].bar(bins, adjusted_rcsb,
               color=_COLOUR_PALETTE["DATABANK"],
-              label="RCSB Frequencies",
+              label="RCSB PDB",
               bottom=pdb_frequencies)
     ax[1].bar(bins, pdb_frequencies,
               color=_COLOUR_PALETTE["USED"],
-              label="Used RCSB Frequencies")
+              label="Used RCSB PDB")
     ax[0].tick_params(axis="x", labelrotation=90, labelsize=20)
     ax[1].tick_params(axis="x", labelrotation=90, labelsize=20)
     ax[0].tick_params(axis="y", labelsize=20)
@@ -75,5 +75,5 @@ def create_bar_plots() -> None:
     ax[1].set_xlabel("Chain length", fontsize=24)
     plt.tight_layout()
     sns.despine()
-    plt.show()
     plt.savefig("../plots/individual_plots_for_paper/bars_alpha_unique.pdf")
+    plt.show()
