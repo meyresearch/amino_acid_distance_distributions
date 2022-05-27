@@ -1,4 +1,4 @@
-# Sequence distance distribution
+# Amino acid distance distributions from simulations and protein data
 
 This repository contains the manuscript and data for project looking at geometric properties of proteins together with Nora Molkenthin. 
 
@@ -9,7 +9,8 @@ This repository contains the manuscript and data for project looking at geometri
 ### 4. [Plotting](https://github.com/meyresearch/sequence_distance_distribution/tree/bump/plots/)
 
 ## Authors:
-Nora Molkenthin   
-Antonia Mey   
 Jasmin Güven
+Antonia Mey   
+Nora Molkenthin 
+Steffen Mühle
 
