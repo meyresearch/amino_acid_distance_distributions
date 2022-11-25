@@ -6,17 +6,20 @@ import numpy as np
 import theory_functions
 
 
-def get_histogram(length_range: str, algorithm: str) -> np.ndarray:
+def get_histogram(length_range: str, algorithm: str, low_confidence: bool) -> np.ndarray:
     """
     Get distribution of amino acid distances from histogram.
     @param length_range: chain length range
     @param algorithm: rcsb or alpha from command line arguments
+    @param low_confidence: True use low confidence structures for alphafold 2, False use high confidence
     @return: histogram of RCSB/AlphaFold 2 data
     """
     histogram = None
     if algorithm == "rcsb":
         histogram = np.load(f"../data/rcsb/histogram_{length_range}_not_normed.npy", allow_pickle=True)
-    elif algorithm == "alpha":
+    elif algorithm == "alpha" and low_confidence:
+        histogram = np.load(f"../data/alphafold/histogram_low_conf_{length_range}_not_normed.npy", allow_pickle=True)
+    elif algorithm == "alpha" and not low_confidence:
         histogram = np.load(f"../data/alphafold/histogram_{length_range}_not_normed.npy", allow_pickle=True)
     return histogram
 
@@ -84,6 +87,10 @@ def parse_command_line_arguments() -> argparse.Namespace:
     parser.add_argument("-startp", "--start-point", dest="start_point", type=int, nargs="?", const=1, default=1,
                         help="point from which to start fitting")
     parser.add_argument("-endp", "--end-point", dest="end_point", type=int, help="point at which to end fitting")
+    parser.add_argument("-l", "--low",
+                    help="get low-confidence AlphaFold 2 structures, default behaviour is to only get structures with confidence above 90",
+                    action="store_true")
+
     compare_group.add_argument("--rcsb-startd", dest="rcsb_startd", type=float,
                                help="starting value for dimensionality constant (A) for rcsb")
     compare_group.add_argument("--rcsb-endd", dest="rcsb_endd", type=float,
@@ -92,6 +99,8 @@ def parse_command_line_arguments() -> argparse.Namespace:
                                help="starting value for exponent constant (a) for rcsb")
     compare_group.add_argument("--rcsb-ende", dest="rcsb_ende", type=float,
                                help="last value for exponent constant (a) for rcsb")
+
+    
 
     arguments = parser.parse_args()
     if arguments.algorithm != "rcsb" or arguments.algorithm != "alpha" or arguments.algorithm != "bar":

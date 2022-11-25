@@ -13,13 +13,19 @@ def parse_arguments() -> argparse.Namespace:
     """
     parser = argparse.ArgumentParser(description="Get secondary structure information from AlphaFold 2 or RCSB PDBs.")
     parser.add_argument("algorithm", type=str, choices=["alpha", "rcsb"])
+    parser.add_argument("-l",
+                        "--low",
+                        help="get low-confidence AlphaFold 2 structures, default behaviour is to only get structures with confidence above 90",
+                        action="store_true")
     return parser.parse_args()
 
 
-algorithm = parse_arguments().algorithm
+arguments = parse_arguments()
+algorithm = arguments.algorithm
+low_confidence = arguments.low
 
 if algorithm == "alpha":
-    dssp_functions.save_alpha_secondary_info()
+    dssp_functions.save_alpha_secondary_info(low_confidence)
 
 elif algorithm == "rcsb":
     dssp_functions.save_rcsb_secondary_info()

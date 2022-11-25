@@ -6,6 +6,11 @@ import seaborn as sns
 import protein_contact_map
 import functions
 from colour_palette import _COLOUR_PALETTE
+import pandas as pd
+import traceback
+import argparse
+import os
+import sys
 
 
 def get_pdb_matrix(pdb_file: str) -> np.ndarray:
@@ -78,37 +83,91 @@ def plot_adjacency_matrix(file: str, data_type: str) -> None:
     plt.show()
 
 
-# skeleton code for average matrix
+def get_all_adjacency_matrices(path_to_csv: str) -> str:
+    """
+    Open secondary structure csv file and use pdb files to store all adjacency matrices in a numpy file
+    @param path_to_csv: full path to secondary structure csv file
+    @return: chain length range as a string 
+    """
+    dataframe = pd.read_csv(path_to_csv) 
+    length_range = path_to_csv.split("_")[-1].replace(".csv", "")
+    pdb_filenames = dataframe["filename"].tolist()
+    all_adjacency_matrices_list = []
+    counter = 1
+    for pdb_filename in pdb_filenames:
+        print(f"Progress: {counter}/{len(pdb_filenames)}")
+        try:
+            adjacency_matrix = get_pdb_matrix(pdb_filename)
+            rows, columns = adjacency_matrix.shape
+            set_correct_rows = np.vstack([adjacency_matrix, np.zeros((350 - rows, columns), dtype=adjacency_matrix.dtype)])
+            new_rows, _ = set_correct_rows.shape
+            reshaping_columns = np.zeros((new_rows, 350 - columns))
+            square_matrix = np.hstack((set_correct_rows, reshaping_columns))
+            all_adjacency_matrices_list.append(square_matrix)
 
-# read in secondary_structure_{range}.csv
-# dataframe = pd.read_csv(path_to_csv) 
-# pdb_filenames = dataframe["filename"].tolist()
+        except FileNotFoundError as err:
+            print(err)
+        all_adjacency_matrices = np.array(all_adjacency_matrices_list)
+        counter += 1
+    if not all_adjacency_matrices:           
+        print("Warning: Histogram list is empty. Check log file.")
+    np.save(f"../data/rcsb/adjacency_matrix_{length_range}.npy", all_adjacency_matrices)
+    return length_range
+    
 
-# Getting adjacency matrix data:
-# with open("log.txt", "w") as log_file:
-#   for pdb_filename in pdb_filenames:
-        # given_algortihm = [rcsb/alpha]
-#       if given_algorithm == "alpha":
-#               clean_pdb_filename = pdb_file.replace("/home/jguven/Projects/sequence_distance_distribution", "..")
-#       else:
-#               clean_pdb_filename = pdb_filename
-#       try:
-#           adjacency_matrix = functions.adjacency_matrix(clean_pdb_filename)[1]
-#           all_adjacency_matrices_list.append(adjacency_matrix)
-#       except FileNotFoundError:
-#           traceback.print_exc(file=log_file)
-#       all_adjacency_matrices = np.array(all_adjacency_matrices_list)
-#    if not histogram_list:
-#        print("Warning: Histogram list is empty. Check log file.")
-#   if given_algorithm == "alpha":
-#        np.save(f"../data/alphafold/adjacency_matrix_{length_range}.npy", all_adjacency_matrices)
-#   elif given_algorithm == "rcsb":
-#        np.save(f"../data/rcsb/adjacency_matrix_{length_range}.npy", all_adjacency_matrices)
-       
 # Get average adjacency matrix:
+def get_average_adjacency_matrix(length_range: str):
+    """
+    compute the average adjacency matrix for a given chain length range
+    @param length_range: chain length range as a string
+    @return: average adjacency matrix
+    """
+    total_matrix = np.load(f"../data/rcsb/adjacency_matrix_{length_range}.npy", allow_pickle=True)
+    n_total_counts = np.sum(total_matrix)
+    return np.sum(total_matrix, axis=0) / n_total_counts
 
-# total_matrix = np.load(f"../data/rcsb/adjacency_matrix_{length_range}.npy")
-# n_total_counts = np.sum(total_matrix)
-# average_adjacency_matrix = np.sum(total_matrix, axis=0) / n_total_counts
 
-# plot
+def plot_average_matrix(length_range: str, average_matrix: np.ndarray):
+    """
+    Plot average adjacency matrix for given chain length range
+    @param length_range: chain length range as as tring
+    @return: None
+    """
+    average_adjacency_matrix = remove_diagonal_elements(average_matrix)
+    plt.figure(figsize=(6, 6))
+    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8, font="Helvetica")
+    colormap = [_COLOUR_PALETTE["NO_CONTACT"], _COLOUR_PALETTE["CONTACT"]]
+    heatmap = sns.heatmap(average_adjacency_matrix, cmap=colormap, cbar=False)
+    set_adjacency_matrix_ticks(heatmap)
+    heatmap.set_xlabel("Amino acid")
+    heatmap.set_ylabel("Amino acid")
+    sns.despine()
+    plt.tight_layout()
+    plt.savefig(f"../plots/adjacency_matrices/average_matrix_{length_range}.jpeg", dpi=900)
+
+
+def command_line_arguments() -> argparse.Namespace:
+    """
+    Parser for command line arguments
+    @return: command line arguments
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument("csv_file",
+                        type=str,
+                        help="secondary structure csv file")                 
+    return parser.parse_args()
+
+def main():
+    arguments = command_line_arguments()
+    csv_file = arguments.csv_file
+    if not os.path.isfile(csv_file):
+        print(f"The input file {csv_file} does not exist")
+        sys.exit()
+    length_range = get_all_adjacency_matrices(csv_file)
+    average_matrix = get_average_adjacency_matrix(length_range)
+    plot_average_matrix(length_range, average_matrix)
+
+
+if __name__ == "__main__":
+    main()
+    

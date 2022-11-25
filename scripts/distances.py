@@ -37,7 +37,7 @@ def create_plots(arguments: argparse.Namespace) -> None:
     plt.figure(figsize=(6, 6))
     sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8, font="Helvetica")
     for i in range(len(length_ranges)):
-        histogram = plot_functions.get_histogram(length_ranges[i], arguments.algorithm)
+        histogram = plot_functions.get_histogram(length_ranges[i], arguments.algorithm, arguments.low)
         plotting_tuple = plot_functions.get_data_for_plotting(histogram, arguments, length_ranges[i])
         distance_bins = plotting_tuple[1]
         measure = plotting_tuple[2]
@@ -53,3 +53,9 @@ def create_plots(arguments: argparse.Namespace) -> None:
         sns.despine()
         plt.tight_layout()
     plt.show()
+    if arguments.low:
+        plt.savefig("../plots/supplementary_material/low_confidence_af2.jpeg", dpi=2600)
+    elif not arguments.low:
+        plt.savefig("../plots/supplementary_material/af2.jpeg", dpi=2600)
+
+

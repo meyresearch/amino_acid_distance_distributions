@@ -144,7 +144,9 @@ def return_distance_histogram(log_file: str, given_algorithm: str, length_range:
     histogram_array = np.asarray(histogram_list)
     if not histogram_list:
         print("Warning: Histogram list is empty. Check log file.")
-    if given_algorithm == "alpha":
+    if given_algorithm == "alpha" and "low" in path_to_csvs:
+        np.save(f"../data/alphafold/histogram_low_conf_{length_range}_not_normed.npy", histogram_array)
+    elif given_algorithm == "alpha" and "low" not in path_to_csvs:
         np.save(f"../data/alphafold/histogram_{length_range}_not_normed.npy", histogram_array)
     elif given_algorithm == "rcsb":
         np.save(f"../data/rcsb/histogram_{length_range}_not_normed.npy", histogram_array)

@@ -4,6 +4,7 @@ Remove duplicates from AlphaFold 2 PDB files
 import glob
 import pandas as pd
 import numpy as np
+import argparse
 
 
 def get_protein_names(filenames: np.ndarray) -> np.ndarray:
@@ -27,22 +28,45 @@ def get_protein_names(filenames: np.ndarray) -> np.ndarray:
     return np.asarray(protein_names)
             
 
-def filter_unique_secondary_structures() -> None:
+def filter_unique_secondary_structures(low_confidence: bool) -> None:
     """
     Open secondary structures csv and find unique protein structures and save as a csv.
+    @param low_confidence: True only use low confidence structures, False use high confidence structures
     @return: None
     """
     chain_lengths = ["100", "200", "300"]
     for length in chain_lengths:
-        secondary_structures_df = pd.read_csv(f"../data/alphafold/secondary_structures_{length}.csv")
+        if low_confidence:
+            secondary_structures_df = pd.read_csv(f"../data/alphafold/low_secondary_structures_{length}.csv")
+        elif not low_confidence:
+            secondary_structures_df = pd.read_csv(f"../data/alphafold/secondary_structures_{length}.csv")
+
         filenames = secondary_structures_df["filename"]
         secondary_structures_df["protein_name"] = get_protein_names(filenames)
         unique_structures_df = secondary_structures_df.drop_duplicates(subset="protein_name")
-        unique_structures_df.to_csv(f"../data/alphafold/unique_secondary_structures_{length}.csv")
+        if low_confidence:
+            unique_structures_df.to_csv(f"../data/alphafold/unique_low_secondary_structures_{length}.csv")
+        elif not low_confidence:
+            unique_structures_df.to_csv(f"../data/alphafold/unique_secondary_structures_{length}.csv")
 
-        
+
+def commandline_arguments() -> argparse.Namespace:
+    """
+    Parser for commandline arguments
+    @return: commandline arguments from user
+    """
+    parser = argparse.ArgumentParser(description="filter AlphaFold 2 structures based on per-residue confidence scores")
+    parser.add_argument("-l",
+                        "--low",
+                        help="get low-confidence AlphaFold 2 structures, default behaviour is to only get structures with confidence above 90",
+                        action="store_true")
+    return parser.parse_args()
+
+
 def main():
-    filter_unique_secondary_structures()
+    arguments = commandline_arguments()
+    low_confidence = arguments.low
+    filter_unique_secondary_structures(low_confidence)
 
     
 if __name__ == "__main__":

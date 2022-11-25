@@ -100,3 +100,7 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
     sns.despine()
     plt.tight_layout()
     plt.show()
+    if arguments.low:
+        plt.savefig("../plots/supplementary_material/low_confidence_comparison.jpeg", dpi=2600)
+    elif not arguments.low:
+        plt.savefig("../plots/supplementary_material/comparison.jpeg", dpi=2600)

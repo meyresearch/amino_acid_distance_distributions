@@ -18,8 +18,8 @@ def plot() -> None:
     arguments = plot_functions.parse_command_line_arguments()
     algorithm = arguments.algorithm
     if algorithm == "comp":
-        rcsb_histogram = plot_functions.get_histogram(arguments.length_range, "rcsb")
-        alpha_histogram = plot_functions.get_histogram(arguments.length_range, "alpha")
+        rcsb_histogram = plot_functions.get_histogram(arguments.length_range, "rcsb", arguments.low)
+        alpha_histogram = plot_functions.get_histogram(arguments.length_range, "alpha", arguments.low)
         comparison.create_comparison_plot(arguments, rcsb_histogram, alpha_histogram)
     elif algorithm == "bar":
         bars.create_bar_plots()

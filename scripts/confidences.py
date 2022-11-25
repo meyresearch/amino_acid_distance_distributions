@@ -36,13 +36,13 @@ def filter_confidences(pdb_files: list, low_confidence: bool) -> pd.DataFrame:
     """
     Filter out AlphaFold structures with less than 90% confidence
     @param pdb_files: glob list of AlphaFold PDBs
-    @param low_confidence: True: get confidences below 90.0, False: get confidences above 90.0
+    @param low_confidence: True: get confidences below 70.0, False: get confidences above 90.0
     @return good_confidence_df: dataframe containing PDBs with either low or high confidence
     """
     confidence_list = get_confidences(pdb_files)
     confidence_dataframe = pd.DataFrame.from_dict(confidence_list)
     if low_confidence: 
-        confidence_filter = confidence_dataframe["mean"] <= 90.0
+        confidence_filter = confidence_dataframe["mean"] < 70.0
     elif not low_confidence:
         confidence_filter = confidence_dataframe["mean"] > 90.0
     return confidence_dataframe.where(confidence_filter).dropna()

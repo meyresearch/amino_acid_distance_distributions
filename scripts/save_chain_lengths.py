@@ -8,10 +8,11 @@ import pandas as pd
 import argparse
 
 
-def save_alpha_chain_lengths(confidence_dataframe: pd.DataFrame) -> None:
+def save_alpha_chain_lengths(confidence_dataframe: pd.DataFrame, low_confidence: bool) -> None:
     """
     Open the confidence dataframe and sort files into length ranges
     @param confidence_dataframe: dataframe containing confidence info
+    @param low_confidence: True use low confidence structures, False use high confidence structures
     return: None
     """
     counter = 1
@@ -45,10 +46,16 @@ def save_alpha_chain_lengths(confidence_dataframe: pd.DataFrame) -> None:
     df_100 = pd.DataFrame.from_dict(proteins_100)
     df_200 = pd.DataFrame.from_dict(proteins_200)
     df_300 = pd.DataFrame.from_dict(proteins_300)
-    df_100.to_csv("../data/alphafold/confidences_100.csv")
-    df_200.to_csv("../data/alphafold/confidences_200.csv")
-    df_300.to_csv("../data/alphafold/confidences_300.csv")
 
+    if low_confidence: 
+        df_100.to_csv("../data/alphafold/low_confidences_100.csv")
+        df_200.to_csv("../data/alphafold/low_confidences_200.csv")
+        df_300.to_csv("../data/alphafold/low_confidences_300.csv")
+    elif not low_confidence:
+        df_100.to_csv("../data/alphafold/confidences_100.csv")
+        df_200.to_csv("../data/alphafold/confidences_200.csv")
+        df_300.to_csv("../data/alphafold/confidences_300.csv")
+    
     
 def save_rcsb_chain_lengths(pdb_files: list) -> None:
     """
@@ -91,14 +98,24 @@ def parse_arguments() -> argparse.Namespace:
     """
     parser = argparse.ArgumentParser(description="Sort PDBs to chain length ranges.")
     parser.add_argument("algorithm", type=str, choices=["alpha", "rcsb"])
+    parser.add_argument("-l",
+                        "--low",
+                        help="get low-confidence AlphaFold 2 structures, default behaviour is to only get structures with confidence above 90",
+                        action="store_true")
     return parser.parse_args()
 
+arguments = parse_arguments()
+algorithm = arguments.algorithm
+low_confidence = arguments.low
 
-algorithm = parse_arguments().algorithm
 if algorithm == "alpha":
     print("Getting AlphaFold length ranges.")
-    confidence_df = pd.read_csv("../data/alphafold/confidences.csv")
-    save_alpha_chain_lengths(confidence_df)
+    if low_confidence:
+        confidence_df = pd.read_csv("../data/alphafold/low_confidences.csv")
+        save_alpha_chain_lengths(confidence_df, low_confidence)
+    elif not low_confidence:
+        confidence_df = pd.read_csv("../data/alphafold/confidences.csv")
+        save_alpha_chain_lengths(confidence_df, low_confidence)
 elif algorithm == "rcsb":
     print("Getting RCSB length ranges.")
     pdbs = glob.glob("../data/rcsb/pdb_files/*.ent")

@@ -53,7 +53,7 @@ def get_secondary_structure(filename: str, dssp_path: str, log_file: str) -> np.
     return np.array(secondary_structures)
 
 
-def save_alpha_secondary_info():
+def save_alpha_secondary_info(low_confidence: bool):
     """
     Get secondary structure and confidence information for AlphaFold 2 from DSSP and save into csv
     @return:
@@ -64,7 +64,10 @@ def save_alpha_secondary_info():
         secondary_structures = []
         print(f"Chains {chain_counter}/{len(length_ranges)}")
         pdb_counter = 1
-        confidence_data = pd.read_csv(f"../data/alphafold/confidences_{length}.csv")
+        if low_confidence:
+            confidence_data = pd.read_csv(f"../data/alphafold/low_confidences_{length}.csv")
+        elif not low_confidence:
+            confidence_data = pd.read_csv(f"../data/alphafold/confidences_{length}.csv")
         pdbs = confidence_data["filename"].to_numpy()
         for pdb in pdbs:
             print(f"At {pdb_counter}/{len(pdbs)}")
@@ -83,7 +86,10 @@ def save_alpha_secondary_info():
         secondary_df["beta"] = secondary_df["B"] + secondary_df["E"]
         clean_df = secondary_df[["filename", "mean", "std", "H", "beta"]]
         renamed_cols_df = clean_df.rename(columns={"H": "alpha"})
-        renamed_cols_df.to_csv(f"../data/alphafold/secondary_structures_{length}.csv")
+        if low_confidence:
+            renamed_cols_df.to_csv(f"../data/alphafold/low_secondary_structures_{length}.csv")
+        elif not low_confidence:
+            renamed_cols_df.to_csv(f"../data/alphafold/secondary_structures_{length}.csv")
         chain_counter += 1
 
 
