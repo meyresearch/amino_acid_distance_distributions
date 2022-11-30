@@ -57,12 +57,14 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
     ks_index = int(rcsb_chain_length) + 15
     ks_statistics = scipy.stats.ks_2samp(rcsb_measure[:ks_index], alpha_measure[:ks_index])
     alpha_confidence = 0.01
-    c_alpha_multiplier = theory_functions.get_ks_multiplier(alpha_confidence)
-    ks_condition = theory_functions.ks_critical_condition(len(rcsb_measure), len(alpha_measure), c_alpha_multiplier)
-    is_accepted = theory_functions.accept_null_hypothesis(ks_statistics.statistic, ks_condition)
+    # c_alpha_multiplier = theory_functions.get_ks_multiplier(alpha_confidence)
+    # print(f"rcsb: {len(rcsb_measure)}, alphafold 2: {len(alpha_measure)}")
+    # ks_condition = theory_functions.ks_critical_condition(len(rcsb_measure), len(alpha_measure), c_alpha_multiplier)
+    # print(f"KS critical condition: {ks_condition}")
+    # is_accepted = theory_functions.accept_null_hypothesis(ks_statistics.statistic, ks_condition)
     fig = plt.figure()
     fig.set_size_inches((6, 6))
-    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.88, font="Helvetica")
+    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.88)
 
     plt.scatter(rcsb_distances, rcsb_measure, label=f"RCSB {arguments.length_range}",
                 color=_COLOUR_PALETTE["PDB_SCATTER"], marker="o")
@@ -88,7 +90,7 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
     print("-----------------------KS STATISTICS----------------------")
     print(f"KS statistic: {ks_statistics.statistic}")
     print(f"p value: {ks_statistics.pvalue}")
-    print(f"Null hypothesis accepted at alpha={alpha_confidence}: {is_accepted}")
+    # print(f"Null hypothesis accepted at alpha={alpha_confidence}: {is_accepted}")
     print("\n")
     plt.yscale("log")
     plt.xscale("log")

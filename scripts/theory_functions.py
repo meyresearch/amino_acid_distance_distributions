@@ -119,7 +119,7 @@ def ks_critical_condition(distribution_n: int, distribution_m: int, multiplier: 
     @param multiplier: constant c(alpha); determined from the alpha confidence level
     @return: condition to be met to accept the null hypothesis
     """
-    return multiplier * np.sqrt((distribution_n + distribution_m) / distribution_n * distribution_m)
+    return multiplier * np.sqrt((distribution_n + distribution_m) / (distribution_n * distribution_m))
 
 
 def accept_null_hypothesis(ks_statistic: float, critical_condition: float) -> bool:

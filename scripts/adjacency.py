@@ -7,7 +7,6 @@ import protein_contact_map
 import functions
 from colour_palette import _COLOUR_PALETTE
 import pandas as pd
-import traceback
 import argparse
 import os
 import sys
@@ -43,19 +42,6 @@ def set_adjacency_matrix_ticks(plot: matplotlib.axes.Axes) -> None:
             label.set_visible(False)
 
 
-def remove_diagonal_elements(matrix: np.ndarray):
-    """
-    Remove diagonal elements and add contacts to first off-diagonals
-    @param matrix: adjacency matrix from simulations
-    @return: simulation matrix with diagonals set to 1
-    """
-    np.fill_diagonal(matrix, 0)
-    off_diagonal = np.ones(len(np.diag(matrix, 1)))
-    np.fill_diagonal(matrix[1:], off_diagonal)
-    np.fill_diagonal(matrix[:, 1:], off_diagonal)
-    return matrix
-
-
 def plot_adjacency_matrix(file: str, data_type: str) -> None:
     """
     Plot adjacency matrix for given protein file (or simulation matrix)
@@ -66,12 +52,19 @@ def plot_adjacency_matrix(file: str, data_type: str) -> None:
     adjacency_matrix = []
     if data_type == "sim":
         simulation_matrix = functions.get_3d_simulation_adjacency_matrix(file)
-        adjacency_matrix = remove_diagonal_elements(simulation_matrix)
+        adjacency_matrix = simulation_matrix.copy()
+        np.fill_diagonal(adjacency_matrix, 0)
+        np.fill_diagonal(adjacency_matrix[1:], 0)
+        np.fill_diagonal(adjacency_matrix[:,1:], 0)
+
     elif data_type == "pdb":
         pdb_matrix = get_pdb_matrix(file)
-        adjacency_matrix = remove_diagonal_elements(pdb_matrix)
+        adjacency_matrix = simulation_matrix.copy()
+        np.fill_diagonal(adjacency_matrix, 0)
+        np.fill_diagonal(adjacency_matrix[1:], 0)
+        np.fill_diagonal(adjacency_matrix[:,1:], 0)
     plt.figure(figsize=(6, 6))
-    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8, font="Helvetica")
+    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8)
     colormap = [_COLOUR_PALETTE["NO_CONTACT"], _COLOUR_PALETTE["CONTACT"]]
     heatmap = sns.heatmap(adjacency_matrix, cmap=colormap, cbar=False)
     set_adjacency_matrix_ticks(heatmap)
@@ -94,7 +87,7 @@ def get_all_adjacency_matrices(path_to_csv: str) -> str:
     pdb_filenames = dataframe["filename"].tolist()
     all_adjacency_matrices_list = []
     counter = 1
-    for pdb_filename in pdb_filenames:
+    for pdb_filename in pdb_filenames[:100]:
         print(f"Progress: {counter}/{len(pdb_filenames)}")
         try:
             adjacency_matrix = get_pdb_matrix(pdb_filename)
@@ -103,19 +96,20 @@ def get_all_adjacency_matrices(path_to_csv: str) -> str:
             new_rows, _ = set_correct_rows.shape
             reshaping_columns = np.zeros((new_rows, 350 - columns))
             square_matrix = np.hstack((set_correct_rows, reshaping_columns))
+            np.fill_diagonal(square_matrix, 0)
+            np.fill_diagonal(square_matrix[1:], 0)
+            np.fill_diagonal(square_matrix[:,1:], 0)
             all_adjacency_matrices_list.append(square_matrix)
-
         except FileNotFoundError as err:
             print(err)
         all_adjacency_matrices = np.array(all_adjacency_matrices_list)
         counter += 1
-    if not all_adjacency_matrices:           
+    if len(all_adjacency_matrices) == 0:           
         print("Warning: Histogram list is empty. Check log file.")
     np.save(f"../data/rcsb/adjacency_matrix_{length_range}.npy", all_adjacency_matrices)
     return length_range
     
 
-# Get average adjacency matrix:
 def get_average_adjacency_matrix(length_range: str):
     """
     compute the average adjacency matrix for a given chain length range
@@ -123,8 +117,10 @@ def get_average_adjacency_matrix(length_range: str):
     @return: average adjacency matrix
     """
     total_matrix = np.load(f"../data/rcsb/adjacency_matrix_{length_range}.npy", allow_pickle=True)
-    n_total_counts = np.sum(total_matrix)
-    return np.sum(total_matrix, axis=0) / n_total_counts
+    summed_elements = np.sum(total_matrix, axis=0)
+    average_matrix = summed_elements.copy()
+    average_matrix[average_matrix > 0] = 1
+    return average_matrix
 
 
 def plot_average_matrix(length_range: str, average_matrix: np.ndarray):
@@ -133,11 +129,10 @@ def plot_average_matrix(length_range: str, average_matrix: np.ndarray):
     @param length_range: chain length range as as tring
     @return: None
     """
-    average_adjacency_matrix = remove_diagonal_elements(average_matrix)
     plt.figure(figsize=(6, 6))
-    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8, font="Helvetica")
+    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8)
     colormap = [_COLOUR_PALETTE["NO_CONTACT"], _COLOUR_PALETTE["CONTACT"]]
-    heatmap = sns.heatmap(average_adjacency_matrix, cmap=colormap, cbar=False)
+    heatmap = sns.heatmap(average_matrix, cmap=colormap, cbar=False)
     set_adjacency_matrix_ticks(heatmap)
     heatmap.set_xlabel("Amino acid")
     heatmap.set_ylabel("Amino acid")
@@ -156,6 +151,7 @@ def command_line_arguments() -> argparse.Namespace:
                         type=str,
                         help="secondary structure csv file")                 
     return parser.parse_args()
+
 
 def main():
     arguments = command_line_arguments()

@@ -197,7 +197,7 @@ python plot.py alpha
 
 To plot the theoretical fit to `300` data, run:
 ```
-python plot.py comp --range=300 --rcsb-startd 0.0007 --rcsb-endd 0.0009 --rcsb-starte 4 --rcsb-ende 6 --quantile 2 --measure-mean --start-point 20 --end-point 150
+python plot.py comp --range=300 --rcsb-startd 0.0007 --rcsb-endd 0.0009 --rcsb-starte 4 --rcsb-ende 6 --quantile 2 --measure mean --start-point 20 --end-point 150
 ```
 For `100`:
 ```
