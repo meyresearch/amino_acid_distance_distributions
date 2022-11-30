@@ -20,7 +20,10 @@ def plot() -> None:
     if algorithm == "comp":
         rcsb_histogram = plot_functions.get_histogram(arguments.length_range, "rcsb", arguments.low)
         alpha_histogram = plot_functions.get_histogram(arguments.length_range, "alpha", arguments.low)
-        comparison.create_comparison_plot(arguments, rcsb_histogram, alpha_histogram)
+        if arguments.low:
+            comparison.create_low_condidence_comparison_plot(arguments, rcsb_histogram, alpha_histogram)
+        else:
+            comparison.create_comparison_plot(arguments, rcsb_histogram, alpha_histogram)
     elif algorithm == "bar":
         bars.create_bar_plots()
     elif algorithm == "rcsb" or algorithm == "alpha":

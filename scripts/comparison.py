@@ -4,7 +4,6 @@ import numpy as np
 import scipy.optimize
 import matplotlib.pyplot as plt
 import seaborn as sns
-import pandas as pd
 import plot_functions
 import theory_functions
 from colour_palette import _COLOUR_PALETTE
@@ -57,11 +56,7 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
     ks_index = int(rcsb_chain_length) + 15
     ks_statistics = scipy.stats.ks_2samp(rcsb_measure[:ks_index], alpha_measure[:ks_index])
     alpha_confidence = 0.01
-    # c_alpha_multiplier = theory_functions.get_ks_multiplier(alpha_confidence)
-    # print(f"rcsb: {len(rcsb_measure)}, alphafold 2: {len(alpha_measure)}")
-    # ks_condition = theory_functions.ks_critical_condition(len(rcsb_measure), len(alpha_measure), c_alpha_multiplier)
-    # print(f"KS critical condition: {ks_condition}")
-    # is_accepted = theory_functions.accept_null_hypothesis(ks_statistics.statistic, ks_condition)
+    is_accepted = theory_functions.accept_null_hypothesis(ks_statistics.pvalue, alpha_confidence)
     fig = plt.figure()
     fig.set_size_inches((6, 6))
     sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.88)
@@ -90,7 +85,7 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
     print("-----------------------KS STATISTICS----------------------")
     print(f"KS statistic: {ks_statistics.statistic}")
     print(f"p value: {ks_statistics.pvalue}")
-    # print(f"Null hypothesis accepted at alpha={alpha_confidence}: {is_accepted}")
+    print(f"Null hypothesis accepted at alpha={alpha_confidence}: {is_accepted}")
     print("\n")
     plt.yscale("log")
     plt.xscale("log")
@@ -106,3 +101,51 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
         plt.savefig("../plots/supplementary_material/low_confidence_comparison.jpeg", dpi=2600)
     elif not arguments.low:
         plt.savefig("../plots/supplementary_material/comparison.jpeg", dpi=2600)
+
+
+def create_low_condidence_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.ndarray,
+                                          alpha_histogram: np.ndarray):
+
+    rcsb_plotting_tuple = plot_functions.get_data_for_plotting(rcsb_histogram, arguments, arguments.length_range)
+    rcsb_chain_length = rcsb_plotting_tuple[0]
+    rcsb_distances = rcsb_plotting_tuple[1]
+    rcsb_measure = rcsb_plotting_tuple[2]
+    rcsb_lower_bound, rcsb_upper_bound = rcsb_plotting_tuple[3], rcsb_plotting_tuple[4]
+
+    alpha_plotting_tuple = plot_functions.get_data_for_plotting(alpha_histogram, arguments, arguments.length_range)
+    alpha_distances = alpha_plotting_tuple[1]
+    alpha_measure = alpha_plotting_tuple[2]
+
+    ks_index = int(rcsb_chain_length) + 15
+    ks_statistics = scipy.stats.ks_2samp(rcsb_measure[:ks_index], alpha_measure[:ks_index])
+    alpha_confidence = 0.01
+    is_accepted = theory_functions.accept_null_hypothesis(ks_statistics.pvalue, alpha_confidence)
+
+    fig = plt.figure()
+    fig.set_size_inches((6, 6))
+    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.88)
+
+    plt.scatter(rcsb_distances, rcsb_measure, label=f"RCSB {arguments.length_range}",
+                color=_COLOUR_PALETTE["PDB_SCATTER"], marker="o")
+    plt.fill_between(rcsb_distances, rcsb_upper_bound, rcsb_lower_bound,
+                     color=_COLOUR_PALETTE["PDB_SCATTER"], alpha=0.25, label="RCSB 95% C.L.", zorder=-99)
+    plt.scatter(alpha_distances, alpha_measure, label=f"AlphaFold 2 {arguments.length_range} low-conf.",
+                color=_COLOUR_PALETTE["ALPHA_SCATTER"], marker="s")
+    print("\n")
+    print("-----------------------KS STATISTICS----------------------")
+    print(f"KS statistic: {ks_statistics.statistic}")
+    print(f"p value: {ks_statistics.pvalue}")
+    print(f"Null hypothesis accepted at alpha={alpha_confidence}: {is_accepted}")
+    print("\n")
+    plt.yscale("log")
+    plt.xscale("log")
+    plt.xlim(4, arguments.end_point)
+    plt.ylim(0.000005, 0.1)
+    plt.xlabel("s")
+    plt.ylabel("P(s)")
+    plt.legend(loc="lower left", fontsize=16)
+    sns.despine()
+    plt.tight_layout()
+    plt.show()
+    plt.savefig("../plots/supplementary_material/low_confidence_comparison.jpeg", dpi=2600)
+

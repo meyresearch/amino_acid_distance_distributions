@@ -3,7 +3,6 @@ import matplotlib
 import numpy as np
 from matplotlib import pyplot as plt
 import seaborn as sns
-import protein_contact_map
 import functions
 from colour_palette import _COLOUR_PALETTE
 import pandas as pd
@@ -129,6 +128,7 @@ def plot_average_matrix(length_range: str, average_matrix: np.ndarray):
     @param length_range: chain length range as as tring
     @return: None
     """
+    maximum_residue = [array_index for array_index in range(len(average_matrix)) if 1 not in average_matrix[array_index]][0]
     plt.figure(figsize=(6, 6))
     sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8)
     colormap = [_COLOUR_PALETTE["NO_CONTACT"], _COLOUR_PALETTE["CONTACT"]]
@@ -137,6 +137,8 @@ def plot_average_matrix(length_range: str, average_matrix: np.ndarray):
     heatmap.set_xlabel("Amino acid")
     heatmap.set_ylabel("Amino acid")
     sns.despine()
+    plt.xlim(0, maximum_residue)
+    plt.ylim(maximum_residue, 0)
     plt.tight_layout()
     plt.savefig(f"../plots/adjacency_matrices/average_matrix_{length_range}.jpeg", dpi=900)
 
