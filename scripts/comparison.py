@@ -44,14 +44,9 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
                                                                   exponent_range[0], dimensionality_range[0]],
                                                                  [rcsb_chain_length, half_n_harmonic,
                                                                   exponent_range[-1], dimensionality_range[-1]]))
-    rcsb_power, rcsb_power_cov = scipy.optimize.curve_fit(f=theory_functions.power_law,
-                                                          sigma=weights[start:end],
-                                                          xdata=rcsb_distances[start:end],
-                                                          ydata=rcsb_measure[start:end])
+                                                                  
     rcsb_theory = theory_functions.amino_acid_distance_distribution(rcsb_distances[start:end], *rcsb_parameters)
     rcsb_sigma = np.sqrt(np.diag(rcsb_cov))
-    rcsb_powerlaw = theory_functions.power_law(rcsb_distances[start:end], *rcsb_power)
-    rcsb_power_sigma = np.sqrt(np.diag(rcsb_power_cov))
 
     ks_index = int(rcsb_chain_length) + 15
     ks_statistics = scipy.stats.ks_2samp(rcsb_measure[:ks_index], alpha_measure[:ks_index])
@@ -69,7 +64,6 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
                 color=_COLOUR_PALETTE["ALPHA_SCATTER"], marker="s")
 
     plt.plot(rcsb_distances[start:end], rcsb_theory, label="Theory RCSB", color="k", lw=1.5)
-    plt.plot(rcsb_distances[start:end], rcsb_powerlaw, label="Power law RCSB", color="k", lw=1.5, ls="--")
 
     print("\n")
     print("-----------------------RCSB THEORY-----------------------")
@@ -77,10 +71,6 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
     print(f"H-N/2: {rcsb_parameters[1]:f} +/- {rcsb_sigma[1]:f}")
     print(f"a: {rcsb_parameters[2]:f} +/- {rcsb_sigma[2]:f}")
     print(f"A: {rcsb_parameters[3]:f} +/- {rcsb_sigma[3]:f}")
-    print("\n")
-    print("----------------------RCSB POWER LAW----------------------")
-    print(f"gamma: {rcsb_power[0]} +/- {rcsb_power_sigma[0]}")
-    print(f"constant: {rcsb_power[1]}+/- {rcsb_power_sigma[1]}")
     print("\n")
     print("-----------------------KS STATISTICS----------------------")
     print(f"KS statistic: {ks_statistics.statistic}")
@@ -97,10 +87,7 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
     sns.despine()
     plt.tight_layout()
     plt.show()
-    if arguments.low:
-        plt.savefig("../plots/supplementary_material/low_confidence_comparison.jpeg", dpi=2600)
-    elif not arguments.low:
-        plt.savefig("../plots/supplementary_material/comparison.jpeg", dpi=2600)
+    plt.savefig(f"../plots/supplementary_material/comparison_{rcsb_chain_length}.pdf")
 
 
 def create_low_condidence_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.ndarray,
