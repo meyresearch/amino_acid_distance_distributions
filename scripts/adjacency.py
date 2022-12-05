@@ -118,7 +118,7 @@ def get_average_adjacency_matrix(length_range: str):
     total_matrix = np.load(f"../data/rcsb/adjacency_matrix_{length_range}.npy", allow_pickle=True)
     summed_elements = np.sum(total_matrix, axis=0)
     average_matrix = summed_elements.copy()
-    average_matrix[average_matrix > 0] = 1
+    # average_matrix[average_matrix > 0] = 1
     return average_matrix
 
 
@@ -132,7 +132,7 @@ def plot_average_matrix(length_range: str, average_matrix: np.ndarray):
     plt.figure(figsize=(6, 6))
     sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8)
     colormap = [_COLOUR_PALETTE["NO_CONTACT"], _COLOUR_PALETTE["CONTACT"]]
-    heatmap = sns.heatmap(average_matrix, cmap=colormap, cbar=False)
+    heatmap = sns.heatmap(average_matrix, cbar=True)
     set_adjacency_matrix_ticks(heatmap)
     heatmap.set_xlabel("Amino acid")
     heatmap.set_ylabel("Amino acid")
@@ -164,7 +164,7 @@ def main():
     length_range = get_all_adjacency_matrices(csv_file)
     average_matrix = get_average_adjacency_matrix(length_range)
     plot_average_matrix(length_range, average_matrix)
-
+    np.save("../data/rcsb/average_matrix.npy", average_matrix)
 
 if __name__ == "__main__":
     main()
