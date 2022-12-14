@@ -58,7 +58,7 @@ def plot_adjacency_matrix(file: str, data_type: str) -> None:
 
     elif data_type == "pdb":
         pdb_matrix = get_pdb_matrix(file)
-        adjacency_matrix = simulation_matrix.copy()
+        adjacency_matrix = pdb_matrix.copy()
         np.fill_diagonal(adjacency_matrix, 0)
         np.fill_diagonal(adjacency_matrix[1:], 0)
         np.fill_diagonal(adjacency_matrix[:,1:], 0)
@@ -66,10 +66,13 @@ def plot_adjacency_matrix(file: str, data_type: str) -> None:
     sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8)
     colormap = [_COLOUR_PALETTE["NO_CONTACT"], _COLOUR_PALETTE["CONTACT"]]
     heatmap = sns.heatmap(adjacency_matrix, cmap=colormap, cbar=False)
-    set_adjacency_matrix_ticks(heatmap)
+    # set_adjacency_matrix_ticks(heatmap)
     heatmap.set_xlabel("Amino acid")
     heatmap.set_ylabel("Amino acid")
     sns.despine()
+    ticks = np.arange(0, len(adjacency_matrix[0]), 50)
+    plt.xticks(ticks, ticks, rotation=360)
+    plt.yticks(ticks, ticks)
     plt.tight_layout()
     plt.savefig(f"../plots/adjacency_matrices/{data_type}_matrix.jpeg", dpi=900)
     plt.show()
@@ -118,7 +121,7 @@ def get_average_adjacency_matrix(length_range: str):
     total_matrix = np.load(f"../data/rcsb/adjacency_matrix_{length_range}.npy", allow_pickle=True)
     summed_elements = np.sum(total_matrix, axis=0)
     average_matrix = summed_elements.copy()
-    # average_matrix[average_matrix > 0] = 1
+    average_matrix[average_matrix > 0] = 1
     return average_matrix
 
 
@@ -132,13 +135,16 @@ def plot_average_matrix(length_range: str, average_matrix: np.ndarray):
     plt.figure(figsize=(6, 6))
     sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8)
     colormap = [_COLOUR_PALETTE["NO_CONTACT"], _COLOUR_PALETTE["CONTACT"]]
-    heatmap = sns.heatmap(average_matrix, cbar=True)
-    set_adjacency_matrix_ticks(heatmap)
+    heatmap = sns.heatmap(average_matrix, cmap=colormap, cbar=False)
+    # set_adjacency_matrix_ticks(heatmap)
     heatmap.set_xlabel("Amino acid")
     heatmap.set_ylabel("Amino acid")
     sns.despine()
     plt.xlim(0, maximum_residue)
     plt.ylim(maximum_residue, 0)
+    ticks = np.arange(0, maximum_residue, 50)
+    plt.xticks(ticks, ticks, rotation=360)
+    plt.yticks(ticks, ticks)
     plt.tight_layout()
     plt.savefig(f"../plots/adjacency_matrices/average_matrix_{length_range}.jpeg", dpi=900)
 
@@ -164,7 +170,8 @@ def main():
     length_range = get_all_adjacency_matrices(csv_file)
     average_matrix = get_average_adjacency_matrix(length_range)
     plot_average_matrix(length_range, average_matrix)
-    np.save("../data/rcsb/average_matrix.npy", average_matrix)
+    np.save("../data/rcsb/average_matrix.npy", average_matrix   )
+
 
 if __name__ == "__main__":
     main()
