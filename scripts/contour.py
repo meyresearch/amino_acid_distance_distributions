@@ -56,7 +56,7 @@ def create_contour_plots() -> None:
         ax = plt.gca()
         fig.set_size_inches((6, 6))
         contour_cloud(alphas=rcsb_df["alpha"], betas=rcsb_df["beta"], colour=colours[0], plot_alpha=0.6)
-        contour_cloud(alphas=alphafold_df["alpha"], betas=alphafold_df["beta"], colour=colours[1], plot_alpha=0.7)
+        # contour_cloud(alphas=alphafold_df["alpha"], betas=alphafold_df["beta"], colour=colours[1], plot_alpha=0.7)
         ax.legend([lines.Line2D([0], [0], marker="", c=colours[0], linewidth=2),
                    lines.Line2D([0], [0], marker="", c=colours[1], linewidth=2)],
                   [f"RCSB {lengths[i]}", f"AlphaFold 2 {lengths[i]}"],
@@ -69,3 +69,4 @@ def create_contour_plots() -> None:
         sns.despine()
         plt.tight_layout()
         plt.show()
+        plt.savefig("../plots/supplementary_material/countour_plot.pdf")
