@@ -60,8 +60,8 @@ def create_comparison_plot(arguments: argparse.Namespace, rcsb_histogram: np.nda
                 color=_COLOUR_PALETTE["PDB_SCATTER"], marker="o")
     plt.fill_between(rcsb_distances, rcsb_upper_bound, rcsb_lower_bound,
                      color=_COLOUR_PALETTE["PDB_SCATTER"], alpha=0.25, label="RCSB 95% C.L.", zorder=-99)
-    plt.scatter(alpha_distances, alpha_measure, label=f"AlphaFold 2 {arguments.length_range}",
-                color=_COLOUR_PALETTE["ALPHA_SCATTER"], marker="s")
+    # plt.scatter(alpha_distances, alpha_measure, label=f"AlphaFold 2 {arguments.length_range}",
+    #             color=_COLOUR_PALETTE["ALPHA_SCATTER"], marker="s")
 
     plt.plot(rcsb_distances[start:end], rcsb_theory, label="Theory RCSB", color="k", lw=1.5)
 
