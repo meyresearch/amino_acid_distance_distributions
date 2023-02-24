@@ -50,16 +50,15 @@ def create_contour_plots() -> None:
         alphafold_y = alphafold_df["beta"]
         plt.scatter(x=rcsb_x[::indices[i]], y=rcsb_y[::indices[i]],
                     color=colours[0], alpha=0.1)
-        plt.scatter(x=alphafold_x[::indices[i]], y=alphafold_y[::indices[i]],
-                    color=colours[1], alpha=0.3)
+        # plt.scatter(x=alphafold_x[::indices[i]], y=alphafold_y[::indices[i]],
+        #             color=colours[1], alpha=0.3)
         fig = plt.gcf()
         ax = plt.gca()
         fig.set_size_inches((6, 6))
         contour_cloud(alphas=rcsb_df["alpha"], betas=rcsb_df["beta"], colour=colours[0], plot_alpha=0.6)
         # contour_cloud(alphas=alphafold_df["alpha"], betas=alphafold_df["beta"], colour=colours[1], plot_alpha=0.7)
-        ax.legend([lines.Line2D([0], [0], marker="", c=colours[0], linewidth=2),
-                   lines.Line2D([0], [0], marker="", c=colours[1], linewidth=2)],
-                  [f"RCSB {lengths[i]}", f"AlphaFold 2 {lengths[i]}"],
+        ax.legend([lines.Line2D([0], [0], marker="", c=colours[0], linewidth=2)],
+                  [f"RCSB {lengths[i]}"],
                   loc="upper right", fontsize=20, frameon=False)
         ax.set_xlim(0, 0.6)
         ax.set_ylim(0, 0.6)
