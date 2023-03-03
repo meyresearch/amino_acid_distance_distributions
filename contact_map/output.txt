@@ -1,0 +1,40 @@
+Shadow Contact Map Java Application (SCM)
+More information at: http://smog-server.org/Shadow.html and the SMOG2 manual
+Version 1.33
+Reading grofile: smog.gro.
+Found 1602 atoms.
+Reading Topology.
+Initializing connected list.
+Found 1 atom types.
+Found 0 pairs.
+Found 1652 bonds.
+Found 2257 angles.
+Found 4944 dihedrals.
+Calculating contacts.
+Shadowing radius is <= 0, treating instead as a cutoff map.
+Printing residue-residue contacts to file: contacts_out.
+******* Parameters used for determination of contacts *********
+Using type: Cutoff
+Cutoff radius: 8.0 angstrom
+Minimum sequence distance between protein contacts: |i-j|>3
+Minimum sequence distance between RNA/DNA/LIGAND contacts: |i-j|>0
+***************************************************************
+Total time: 0.222 seconds.
+*****************************************************************
+This software is part of SMOG.  http://smog-server.org
+Direct questions to: info@smog-server.org
+Work utilizing SMOG should cite:
+
+Noel JK, Levi M, Raghunathan M, Lammert H, Hayes R, Onuchic JN, and Whitford PC. (2016)
+SMOG V2, A Versatile Software Package for Generating Structure-Based Models.
+PLoS Comput Biol 12(3): e1004794. doi:10.1371/journal.pcbi.1004794
+
+Work using the Shadow contact map should cite:
+
+Noel JK, Whitford PC & Onuchic JN (2012)
+The shadow map: a general contact definition for capturing the 
+dynamics of biomolecular folding and function. 
+Journal of Physical Chemistry B 116, 8692-8702.
+*****************************************************************
+Finished. 
+
