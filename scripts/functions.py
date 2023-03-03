@@ -9,7 +9,8 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 import protein_contact_map
-import subprocess as sp
+import os
+import MDAnalysis as mda
 np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
 
 
@@ -111,6 +112,26 @@ def get_distances(adjacency_matrix: np.ndarray) -> np.ndarray:
     return np.asarray(distances_list)
 
 
+def run_smog(pdb_file: str) -> None: 
+    """
+    Run shadow.sh which runs smog codes to get Shadow map
+    @param pdb_file: full path to pdb file
+    @return: None
+    """
+    os.system(f"yes | ./shadow.sh {pdb_file}")
+
+
+def create_shadow_contact_map(path_to_shadow_files: str):
+    """
+    @param contacts_file: full path to CA contacts from Shadow map
+    """
+    shadow_map_pdb_file = path_to_shadow_files + "_scm.pdb"
+    universe = mda.Universe(shadow_map_pdb_file)
+    residues = universe.residues
+    chain_length = len(residues)
+    print(chain_length)
+
+
 def get_shadow_distances(path: str):
     """
     Read in .csv file containing paths to pdb files and return amino acid distances for Shadow map
@@ -118,11 +139,14 @@ def get_shadow_distances(path: str):
     @return: ???
     """
     dataframe = pd.read_csv(path)
-    pdb_files = dataframe["filename"].tolist()
-    pdb_files = pdb_files[:10] # uncomment for debugging
-    for pdb in pdb_files:
+    paths_to_pdbs = dataframe["filename"].tolist()
+    paths_to_pdbs = paths_to_pdbs[:1] # uncomment for debugging
+    for pdb_path in paths_to_pdbs:
+        run_smog(pdb_file=pdb_path)
+        pdb_file_name = pdb_path.split("/")[-1].strip(".pdb")
+        shadow_path = pdb_path.replace(f".pdb", "").replace("pdb_files", "shadow_maps") 
+        create_shadow_contact_map(shadow_path)
         
-
 
 def return_distance_histogram(log_file: str, given_algorithm: str, length_range: str, path_to_csvs: str) -> np.ndarray:
     """

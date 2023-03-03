@@ -23,7 +23,7 @@ def main():
     # algorithm = arguments.algorithm
     # length_range = arguments.length_range
     path = arguments.path_to_pdbs
-
+    fn.get_shadow_distances(path)
 
 
 if __name__ == "__main__":
