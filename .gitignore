@@ -11,3 +11,4 @@ data/*
 scripts/__pycache__/*
 plots/old_supplementary_information/*
 scripts/histogram_*
+*.swp
