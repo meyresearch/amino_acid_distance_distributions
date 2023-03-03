@@ -9,6 +9,7 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 import protein_contact_map
+import subprocess as sp
 np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
 
 
@@ -108,6 +109,19 @@ def get_distances(adjacency_matrix: np.ndarray) -> np.ndarray:
                 distance = np.abs(col_value - row_value)
                 distances_list.append(distance)
     return np.asarray(distances_list)
+
+
+def get_shadow_distances(path: str):
+    """
+    Read in .csv file containing paths to pdb files and return amino acid distances for Shadow map
+    @param path: full path to the csv file containing paths to pdb files
+    @return: ???
+    """
+    dataframe = pd.read_csv(path)
+    pdb_files = dataframe["filename"].tolist()
+    pdb_files = pdb_files[:10] # uncomment for debugging
+    for pdb in pdb_files:
+        
 
 
 def return_distance_histogram(log_file: str, given_algorithm: str, length_range: str, path_to_csvs: str) -> np.ndarray:

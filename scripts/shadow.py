@@ -20,11 +20,10 @@ import functions as fn
 
 def main():
     arguments = fn.commandline_arguments()
-    algorithm = arguments.algorithm
-    length_range = arguments.length_range
+    # algorithm = arguments.algorithm
+    # length_range = arguments.length_range
     path = arguments.path_to_pdbs
 
-    print(f"{algorithm} {length_range} {path}")
 
 
 if __name__ == "__main__":
