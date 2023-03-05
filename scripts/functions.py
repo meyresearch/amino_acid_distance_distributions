@@ -83,19 +83,65 @@ def check_arguments(arguments: argparse.Namespace, argument_parser: argparse.Arg
         argument_parser.error("3d-sim requires --file=None")
         
         
-def pdb_to_adjacency(pdb_file: str) -> tuple:
+def pdb_to_adjacency(pdb_file: str, cutoff=8.0) -> tuple:
     """
     Convert given PDB file to an adjacency matrix
     @param pdb_file: PDB file from RCSB or AlphaFold in each length range
     @return: tuple of the adjacency and distance matrices as numpy arrays
     """
-    pcm = protein_contact_map.ProteinContactMap(pdb_file)
+    pcm = None
+    if cutoff != 8.0:
+        pcm = protein_contact_map.ProteinContactMap(pdb_file, cutoff)
+    else:
+        pcm = protein_contact_map.ProteinContactMap(pdb_file)
     alpha_carbons = pcm.get_alpha_carbons
     distance_array = protein_contact_map.get_distance_array(alpha_carbons)
     distance_matrix = protein_contact_map.get_distance_matrix(alpha_carbons, distance_array)
     adjacency_matrix = pcm.get_adjacency_matrix(alpha_carbons, distance_array)
     return distance_matrix, adjacency_matrix
 
+
+def get_distances_with_different_cutoff(given_algorithm: str, length_range: str, path_to_csvs: str, cutoff: float) -> np.ndarray:
+    """
+    Compute the amino acid distance distribution for PDB files in given range from adjacency matrix using different cutoff
+    and save in a numpy file.
+    @param given_algorithm: alpha or rcsb
+    @param length_range: 100, 200 or 300
+    @param path_to_csvs: full path to csv files
+    @param cutoff: threshold value for counting contacts
+    @return: None
+    """
+    dataframe = pd.read_csv(path_to_csvs)
+    pdb_files = dataframe["filename"].to_numpy()
+    histogram_list = []
+    counter = 1
+
+    for pdb_file in pdb_files:
+        print(f"Progress: {counter}/{len(pdb_files)}")
+        if given_algorithm == "alpha":
+            clean_pdb_filename = pdb_file.replace("/home/jguven/Projects/sequence_distance_distribution", "..")
+        else:
+            clean_pdb_filename = pdb_file
+        try:
+            cutoff = float(cutoff)
+            adjacency_matrix = pdb_to_adjacency(clean_pdb_filename, cutoff)[1]
+            distances = get_distances(adjacency_matrix)
+            # bins = np.linspace(start=1, stop=200, num=100)
+            bins = np.linspace(start=1, stop=350, num=350)
+            histogram = np.histogram(distances, bins=bins, density=False)[0]
+            histogram_list.append(histogram)
+            counter += 1
+        except FileNotFoundError as e:
+            print(e)
+        except TypeError as e:
+            print(e)
+    histogram_array = np.asarray(histogram_list)
+    if not histogram_list:
+        print("Warning: Histogram list is empty. Check log file.")
+    if given_algorithm == "alpha":
+        np.save(f"../data/alphafold/histogram_c_{cutoff}_{length_range}_not_normed.npy", histogram_array)
+    elif given_algorithm == "rcsb":
+        np.save(f"../data/rcsb/histogram_c_{cutoff}_{length_range}_not_normed.npy", histogram_array)
 
 def get_distances(adjacency_matrix: np.ndarray) -> np.ndarray:
     """
