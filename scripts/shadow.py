@@ -3,27 +3,35 @@ Compute amino acid distances using Shadow map [https://doi.org/10.1021/jp300852d
 """
 import argparse
 import functions as fn
+import plot_functions as pf
 
 
-# def handle_commandline_options(cl_arguments: argparse.Namespace) -> None:
-#     """
-#     Read in CL arguments and make a choice depending on given option
-#     @param cl_arguments from user
-#     @return: None
-#     """
-#     given_algorithm = cl_arguments.algorithm
-#     given_path = cl_arguments.path_to_pdbs
-#     if given_algorithm == "rcsb":
-#         pass
-#     elif given_algorithm == "alpha":
+def shadow_commandline_options() -> None:
+    """
+    Read in CL arguments and make a choice depending on given option
+    @param cl_arguments from user
+    @return: None
+    """
+    parser = argparse.ArgumentParser(description="Get amino acid distance distributions from Shadow maps.")
+    parser.add_argument("-p", "--path", type=str, help="Full path to file contianing PDB IDs and paths")
+    parser.add_argument("-d", "--distances", action="store_true", help="Compute distances from Shadow map")
+    parser.add_argument("-pd", "--plot-distances", type=str, help="npy file for plotting Shadow map distances")
+    return parser.parse_args()
 
 
 def main():
-    arguments = fn.commandline_arguments()
-    # algorithm = arguments.algorithm
-    # length_range = arguments.length_range
-    path = arguments.path_to_pdbs
-    fn.get_shadow_distances(path)
+    arguments = shadow_commandline_options()
+    path = arguments.path
+    distances = arguments.distances
+    plot_file = arguments.plot_distances
+
+    if distances:
+        print("Computing distances from Shadow map")
+        fn.get_shadow_distances(path)
+    if plot_file:
+        print("Plotting distances from Shadow map")
+        histogram = pf.get_histogram(length_range="", algorithm=plot_file, low_confidence=False)
+        
 
 
 if __name__ == "__main__":

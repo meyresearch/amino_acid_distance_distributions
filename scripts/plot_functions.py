@@ -22,6 +22,8 @@ def get_histogram(length_range: str, algorithm: str, low_confidence: bool) -> np
         histogram = np.load(f"../data/alphafold/histogram_low_conf_{length_range}_not_normed.npy", allow_pickle=True)
     elif algorithm == "alpha" and not low_confidence:
         histogram = np.load(f"../data/alphafold/histogram_{length_range}_not_normed.npy", allow_pickle=True)
+    else: 
+        histogram = np.load(algorithm, allow_pickle=True)
     return histogram
 
 

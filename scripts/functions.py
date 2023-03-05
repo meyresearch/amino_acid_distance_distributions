@@ -135,14 +135,12 @@ def get_shadow_distance_matrix(path_to_shadow_files: str) -> np.array:
     distance_matrix = adjacency_matrix.copy()
     rows = contacts_file["residue_1"].to_numpy() - 1
     columns = contacts_file["residue_2"].to_numpy() - 1
+
     for row, col in zip(rows, columns):
         adjacency_matrix[row, col] = 1
         adjacency_matrix[col, row] = 1
-    for row in range(chain_length):
-        for col in range(chain_length):
-            if adjacency_matrix[row][col] == 1:
-                distance_matrix[row][col] = np.abs(col - row)
-    return distance_matrix
+        distance_matrix[row, col] = np.abs(col - row)
+    return adjacency_matrix, distance_matrix
 
 
 
@@ -154,26 +152,32 @@ def get_shadow_distances(path: str):
     """
     dataframe = pd.read_csv(path)
     paths_to_pdbs = dataframe["filename"].tolist()
-    # paths_to_pdbs = paths_to_pdbs[:20] # uncomment for debugging
-    histogram_list = []
+    # paths_to_pdbs = paths_to_pdbs[:10] # uncomment for debugging
+    distance_histogram_list = []
+    adjacency_histogram_list = []
+    
     counter = 1
     n_files = len(paths_to_pdbs)
     for pdb_path in paths_to_pdbs:
         print(f"Progress: {counter}/{n_files}")
         run_smog(pdb_file=pdb_path)
-        # pdb_file_name = pdb_path.split("/")[-1].strip(".pdb")
         shadow_path = pdb_path.replace(f".pdb", "").replace("pdb_files", "shadow_maps") 
-        shadow_distance_matrix = get_shadow_distance_matrix(shadow_path)
+        shadow_adjacency_matrix, shadow_distance_matrix = get_shadow_distance_matrix(shadow_path)
         bins = np.linspace(start=1, stop=350, num=350)
         histogram = np.histogram(shadow_distance_matrix, bins=bins, density=False)[0]
-        histogram_list.append(histogram)
+        adjacency_histogram_list.append(shadow_adjacency_matrix)
+        distance_histogram_list.append(histogram)
         counter += 1
-    histograms = np.array(histogram_list)
-    if not histogram_list: 
+    distance_histograms = np.array(distance_histogram_list)
+    adjacency_histograms = np.array(adjacency_histogram_list)
+
+    if not distance_histogram_list: 
         print("Warning: histogram list is empty")
     csv_file = path.split("/")[-1]
     save_path = path.replace(csv_file, "")
-    np.save(save_path + "shadow_distance_histogram_not_normed.npy", histograms)
+    np.save(save_path + "shadow_distance_histogram_not_normed.npy", distance_histograms)
+    np.save(save_path + "shadow_adjacency_histogram_not_normed.npy", adjacency_histograms)
+
         
 
 def return_distance_histogram(log_file: str, given_algorithm: str, length_range: str, path_to_csvs: str) -> np.ndarray:
