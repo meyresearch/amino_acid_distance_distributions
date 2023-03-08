@@ -1,7 +1,4 @@
 # save chain lengths
-import subprocess
-import numpy as np
-import os
 import protein_contact_map
 import glob 
 import pandas as pd
