@@ -21,9 +21,9 @@ def handle_commandline_options(cl_arguments: argparse.Namespace) -> None:
                                             path_to_csvs=given_path)
     elif given_algorithm == "alpha":
         functions.return_distance_histogram(log_file="log.txt",
-                                            given_algorithm=given_algorithm,
-                                            length_range=given_linklength,
-                                            path_to_csvs=given_path)
+                                                given_algorithm=given_algorithm,
+                                                length_range=given_linklength,
+                                                path_to_csvs=given_path)
     elif given_algorithm == "3d-sim":
         functions.return_3d_simulation_distance_histogram(length_range=given_linklength)
 

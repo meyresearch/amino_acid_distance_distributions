@@ -8,7 +8,7 @@ import traceback
 import networkx as nx
 import numpy as np
 import pandas as pd
-import protein_contact_map
+import scripts.old_protein_contact_map as old_protein_contact_map
 import os
 import MDAnalysis as mda
 np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
@@ -91,12 +91,12 @@ def pdb_to_adjacency(pdb_file: str, cutoff=8.0) -> tuple:
     """
     pcm = None
     if cutoff != 8.0:
-        pcm = protein_contact_map.ProteinContactMap(pdb_file, cutoff)
+        pcm = old_protein_contact_map.ProteinContactMap(pdb_file, cutoff)
     else:
-        pcm = protein_contact_map.ProteinContactMap(pdb_file)
+        pcm = old_protein_contact_map.ProteinContactMap(pdb_file)
     alpha_carbons = pcm.get_alpha_carbons
-    distance_array = protein_contact_map.get_distance_array(alpha_carbons)
-    distance_matrix = protein_contact_map.get_distance_matrix(alpha_carbons, distance_array)
+    distance_array = old_protein_contact_map.get_distance_array(alpha_carbons)
+    distance_matrix = old_protein_contact_map.get_distance_matrix(alpha_carbons, distance_array)
     adjacency_matrix = pcm.get_adjacency_matrix(alpha_carbons, distance_array)
     return distance_matrix, adjacency_matrix
 
@@ -142,6 +142,7 @@ def get_distances_with_different_cutoff(given_algorithm: str, length_range: str,
         np.save(f"../data/alphafold/histogram_c_{cutoff}_{length_range}_not_normed.npy", histogram_array)
     elif given_algorithm == "rcsb":
         np.save(f"../data/rcsb/histogram_c_{cutoff}_{length_range}_not_normed.npy", histogram_array)
+
 
 def get_distances(adjacency_matrix: np.ndarray) -> np.ndarray:
     """
@@ -242,7 +243,6 @@ def get_shadow_distance_histograms(path: str, cutoff: int, shadow: int) -> None:
     np.save(save_path + f"shadow_adjacency_histogram_not_normed_s_{shadow}_c_{cutoff}.npy", adjacency_histograms)
 
         
-
 def return_distance_histogram(log_file: str, given_algorithm: str, length_range: str, path_to_csvs: str) -> np.ndarray:
     """
     Compute the amino acid distance distribution for PDB files in given range from adjacency matrix
@@ -267,7 +267,6 @@ def return_distance_histogram(log_file: str, given_algorithm: str, length_range:
             try:
                 adjacency_matrix = pdb_to_adjacency(clean_pdb_filename)[1]
                 distances = get_distances(adjacency_matrix)
-                # bins = np.linspace(start=1, stop=200, num=100)
                 bins = np.linspace(start=1, stop=350, num=350)
                 histogram = np.histogram(distances, bins=bins, density=False)[0]
                 histogram_list.append(histogram)
@@ -326,9 +325,9 @@ def pdb_to_pcm(log_file: str, given_algorithm: str, length_range: str, path_to_p
                 continue
 
             if os.path.isfile(pdb_file):
-                pcm = protein_contact_map.ProteinContactMap(pdb_file)
+                pcm = old_protein_contact_map.ProteinContactMap(pdb_file)
                 alpha_carbons = pcm.get_alpha_carbons
-                chain_length = protein_contact_map.get_chain_length(alpha_carbons)
+                chain_length = old_protein_contact_map.get_chain_length(alpha_carbons)
 
                 if chain_length in range(85, 116):
                     print("This PDB is in the length range 85-115. \nGetting amino acid distances.")
