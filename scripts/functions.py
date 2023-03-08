@@ -4,6 +4,7 @@ import protein_contact_map
 import traceback
 import glob
 import os
+import MDAnalysis as mda
 
 
 def pdb_to_adjacency(pdb_file: str, cutoff=8.0) -> tuple:
@@ -201,3 +202,87 @@ def get_distances_with_different_cutoff(given_algorithm: str, length_range: str,
         np.save(f"../data/alphafold/histogram_c_{cutoff}_{length_range}_not_normed.npy", histogram_array)
     elif given_algorithm == "rcsb":
         np.save(f"../data/rcsb/histogram_c_{cutoff}_{length_range}_not_normed.npy", histogram_array)
+
+
+def run_smog(path: str, cutoff: int, shadow: int) -> None: 
+    """
+    Run shadow.sh which runs smog codes to get Shadow map
+    @param pdb_file: full path to pdb file
+    @return: None
+    """
+    dataframe = pd.read_csv(path)
+    paths_to_pdbs = dataframe["filename"].tolist()
+    # paths_to_pdbs = paths_to_pdbs[:1] # uncomment for debugging
+    counter = 1
+    n_files = len(paths_to_pdbs)
+    for pdb_file in paths_to_pdbs:
+        print(f"Progress: {counter}/{n_files}")
+        os.system(f"yes | ./shadow.sh {pdb_file} {cutoff} {shadow}")
+        counter += 1
+
+
+def get_shadow_adjacency_matrix(path_to_shadow_files: str) -> np.array:
+    """
+    @param 
+    """
+    shadow_map_pdb_file = path_to_shadow_files + "_adjusted.pdb"
+    universe = mda.Universe(shadow_map_pdb_file)
+    residues = universe.residues
+    chain_length = len(residues) # Is this equivalent to getting the CA from our PCM?
+    column_names = ["chain_1", "residue_1", "chain_2", "residue_2", "distance"]
+    contacts_file = pd.read_csv(path_to_shadow_files + "_contacts", header=None, sep=" ", names=column_names)
+    adjacency_matrix = np.zeros((chain_length, chain_length))
+    rows = contacts_file["residue_1"].to_numpy() - 1
+    columns = contacts_file["residue_2"].to_numpy() - 1
+
+    for row, col in zip(rows, columns):
+        adjacency_matrix[row, col] = 1
+        adjacency_matrix[col, row] = 1
+
+    return adjacency_matrix
+
+
+def get_shadow_distances(shadow_adjacency_matrix: np.array) -> np.array:
+    """
+    @param 
+    """
+    distances_list = []
+    for row in range(len(shadow_adjacency_matrix)):
+        for col in range(len(shadow_adjacency_matrix)):
+            if shadow_adjacency_matrix[row][col] == 1:
+                distance  = np.abs(col - row)
+                distances_list.append(distance)
+    return np.array(distances_list)
+
+def get_shadow_distance_histograms(path: str, cutoff: int, shadow: int) -> None:
+    """
+    Read in .csv file containing paths to pdb files and return amino acid distances for Shadow map
+    @param path: full path to the csv file containing paths to pdb files
+    @return: ???
+    """
+    dataframe = pd.read_csv(path)
+    paths_to_pdbs = dataframe["filename"].tolist()
+    # paths_to_pdbs = paths_to_pdbs[:1] # uncomment for debugging
+    distance_histogram_list = []
+    adjacency_histogram_list = []
+    counter = 1
+    n_files = len(paths_to_pdbs)
+    for pdb_path in paths_to_pdbs:
+        print(f"Progress: {counter}/{n_files}")
+        shadow_path = pdb_path.replace(f".pdb", "").replace("pdb_files", f"shadow_maps_s_{shadow}_c_{cutoff}_A") 
+        shadow_adjacency_matrix = get_shadow_adjacency_matrix(shadow_path)
+        shadow_distances = get_shadow_distances(shadow_adjacency_matrix)
+        bins = np.linspace(start=1, stop=350, num=350)
+        histogram = np.histogram(shadow_distances, bins=bins, density=False)[0]
+        adjacency_histogram_list.append(shadow_adjacency_matrix)
+        distance_histogram_list.append(histogram)
+        counter += 1
+    distance_histograms = np.array(distance_histogram_list)
+    adjacency_histograms = np.array(adjacency_histogram_list)
+
+    if not distance_histogram_list: 
+        print("Warning: histogram list is empty")
+    csv_file = path.split("/")[-1]
+    save_path = path.replace(csv_file, "")
+    np.save(save_path + f"shadow_distance_histogram_not_normed_s_{shadow}_c_{cutoff}.npy", distance_histograms)
+    np.save(save_path + f"shadow_adjacency_histogram_not_normed_s_{shadow}_c_{cutoff}.npy", adjacency_histograms)

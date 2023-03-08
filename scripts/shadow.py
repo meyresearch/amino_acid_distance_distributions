@@ -38,7 +38,7 @@ def main():
         fn.get_shadow_distance_histograms(path, cutoff_radius, shadow_radius)
     if plot:
         print("Plotting distances from Shadow map")
-        histogram = pf.get_histogram(length_range="", algorithm=path, low_confidence=False)
+   #     histogram = pf.get_histogram(length_range="", algorithm=path, low_confidence=False)
         
 
 
