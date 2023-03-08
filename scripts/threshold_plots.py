@@ -2,10 +2,8 @@
     distributions.
 """
 
-import functions
 import numpy as np
 import pandas as pd
-import protein_contact_map
 import matplotlib.pyplot as plt
 from colour_palette import _COLOUR_PALETTE
 import seaborn as sns

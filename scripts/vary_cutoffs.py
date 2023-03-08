@@ -4,7 +4,6 @@ Get amino acid distance distributions for a user-specified value of C
 import argparse
 import functions
 import plot_functions
-import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from colour_palette import _COLOUR_PALETTE
