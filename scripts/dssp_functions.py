@@ -2,7 +2,6 @@
 import subprocess
 import numpy as np
 import os
-import protein_contact_map
 import pandas as pd
 import collections
 import traceback
@@ -11,7 +10,7 @@ import traceback
 def get_secondary_structure(filename: str, dssp_path: str, log_file: str) -> np.ndarray:
     """
     Get the following secondary structure information for each PDB file
-    H = α-helix
+    H = alpha-helix
     B = residue in isolated β-bridge
     E = extended strand, participates in β ladder
     G = 3-helix (310 helix)
