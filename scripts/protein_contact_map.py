@@ -189,7 +189,7 @@ class ProteinContactMap:
         diagonal = 1
         upper_triangle = np.triu_indices(n_rows, k=diagonal)
         pcm_matrix[upper_triangle] = adjacency_array
-        np.fill_diagonal(pcm_matrix, 1)
+        np.fill_diagonal(pcm_matrix, 0)
         return np.where(pcm_matrix, pcm_matrix, pcm_matrix.T)
 
     def get_link_lengths(self, alpha_carbons: mdA.AtomGroup) -> np.ndarray:
