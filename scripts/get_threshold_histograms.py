@@ -3,7 +3,7 @@ import functions
 import numpy as np
 from tqdm import tqdm
 import protein_contact_map
-
+import traceback
 
 def pdb_to_adjacency(pdb_file: str, threshold: float) -> tuple:
     """
@@ -15,9 +15,8 @@ def pdb_to_adjacency(pdb_file: str, threshold: float) -> tuple:
     pcm = protein_contact_map.ProteinContactMap(pdb_file, default_threshold=threshold)
     alpha_carbons = pcm.get_alpha_carbons
     distance_array = protein_contact_map.get_distance_array(alpha_carbons)
-    distance_matrix = protein_contact_map.get_distance_matrix(alpha_carbons, distance_array)
     adjacency_matrix = pcm.get_adjacency_matrix(alpha_carbons, distance_array)
-    return distance_matrix, adjacency_matrix
+    return adjacency_matrix
 
 
 def return_distance_histogram(log_file: str, given_algorithm: str, length_range: str,
@@ -45,7 +44,7 @@ def return_distance_histogram(log_file: str, given_algorithm: str, length_range:
             else:
                 clean_pdb_filename = pdb_file
             try:
-                adjacency_matrix = pdb_to_adjacency(clean_pdb_filename, threshold)[1]
+                adjacency_matrix = pdb_to_adjacency(clean_pdb_filename, threshold)
                 distances = functions.get_distances(adjacency_matrix)
                 bins = np.linspace(start=1, stop=350, num=350)
                 histogram = np.histogram(distances, bins=bins, density=False)[0]

@@ -148,3 +148,13 @@ def concatenate_rcsb_id_files() -> np.array:
     dataframe = dataframe.drop(columns='index')
     pdb_array = dataframe[0].to_numpy()
     return pdb_array
+
+
+def get_uniprot_ids(sequence_length: str) -> np.ndarray:
+    """
+    Return Uniprot IDs in the given sequence length range.
+    @param sequence_length
+    @return: np.ndarray of Uniprot IDs
+    """
+    id_dataframe = pd.read_excel(f"../data/alphafold/uniprot_ids/uniprot_{sequence_length}s.xlsx")
+    return id_dataframe["Entry"].to_numpy()
