@@ -5,76 +5,8 @@ Base class for PCMs.
 import networkx as nx
 import MDAnalysis as mdA
 import numpy as np
-import warnings
-from MDAnalysis.analysis import distances, contacts
-warnings.filterwarnings("ignore")
-
-
-def create_connected_component_subgraphs(graph: nx.Graph) -> None:
-    """
-    Create connected component subgraphs within protein graph.
-    @param graph: protein graph
-    @return:
-    """
-    for components in nx.connected_components(graph):
-        yield graph.subgraph(components)
-
-
-def get_chain_length(alpha_carbons: mdA.AtomGroup) -> int:
-    """
-    Calculate the chain length of protein from alpha carbons.
-    @param alpha_carbons
-    @return: length of chain
-    """
-    chain_length = 0
-    if alpha_carbons:
-        chain_length = len(alpha_carbons)
-    return chain_length
-
-
-def get_distance_matrix(alpha_carbons: mdA.AtomGroup, distance_array: np.ndarray) -> np.ndarray:
-    """
-    Get distance matrix for PDBs from distance array and C-alphas
-    @param: alpha_carbons C-alphas from PDB
-    @param: distance_array distance array from C-alphas
-    @return: distance_matrix as a numpy array
-    """
-    n_alpha_carbons = get_chain_length(alpha_carbons)
-    distance_matrix = np.zeros((n_alpha_carbons, n_alpha_carbons))
-    n_rows = distance_matrix.shape[0]
-    diagonal = 1
-    upper_triangle = np.triu_indices(n_rows, k=diagonal)
-    distance_matrix[upper_triangle] = distance_array
-    np.fill_diagonal(distance_matrix, 0)
-    for i in range(len(distance_matrix)):
-        for j in range(i):
-            distance_matrix[i, j] = distance_matrix[j, i]
-    return distance_matrix
-
-
-def get_distance_array(alpha_carbons: mdA.AtomGroup) -> np.ndarray:
-    """
-    Use the C-alphas to get the distance array
-    @return: distance array
-    """
-    return distances.self_distance_array(alpha_carbons.positions)
-
-
-def get_discreet_distances(adjacency_matrix: np.ndarray) -> np.ndarray:
-    """
-    Get the amino acid distances from the adjacency matrix
-    @param: adjacency_matrix from PDB
-    @return list of discrete distances from adjacency matrix
-    """
-    distance_list = []
-    rows = len(adjacency_matrix)
-    columns = len(adjacency_matrix)
-    for row in rows:
-        for col in columns:
-            if adjacency_matrix[row][col] == 1:
-                distance = np.abs(col - row)
-                distance_list.append(distance)
-    return np.asarray(distance_list)
+import MDAnalysis.analysis.contacts
+import MDAnalysis.analysis.distances
 
 
 class ProteinContactMap:
@@ -164,12 +96,14 @@ class ProteinContactMap:
                 continue
         return alpha_carbons
 
+
     def get_contacts_array(self, distance_array: np.ndarray) -> np.ndarray:
         """
         Use the distance array to get contacts array
         @return: contacts array
         """
-        return contacts.contact_matrix(distance_array, radius=self.threshold)
+        return MDAnalysis.analysis.contacts.contact_matrix(distance_array, radius=self.threshold)
+
 
     def get_adjacency_matrix(self, alpha_carbons: mdA.AtomGroup, distance_array: np.ndarray) -> np.ndarray:
         """
@@ -192,49 +126,24 @@ class ProteinContactMap:
         np.fill_diagonal(pcm_matrix, 0)
         return np.where(pcm_matrix, pcm_matrix, pcm_matrix.T)
 
-    def get_link_lengths(self, alpha_carbons: mdA.AtomGroup) -> np.ndarray:
-        """
-        Use the C-alphas to calculate the amino acid distances.
 
-        @param alpha_carbons
-        @return: array of amino acid distances
-        """
-        link_lengths = []
-        parent_graph = self.get_protein_graph(alpha_carbons)
-        n_parent_graph_edges = len(parent_graph.edges())
-        n_parent_graph_nodes = len(parent_graph.nodes())
-        # Add links to list
-        if n_parent_graph_edges > 0:
-            subgraphs = list(create_connected_component_subgraphs(parent_graph))
-            n_subgraphs = len(subgraphs)
-            protein_graph = subgraphs[0]  # changed [0]
-            if n_subgraphs > 1:  # more than one subgraph
-                print("More than one subgraph. This PDB will be excluded.")
-            else:  # just one subgraph
-                cycle_graph = nx.cycle_graph(n_parent_graph_nodes)
-                links = list(set(protein_graph.edges()) - set(cycle_graph.edges()))
-                for link in links:
-                    link_length = abs(link[0] - link[1])
-                    if link_length <= 1:
-                        print("There is a link of length 1.")
-                    else:
-                        link_lengths.append(link_length)
-        return np.array(link_lengths)
 
-    def get_protein_graph(self, alpha_carbons: mdA.AtomGroup) -> nx.Graph:
-        """
-        Create protein graph from alpha carbons.
-        @param alpha_carbons
-        @return: protein graph
-        """
-        alpha_carbon_positions = alpha_carbons.positions
-        n_alpha_carbons = len(alpha_carbons)
-        parent_graph = nx.empty_graph(n_alpha_carbons)
+def get_chain_length(alpha_carbons: mdA.AtomGroup) -> int:
+    """
+    Calculate the chain length of protein from alpha carbons.
+    @param alpha_carbons
+    @return: length of chain
+    """
+    chain_length = 0
+    if alpha_carbons:
+        chain_length = len(alpha_carbons)
+    return chain_length
 
-        for i in range(n_alpha_carbons):
-            for j in range(i):
-                # Get the distance between two adjacent atoms
-                distance = np.linalg.norm(alpha_carbon_positions[i] - alpha_carbon_positions[j])
-                if distance < self.threshold:
-                    parent_graph.add_edge(i, j)
-        return parent_graph
+
+def get_distance_array(alpha_carbons: mdA.AtomGroup) -> np.ndarray:
+    """
+    Use the C-alphas to get the distance array
+    @return: distance array
+    """
+    return MDAnalysis.analysis.distances.self_distance_array(alpha_carbons.positions)
+
