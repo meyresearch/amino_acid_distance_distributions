@@ -24,9 +24,9 @@ def commandline_arguments():
     return parser.parse_args()
     
 
-def create_plot(arguments: argparse.Namespace, histogram: np.array):
+def create_plot(arguments: argparse.Namespace, plot_file: str):
     
-    plotting_tuple = plot_functions.get_data_for_plotting(histogram, arguments, arguments.range)
+    plotting_tuple = plot_functions.get_data_for_plotting(plot_file, arguments, arguments.range)
     chain_length = plotting_tuple[0]
     distances = plotting_tuple[1]
     mean = plotting_tuple[2]
@@ -35,10 +35,10 @@ def create_plot(arguments: argparse.Namespace, histogram: np.array):
     fig = plt.figure()
     fig.set_size_inches((6, 6))
     sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.88)
-    plt.scatter(distances, mean, label=f"RCSB PDB {chain_length} c={arguments.cutoff} Å",
-                color=_COLOUR_PALETTE["PDB_SCATTER"], marker="o")
+    plt.scatter(distances, mean, label=f"AlphaFold 2 {chain_length} c={arguments.cutoff} Å",
+                color=_COLOUR_PALETTE["ALPHA_SCATTER"], marker="o")
     plt.fill_between(distances, upper_bound, lower_bound,
-                color=_COLOUR_PALETTE["PDB_SCATTER"], alpha=0.25, label="RCSB 95% C.L.", zorder=-99)
+                color=_COLOUR_PALETTE["ALPHA_SCATTER"], alpha=0.25, label="95% C.L.", zorder=-99)
     plt.xlim(x1, x2)
     plt.ylim(0.0005, 0.1)
     plt.xlabel("s")

@@ -158,13 +158,21 @@ def get_distances(adjacency_matrix: np.ndarray) -> np.ndarray:
     return np.asarray(distances_list)
 
 
-def run_smog(pdb_file: str) -> None: 
+def run_smog(path: str, cutoff: int, shadow: int) -> None: 
     """
     Run shadow.sh which runs smog codes to get Shadow map
     @param pdb_file: full path to pdb file
     @return: None
     """
-    os.system(f"yes | ./shadow.sh {pdb_file}")
+    dataframe = pd.read_csv(path)
+    paths_to_pdbs = dataframe["filename"].tolist()
+    # paths_to_pdbs = paths_to_pdbs[:1] # uncomment for debugging
+    counter = 1
+    n_files = len(paths_to_pdbs)
+    for pdb_file in paths_to_pdbs:
+        print(f"Progress: {counter}/{n_files}")
+        os.system(f"yes | ./shadow.sh {pdb_file} {cutoff} {shadow}")
+        counter += 1
 
 
 def get_shadow_distance_matrix(path_to_shadow_files: str) -> np.array:
@@ -189,8 +197,7 @@ def get_shadow_distance_matrix(path_to_shadow_files: str) -> np.array:
     return adjacency_matrix, distance_matrix
 
 
-
-def get_shadow_distances(path: str):
+def get_shadow_distances(path: str, cutoff: int, shadow: int) -> None:
     """
     Read in .csv file containing paths to pdb files and return amino acid distances for Shadow map
     @param path: full path to the csv file containing paths to pdb files
@@ -198,16 +205,14 @@ def get_shadow_distances(path: str):
     """
     dataframe = pd.read_csv(path)
     paths_to_pdbs = dataframe["filename"].tolist()
-    # paths_to_pdbs = paths_to_pdbs[:10] # uncomment for debugging
+    # paths_to_pdbs = paths_to_pdbs[:1] # uncomment for debugging
     distance_histogram_list = []
     adjacency_histogram_list = []
-    
     counter = 1
     n_files = len(paths_to_pdbs)
     for pdb_path in paths_to_pdbs:
         print(f"Progress: {counter}/{n_files}")
-        run_smog(pdb_file=pdb_path)
-        shadow_path = pdb_path.replace(f".pdb", "").replace("pdb_files", "shadow_maps") 
+        shadow_path = pdb_path.replace(f".pdb", "").replace("pdb_files", f"shadow_maps_s_{shadow}_c_{cutoff}_A") 
         shadow_adjacency_matrix, shadow_distance_matrix = get_shadow_distance_matrix(shadow_path)
         bins = np.linspace(start=1, stop=350, num=350)
         histogram = np.histogram(shadow_distance_matrix, bins=bins, density=False)[0]
@@ -221,8 +226,8 @@ def get_shadow_distances(path: str):
         print("Warning: histogram list is empty")
     csv_file = path.split("/")[-1]
     save_path = path.replace(csv_file, "")
-    np.save(save_path + "shadow_distance_histogram_not_normed.npy", distance_histograms)
-    np.save(save_path + "shadow_adjacency_histogram_not_normed.npy", adjacency_histograms)
+    np.save(save_path + f"shadow_distance_histogram_not_normed_s_{shadow}_c_{cutoff}.npy", distance_histograms)
+    np.save(save_path + f"shadow_adjacency_histogram_not_normed_s_{shadow}_c_{cutoff}.npy", adjacency_histograms)
 
         
 
