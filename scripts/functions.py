@@ -184,7 +184,7 @@ def get_distances_with_different_cutoff(given_algorithm: str, length_range: str,
         else:
             clean_pdb_filename = pdb_file
         try:
-            cutoff = float(cutoff)
+            cutoff = int(cutoff)
             adjacency_matrix = pdb_to_adjacency(clean_pdb_filename, cutoff)
             distances = get_distances(adjacency_matrix)
             # bins = np.linspace(start=1, stop=200, num=100)
@@ -220,7 +220,7 @@ def run_smog(path: str, cutoff: int, shadow: int) -> None:
     n_files = len(paths_to_pdbs)
     for pdb_file in paths_to_pdbs:
         print(f"Progress: {counter}/{n_files}")
-        if ".ent" in pdb_file:
+        if ".ent" in pdb_file: # currently not working due to non-sequential residue numbering 
             new_filename = pdb_file.replace(".ent", ".pdb")
             os.system(f"mv {pdb_file} {new_filename}")
             os.system(f"yes | ./shadow.sh {new_filename} {cutoff} {shadow}")

@@ -23,7 +23,8 @@ def get_histogram(length_range: str, algorithm: str, low_confidence: bool) -> np
     elif algorithm == "alpha" and not low_confidence:
         histogram = np.load(f"../data/alphafold/histogram_{length_range}_not_normed.npy", allow_pickle=True)
     else: 
-        histogram = np.load(algorithm, allow_pickle=True)
+        path = algorithm
+        histogram = np.load(path, allow_pickle=True)
     return histogram
 
 
@@ -193,3 +194,5 @@ def check_required_arguments(argument_parser: argparse.ArgumentParser, given_alg
             (given_algorithm == "adj" and rcsb_starte is not None) or \
             (given_algorithm == "adj" and rcsb_ende is not None):
         argument_parser.error("adj requires -t, -f")
+
+
