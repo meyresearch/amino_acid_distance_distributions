@@ -43,8 +43,8 @@ def plot_shadow_comparison(cutoff: str, length_range: str, arguments: argparse.N
     fig = plt.figure()
     fig.set_size_inches((6, 6))
     sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.88)
-    plt.scatter(bins, n_mean_pdb, label=f"RCSB PDB", marker="o", color=_COLOUR_PALETTE["PDB_SCATTER"])
-    plt.fill_between(bins, n_high_bound, n_low_bound, color=_COLOUR_PALETTE["PDB_SCATTER"], alpha=0.25, label="RCSB PDB 95% C.L.", zorder=-100)
+    plt.scatter(bins, n_mean_pdb, label=f"RCSB 300", marker="o", color=_COLOUR_PALETTE["PDB_SCATTER"])
+    plt.fill_between(bins, n_high_bound, n_low_bound, color=_COLOUR_PALETTE["PDB_SCATTER"], alpha=0.25, label="RCSB 300 95% C.L.", zorder=-100)
     plt.scatter(bins, n_mean_s0, label=f"AF2 SCM S = 0 \u212B", marker="^", color="#47b856")
     plt.scatter(bins, n_mean_s1, label=f"AF2 SCM S = 1 \u212B", marker="s", color="#15371a")
     plt.yscale("log")
@@ -58,7 +58,7 @@ def plot_shadow_comparison(cutoff: str, length_range: str, arguments: argparse.N
     plt.tight_layout()
     plt.savefig(f"../plots/supplementary_material/shadow_comparison_c_{cutoff}.pdf")
     plt.show()
-    
+
 
 def main():
     arguments = shadow_commandline_options()
