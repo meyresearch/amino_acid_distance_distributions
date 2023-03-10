@@ -34,7 +34,8 @@ def get_distances(adjacency_matrix: np.ndarray) -> np.ndarray:
         for col_value in range(len(adjacency_matrix)):
             if adjacency_matrix[row_value][col_value] == 1:
                 distance = np.abs(col_value - row_value)
-                distances_list.append(distance)
+                if distance > 3:
+                    distances_list.append(distance)
     return np.asarray(distances_list)
 
 
@@ -184,7 +185,7 @@ def get_distances_with_different_cutoff(given_algorithm: str, length_range: str,
             clean_pdb_filename = pdb_file
         try:
             cutoff = float(cutoff)
-            adjacency_matrix = pdb_to_adjacency(clean_pdb_filename, cutoff)[1]
+            adjacency_matrix = pdb_to_adjacency(clean_pdb_filename, cutoff)
             distances = get_distances(adjacency_matrix)
             # bins = np.linspace(start=1, stop=200, num=100)
             bins = np.linspace(start=1, stop=350, num=350)
@@ -207,23 +208,32 @@ def get_distances_with_different_cutoff(given_algorithm: str, length_range: str,
 def run_smog(path: str, cutoff: int, shadow: int) -> None: 
     """
     Run shadow.sh which runs smog codes to get Shadow map
-    @param pdb_file: full path to pdb file
+    @param path: full path to pdb file
+    @param cutoff: cutoff radius for contatc maps
+    @param shadow: shadowing radius for shadow maps 
     @return: None
     """
     dataframe = pd.read_csv(path)
     paths_to_pdbs = dataframe["filename"].tolist()
-    # paths_to_pdbs = paths_to_pdbs[:1] # uncomment for debugging
+    paths_to_pdbs = paths_to_pdbs[:1] # uncomment for debugging
     counter = 1
     n_files = len(paths_to_pdbs)
     for pdb_file in paths_to_pdbs:
         print(f"Progress: {counter}/{n_files}")
-        os.system(f"yes | ./shadow.sh {pdb_file} {cutoff} {shadow}")
+        if ".ent" in pdb_file:
+            new_filename = pdb_file.replace(".ent", ".pdb")
+            os.system(f"mv {pdb_file} {new_filename}")
+            os.system(f"yes | ./shadow.sh {new_filename} {cutoff} {shadow}")
+        else:
+            os.system(f"yes | ./shadow.sh {pdb_file} {cutoff} {shadow}")
         counter += 1
 
 
 def get_shadow_adjacency_matrix(path_to_shadow_files: str) -> np.array:
     """
-    @param 
+    Create adjacency matrix from SMOG 2 output from Shadow map
+    @param path_to_shadow_files: full path to Shadow pdb files
+    @return: adjacency matrix as a numpy array
     """
     shadow_map_pdb_file = path_to_shadow_files + "_adjusted.pdb"
     universe = mda.Universe(shadow_map_pdb_file)
@@ -234,17 +244,17 @@ def get_shadow_adjacency_matrix(path_to_shadow_files: str) -> np.array:
     adjacency_matrix = np.zeros((chain_length, chain_length))
     rows = contacts_file["residue_1"].to_numpy() - 1
     columns = contacts_file["residue_2"].to_numpy() - 1
-
     for row, col in zip(rows, columns):
         adjacency_matrix[row, col] = 1
         adjacency_matrix[col, row] = 1
-
     return adjacency_matrix
 
 
 def get_shadow_distances(shadow_adjacency_matrix: np.array) -> np.array:
     """
-    @param 
+    Compute amino acid distances from a Shadow map
+    @param shadow_adjacency_matrix: binary adjacency matrix from Shadow maps from SMOG 2
+    @return: array of distances
     """
     distances_list = []
     for row in range(len(shadow_adjacency_matrix)):
@@ -254,15 +264,18 @@ def get_shadow_distances(shadow_adjacency_matrix: np.array) -> np.array:
                 distances_list.append(distance)
     return np.array(distances_list)
 
+
 def get_shadow_distance_histograms(path: str, cutoff: int, shadow: int) -> None:
     """
     Read in .csv file containing paths to pdb files and return amino acid distances for Shadow map
     @param path: full path to the csv file containing paths to pdb files
-    @return: ???
+    @cutoff: Cutoff distance for contact maps
+    @shadow: Shadowing radius 
+    @return: None
     """
     dataframe = pd.read_csv(path)
     paths_to_pdbs = dataframe["filename"].tolist()
-    # paths_to_pdbs = paths_to_pdbs[:1] # uncomment for debugging
+    paths_to_pdbs = paths_to_pdbs[:1] # uncomment for debugging
     distance_histogram_list = []
     adjacency_histogram_list = []
     counter = 1
@@ -270,6 +283,9 @@ def get_shadow_distance_histograms(path: str, cutoff: int, shadow: int) -> None:
     for pdb_path in paths_to_pdbs:
         print(f"Progress: {counter}/{n_files}")
         shadow_path = pdb_path.replace(f".pdb", "").replace("pdb_files", f"shadow_maps_s_{shadow}_c_{cutoff}_A") 
+        filename = shadow_path.split("/")[-1]
+        shadow_directory = shadow_path.replace(filename, "")
+        create_directory(shadow_directory)
         shadow_adjacency_matrix = get_shadow_adjacency_matrix(shadow_path)
         shadow_distances = get_shadow_distances(shadow_adjacency_matrix)
         bins = np.linspace(start=1, stop=350, num=350)
@@ -286,3 +302,15 @@ def get_shadow_distance_histograms(path: str, cutoff: int, shadow: int) -> None:
     save_path = path.replace(csv_file, "")
     np.save(save_path + f"shadow_distance_histogram_not_normed_s_{shadow}_c_{cutoff}.npy", distance_histograms)
     np.save(save_path + f"shadow_adjacency_histogram_not_normed_s_{shadow}_c_{cutoff}.npy", adjacency_histograms)
+
+
+def create_directory(path: str) -> str:
+    """
+    Take path and check if it is an existing directory. If not, create directory in this path.
+    @param path: full path to directory
+    @return: path to directory
+    """
+    path_exists = os.path.exists(path)
+    if not path_exists:
+        os.makedirs(path)
+    return path

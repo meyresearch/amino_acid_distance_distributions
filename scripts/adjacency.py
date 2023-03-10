@@ -17,7 +17,7 @@ def get_pdb_matrix(pdb_file: str) -> np.ndarray:
     @param pdb_file: PDB file from either RCSB or AlphaFold (default)
     @return: adjacency matrix as a Numpy array
     """
-    return functions.pdb_to_adjacency(pdb_file)[1]
+    return functions.pdb_to_adjacency(pdb_file)
 
 
 def set_adjacency_matrix_ticks(plot: matplotlib.axes.Axes) -> None:
