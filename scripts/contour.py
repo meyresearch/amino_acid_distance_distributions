@@ -68,5 +68,5 @@ def create_contour_plots() -> None:
         # ax.set_yticks(np.arange(0, 0.6, 0.2))
         sns.despine()
         plt.tight_layout()
-        plt.show()
         plt.savefig("../plots/supplementary_material/countour_plot.pdf")
+        plt.show()
