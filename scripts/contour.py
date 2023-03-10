@@ -34,20 +34,21 @@ def create_contour_plots() -> None:
     Create contour distribution plots of the secondary structure content in PDB files
     @return: None
     """
-    lengths = ["100", "200", "300"]
+    # lengths = ["100", "200", "300"]
+    lengths = ["300"]
     indices = [50, 50, 70]
     colours = ["#682860", "#286830", "#fbafe4", '#006374']
     for i in range(len(lengths)):
-        sns.set(context="notebook", style="ticks", font_scale=1.88, font="Helvetica")
+        sns.set(context="notebook", style="ticks", font_scale=1.88)
         sns.set_palette(sns.color_palette(colours))
-        alphafold_df = pd.read_csv(f"../data/alphafold/unique_secondary_structures_{lengths[i]}.csv")
+        # alphafold_df = pd.read_csv(f"../data/alphafold/unique_secondary_structures_{lengths[i]}.csv")
         rcsb_df = pd.read_csv(f"../data/rcsb/secondary_structures_{lengths[i]}.csv")
         rcsb_df = rcsb_df.loc[(rcsb_df[['alpha', 'beta']] != 0).all(axis=1)]
-        alphafold_df = alphafold_df.loc[(alphafold_df[["alpha", "beta"]] != 0).all(axis=1)]
+        # alphafold_df = alphafold_df.loc[(alphafold_df[["alpha", "beta"]] != 0).all(axis=1)]
         rcsb_x = rcsb_df["alpha"]
         rcsb_y = rcsb_df["beta"]
-        alphafold_x = alphafold_df["alpha"]
-        alphafold_y = alphafold_df["beta"]
+        # alphafold_x = alphafold_df["alpha"]
+        # alphafold_y = alphafold_df["beta"]
         plt.scatter(x=rcsb_x[::indices[i]], y=rcsb_y[::indices[i]],
                     color=colours[0], alpha=0.1)
         # plt.scatter(x=alphafold_x[::indices[i]], y=alphafold_y[::indices[i]],
@@ -61,10 +62,10 @@ def create_contour_plots() -> None:
                   [f"RCSB {lengths[i]}"],
                   loc="upper right", fontsize=20, frameon=False)
         ax.set_xlim(0, 0.6)
-        ax.set_ylim(0, 0.6)
+        ax.set_ylim(0, 0.5)
         ax.set_xlabel(r"$\alpha$-helix %")
         ax.set_ylabel(r"$\beta$-sheet %")
-        ax.set_xticks(np.arange(0, 1.0, 0.2))
+        # ax.set_yticks(np.arange(0, 0.6, 0.2))
         sns.despine()
         plt.tight_layout()
         plt.show()
