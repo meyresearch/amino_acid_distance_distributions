@@ -56,9 +56,9 @@ def plot_shadow_comparison(cutoff: str, length_range: str, arguments: argparse.N
     plt.legend(loc="upper right", fontsize=16)
     sns.despine()
     plt.tight_layout()
-    plt.show()
     plt.savefig(f"../plots/supplementary_material/shadow_comparison_c_{cutoff}.pdf")
-
+    plt.show()
+    
 
 def main():
     arguments = shadow_commandline_options()
