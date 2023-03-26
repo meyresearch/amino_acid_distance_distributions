@@ -45,7 +45,7 @@ def create_bar_plots() -> None:
     adjusted_rcsb = calculate_adjusted_frequency(rcsb_frequencies, pdb_frequencies)
 
     fig, ax = plt.subplots(figsize=(6, 6))
-
+    sns.set(context="notebook", palette="colorblind", style="ticks", font_scale=1.8)
     ax.bar(bins, adjusted_rcsb,
               color=_COLOUR_PALETTE["DATABANK"],
               label="RCSB PDB",
@@ -55,10 +55,10 @@ def create_bar_plots() -> None:
               label="Used RCSB PDB")
 
     ax.tick_params(axis="x", labelrotation=90, labelsize=14)
-    ax.tick_params(axis="y", labelsize=20)
+    ax.tick_params(axis="y", labelsize=14)
     ax.legend(fontsize=18, frameon=False)
-    ax.set_ylabel("Frequency\n", fontsize=24)
-    ax.set_xlabel("Chain length", fontsize=24)
+    ax.set_ylabel("Frequency\n", fontsize=14)
+    ax.set_xlabel("Chain length", fontsize=14)
     plt.tight_layout()
     sns.despine()
     plt.savefig("../plots/individual_plots_for_paper/bars.pdf")
