@@ -39,41 +39,26 @@ def create_bar_plots() -> None:
     swissprot_file = "UniProt_Swiss_Prot.csv"
     rcsb_file = "RCSB_by_length.csv"
 
-    alpha_bins, alpha_frequencies = get_data_for_bars(path + alphafold_file)
-    swiss_bins, swiss_frequencies = get_data_for_bars(path + swissprot_file)
     pdb_bins, pdb_frequencies = get_data_for_bars(path + pdb_file)
     bins, rcsb_frequencies = get_data_for_bars(path + rcsb_file)
 
-    adjusted_swiss = calculate_adjusted_frequency(swiss_frequencies, alpha_frequencies)
     adjusted_rcsb = calculate_adjusted_frequency(rcsb_frequencies, pdb_frequencies)
 
-    fig = plt.figure(figsize=(8, 8))
-    ax = fig.subplots(2, 1, sharex=True)
+    fig, ax = plt.subplots(figsize=(6, 6))
 
-    ax[0].bar(bins, adjusted_swiss,
-              color=_COLOUR_PALETTE["DATABANK"],
-              label="Swiss-Prot",
-              bottom=alpha_frequencies)
-    ax[0].bar(bins, alpha_frequencies,
-              color=_COLOUR_PALETTE["USED"],
-              label="Used AlphaFold 2")
-    ax[1].bar(bins, adjusted_rcsb,
+    ax.bar(bins, adjusted_rcsb,
               color=_COLOUR_PALETTE["DATABANK"],
               label="RCSB PDB",
               bottom=pdb_frequencies)
-    ax[1].bar(bins, pdb_frequencies,
+    ax.bar(bins, pdb_frequencies,
               color=_COLOUR_PALETTE["USED"],
               label="Used RCSB PDB")
-    ax[0].tick_params(axis="x", labelrotation=90, labelsize=20)
-    ax[1].tick_params(axis="x", labelrotation=90, labelsize=20)
-    ax[0].tick_params(axis="y", labelsize=20)
-    ax[1].tick_params(axis="y", labelsize=20)
-    ax[0].legend(fontsize=18, frameon=False)
-    ax[1].legend(fontsize=18, frameon=False)
-    ax[0].set_ylabel("Frequency", fontsize=24)
-    ax[1].set_ylabel("Frequency\n", fontsize=24)
-    ax[1].set_xlabel("Chain length", fontsize=24)
+
+    ax.tick_params(axis="x", labelrotation=90, labelsize=20)
+    ax.tick_params(axis="y", labelsize=20)
+    ax.legend(fontsize=18, frameon=False)
+    ax.set_ylabel("Frequency\n", fontsize=24)
+    ax.set_xlabel("Chain length", fontsize=24)
     plt.tight_layout()
     sns.despine()
-    plt.savefig("../plots/individual_plots_for_paper/bars_alpha_unique.pdf")
-    plt.show()
+    plt.savefig("../plots/individual_plots_for_paper/bars.pdf")
