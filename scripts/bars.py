@@ -54,7 +54,7 @@ def create_bar_plots() -> None:
               color=_COLOUR_PALETTE["USED"],
               label="Used RCSB PDB")
 
-    ax.tick_params(axis="x", labelrotation=90, labelsize=20)
+    ax.tick_params(axis="x", labelrotation=90, labelsize=14)
     ax.tick_params(axis="y", labelsize=20)
     ax.legend(fontsize=18, frameon=False)
     ax.set_ylabel("Frequency\n", fontsize=24)
