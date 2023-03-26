@@ -62,7 +62,6 @@ def plot_shadow_comparison(cutoff: str, length_range: str, arguments: argparse.N
 
 def main():
     arguments = shadow_commandline_options()
-    print(arguments)
     path = arguments.path
     cutoff_radius = arguments.cutoff
     shadow_radius = arguments.shadow_radius
