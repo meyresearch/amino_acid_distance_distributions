@@ -53,7 +53,7 @@ def plot_shadow_comparison(cutoff: str, length_range: str, arguments: argparse.N
     plt.ylim(0.0005, 0.1)
     plt.xlabel("s")
     plt.ylabel("P(s)")
-    plt.legend(loc="lower left", fontsize=16)
+    plt.legend(loc="upper left", fontsize=16)
     sns.despine()
     plt.tight_layout()
     plt.savefig(f"../plots/supplementary_material/shadow_comparison_c_{cutoff}.pdf")
